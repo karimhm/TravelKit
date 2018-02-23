@@ -5,7 +5,7 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#import <TravelKit/TKDBRow.h>
+#import "TKDBRow.h"
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN

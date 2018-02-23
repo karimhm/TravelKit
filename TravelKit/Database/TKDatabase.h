@@ -5,8 +5,8 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#import <TravelKit/TKDBQuery.h>
-#import <TravelKit/TKDBCursor.h>
+#import "TKDBQuery.h"
+#import "TKDBCursor.h"
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN

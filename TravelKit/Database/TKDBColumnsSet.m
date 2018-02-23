@@ -23,6 +23,7 @@
 }
 
 #pragma mark - TKDBRow
+#pragma mark By Name
 
 - (TKDBValueType)valueTypeForColumn:(NSString *)columnName {
     switch (sqlite3_column_type(_stmt, sqlite3_column_type(_stmt, (int)[_columnMap indexOfObject:columnName]))) {
@@ -59,6 +60,44 @@
 
 - (NSString *)stringForColumn:(NSString *)columnName {
     return [NSString stringWithUTF8String:[self textForColumn:columnName]];
+}
+
+#pragma mark By Index
+
+- (TKDBValueType)valueTypeForColumnAtIndex:(NSInteger)columnIndex; {
+    switch (sqlite3_column_type(_stmt, sqlite3_column_type(_stmt, (int)columnIndex))) {
+        case SQLITE_INTEGER:
+            return TKDBValueTypeInteger;
+        case SQLITE_FLOAT:
+            return TKDBValueTypeFloat;
+        case SQLITE_BLOB:
+            return TKDBValueTypeBlob;
+        case SQLITE_NULL:
+            return TKDBValueTypeNull;
+        case SQLITE_TEXT:
+            return TKDBValueTypeText;
+    }
+    
+    return TKDBValueTypeUnknown;
+}
+
+- (const void*)blobForColumnAtIndex:(NSInteger)columnIndex {
+    return sqlite3_column_blob(_stmt, (int)columnIndex);
+}
+- (double)doubleForColumnAtIndex:(NSInteger)columnIndex {
+    return sqlite3_column_double(_stmt, (int)columnIndex);
+}
+
+- (int64_t)int64ForColumnAtIndex:(NSInteger)columnIndex {
+    return (int64_t)sqlite3_column_int64(_stmt, (int)columnIndex);
+}
+
+- (const char *)textForColumnAtIndex:(NSInteger)columnIndex {
+    return (const char *)sqlite3_column_text(_stmt, (int)columnIndex);
+}
+
+- (NSString *)stringForColumnAtIndex:(NSInteger)columnIndex {
+    return [NSString stringWithUTF8String:[self textForColumnAtIndex:columnIndex]];
 }
 
 #pragma mark - description

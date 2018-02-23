@@ -32,6 +32,7 @@
     if (self = [super init]) {
         _url = url;
         _db = [[TKDatabase alloc] initWithURL:url];
+        _stations = [[NSMutableSet alloc] initWithCapacity:0];
         
         [self openDatabase:error];
     }
@@ -44,7 +45,6 @@
     if ([_db openWithOptions:TKDBOptionsOpenReadOnly error:error]) {
         if ([self verifyDatabase:_db]) {
             _valid = true;
-            [self loadStations];
         } else {
             *error = [NSError tk_badDatabaseError];
         }
@@ -57,7 +57,6 @@
 
 - (void)loadStations {
     TKDBCursor *cursor = [_db executeQuery:[TKDBQuery queryWithTable:kTKTableStation]];
-    _stations = [[NSMutableSet alloc] initWithCapacity:(NSUInteger)cursor.count];
     
     for (id<TKDBRow> row in cursor) {
         TKStation *station = [[TKStation alloc] initWithRow:row];

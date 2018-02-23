@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A2252C3203F2154003C1D97 /* TravelKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2252C2203F2154003C1D97 /* TravelKitTests.m */; };
+		8A2252C5203F2154003C1D97 /* TravelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5A885E2033325300998074 /* TravelKit.framework */; };
 		8A40FDDD2033808C00FB9C2F /* TKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A40FDDB2033808C00FB9C2F /* TKDatabase.h */; };
 		8A40FDDE2033808C00FB9C2F /* TKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A40FDDC2033808C00FB9C2F /* TKDatabase.m */; };
 		8A40FDE3203389AC00FB9C2F /* TKStation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A40FDE1203389AC00FB9C2F /* TKStation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -18,6 +20,7 @@
 		8A6E2C6F2038FF66006A240F /* TKDBCursor_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6E2C6E2038FF66006A240F /* TKDBCursor_Private.h */; };
 		8A6E2C7A2039316A006A240F /* TKUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6E2C782039316A006A240F /* TKUtilities.h */; };
 		8A6E2C7B2039316A006A240F /* TKUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E2C792039316A006A240F /* TKUtilities.m */; };
+		8A93F402203F35A10029ED44 /* data.db in Resources */ = {isa = PBXBuildFile; fileRef = 8A2252CB203F23FF003C1D97 /* data.db */; };
 		8A9645F12037282900A39571 /* TKDBQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9645EF2037282900A39571 /* TKDBQuery.h */; };
 		8A9645F22037282900A39571 /* TKDBQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9645F02037282900A39571 /* TKDBQuery.m */; };
 		8A9645FF20374D5A00A39571 /* TKDBRow.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9645FE20374D5A00A39571 /* TKDBRow.h */; };
@@ -39,7 +42,21 @@
 		8AF5C85C203618B500715995 /* NSError+TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF5C85A203618B500715995 /* NSError+TravelKit.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8A2252C6203F2154003C1D97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A5A88552033325300998074 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A5A885D2033325300998074;
+			remoteInfo = TravelKit;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A2252C2203F2154003C1D97 /* TravelKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TravelKitTests.m; sourceTree = "<group>"; };
+		8A2252C4203F2154003C1D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A2252CB203F23FF003C1D97 /* data.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.db; sourceTree = "<group>"; };
 		8A40FDDB2033808C00FB9C2F /* TKDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDatabase.h; sourceTree = "<group>"; };
 		8A40FDDC2033808C00FB9C2F /* TKDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKDatabase.m; sourceTree = "<group>"; };
 		8A40FDE1203389AC00FB9C2F /* TKStation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKStation.h; sourceTree = "<group>"; };
@@ -76,6 +93,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8A2252BD203F2154003C1D97 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A2252C5203F2154003C1D97 /* TravelKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A5A885A2033325300998074 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -86,6 +111,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A2252C1203F2154003C1D97 /* TravelKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				8A2252CB203F23FF003C1D97 /* data.db */,
+				8A2252C2203F2154003C1D97 /* TravelKitTests.m */,
+				8A2252C4203F2154003C1D97 /* Info.plist */,
+			);
+			path = TravelKitTests;
+			sourceTree = "<group>";
+		};
 		8A40FDDA2033807A00FB9C2F /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				8A5A88602033325300998074 /* TravelKit */,
+				8A2252C1203F2154003C1D97 /* TravelKitTests */,
 				8A5A885F2033325300998074 /* Products */,
 				8A63F4B82033913E00742FE5 /* Frameworks */,
 			);
@@ -128,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				8A5A885E2033325300998074 /* TravelKit.framework */,
+				8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -238,6 +275,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		8A2252BF203F2154003C1D97 /* TravelKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A2252CA203F2154003C1D97 /* Build configuration list for PBXNativeTarget "TravelKitTests" */;
+			buildPhases = (
+				8A2252BC203F2154003C1D97 /* Sources */,
+				8A2252BD203F2154003C1D97 /* Frameworks */,
+				8A2252BE203F2154003C1D97 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8A2252C7203F2154003C1D97 /* PBXTargetDependency */,
+			);
+			name = TravelKitTests;
+			productName = TravelKitTests;
+			productReference = 8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8A5A885D2033325300998074 /* TravelKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A5A88662033325300998074 /* Build configuration list for PBXNativeTarget "TravelKit" */;
@@ -265,6 +320,10 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Karim;
 				TargetAttributes = {
+					8A2252BF203F2154003C1D97 = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Manual;
+					};
 					8A5A885D2033325300998074 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Manual;
@@ -284,11 +343,20 @@
 			projectRoot = "";
 			targets = (
 				8A5A885D2033325300998074 /* TravelKit */,
+				8A2252BF203F2154003C1D97 /* TravelKitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8A2252BE203F2154003C1D97 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A93F402203F35A10029ED44 /* data.db in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A5A885C2033325300998074 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,6 +367,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8A2252BC203F2154003C1D97 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A2252C3203F2154003C1D97 /* TravelKitTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A5A88592033325300998074 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -318,7 +394,45 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		8A2252C7203F2154003C1D97 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8A5A885D2033325300998074 /* TravelKit */;
+			targetProxy = 8A2252C6203F2154003C1D97 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		8A2252C8203F2154003C1D97 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = TravelKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.karhm.TravelKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8A2252C9203F2154003C1D97 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = TravelKitTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.karhm.TravelKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		8A5A88642033325300998074 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -476,6 +590,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8A2252CA203F2154003C1D97 /* Build configuration list for PBXNativeTarget "TravelKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A2252C8203F2154003C1D97 /* Debug */,
+				8A2252C9203F2154003C1D97 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8A5A88582033325300998074 /* Build configuration list for PBXProject "TravelKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

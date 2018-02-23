@@ -5,7 +5,7 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#import <TravelKit/TKDBRow.h>
+#import "TKDBRow.h"
 #import <sqlite3.h>
 
 @interface TKDBColumnsSet : NSObject <TKDBRow>

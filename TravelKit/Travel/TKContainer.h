@@ -18,4 +18,6 @@
 
 @property (strong, nonatomic, readonly) NSSet <TKStation *> *stations;
 
+- (void)loadStations;
+
 @end
