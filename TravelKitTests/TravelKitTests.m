@@ -34,6 +34,13 @@
     XCTAssertNil(error, "Unable to open test database");
 }
 
+- (void)testLoadingContainer {
+    NSError *error = nil;
+    TKContainer *db = [[TKContainer alloc] initWithURL:self.dbURL error:&error];
+    XCTAssertNil(error, "Container allocation did failed");
+    XCTAssertTrue(db.valid, "Container is marked as non valid");
+}
+
 - (void)testPerformanceLoadingStations {
     NSError *error = nil;
     TKContainer *cont = [[TKContainer alloc] initWithURL:self.dbURL error:&error];

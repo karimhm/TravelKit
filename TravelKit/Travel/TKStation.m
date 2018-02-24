@@ -21,14 +21,11 @@
 
 #pragma mark - TKDBVerify
 
-+ (NSString *)databaseTableName {
-    return kTKTableStation;
-}
-
-+ (NSArray <NSString *> *)tableRequiredColumns {
-    return @[kTKColumnName,
-             kTKColumnLatitude,
-             kTKColumnLongitude];
++ (TKDBVerifySet *)requiredTablesAndColumns {
+    return @{kTKTableStation:@[kTKColumnName,
+                               kTKColumnLatitude,
+                               kTKColumnLongitude]
+             };
 }
 
 #pragma mark -

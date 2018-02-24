@@ -17,28 +17,32 @@
 #pragma mark - TKDBVerify
 
 + (BOOL)isDatabaseValid:(TKDatabase *)database {
-    NSString *tableName = [self databaseTableName];
+    TKDBVerifySet *set = [self requiredTablesAndColumns];
+    BOOL valid = true;
     
-    if (tableName && [database tableExists:tableName]) {
-        for (id column in [self tableRequiredColumns]) {
-            if (![database columnExists:column inTableWithName:tableName]) {
-                return false;
+    if (set) {
+        for (id tableName in set.keyEnumerator) {
+            if ([database tableExists:tableName]) {
+                for (id column in [set valueForKey:tableName]) {
+                    if (![database columnExists:column inTableWithName:tableName]) {
+                        valid = false;
+                        break;
+                    }
+                }
+            } else {
+                valid = false;
                 break;
             }
         }
     } else {
-        return false;
+        valid = false;
     }
     
-    return true;
+    return valid;
 }
 
-+ (NSString *)databaseTableName {
-    return nil;
-}
-
-+ (NSArray <NSString *> *)tableRequiredColumns {
-    return @[];
++ (TKDBVerifySet *)requiredTablesAndColumns {
+    return @{};
 }
 
 @end

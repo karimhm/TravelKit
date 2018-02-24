@@ -7,10 +7,11 @@
 
 #import <TravelKit/TKDatabase.h>
 
+typedef NSDictionary <NSString*, NSArray <NSString*> *> TKDBVerifySet;
+
 @protocol TKDBVerify <NSObject>
 
 + (BOOL)isDatabaseValid:(TKDatabase *)database;
-+ (NSString *)databaseTableName;
-+ (NSArray <NSString *> *)tableRequiredColumns;
++ (TKDBVerifySet *)requiredTablesAndColumns;
 
 @end
