@@ -5,9 +5,9 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#import "TKDBQuery.h"
-#import "TKDBCursor.h"
+#import "TKDBFunction.h"
 #import <Foundation/Foundation.h>
+#import <sqlite3.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -40,13 +40,11 @@ typedef NS_OPTIONS(NSUInteger, TKDBOptions) {
 @property (nonatomic, readonly, getter=isValid) BOOL valid;
 @property (nonatomic, readonly, getter=isOpen) BOOL open;
 
+@property (nonatomic, readonly) sqlite3* sqlitePtr;
+
 @property (nonatomic) NSInteger busyTimeout;
 
 @property (weak, nonatomic) id<TKDatabaseDelegate> delegate;
-
-- (TKDBCursor *)executeQuery:(TKDBQuery *)query;
-- (TKDBCursor *)executeQuery:(TKDBQuery *)query error:(NSError **)error;
-- (TKDBCursor *)executeQueryWithFormat:(NSString *)format, ...;
 
 - (BOOL)tableExists:(NSString*)tableName;
 - (BOOL)columnExists:(NSString*)columnName inTableWithName:(NSString*)tableName;

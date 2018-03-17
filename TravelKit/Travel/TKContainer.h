@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CLLocation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface TKContainer : NSObject
 
 - (instancetype)initWithPath:(NSString *)path error:(NSError **)error;
@@ -16,8 +18,10 @@
 
 @property (nonatomic, readonly, getter=isValid) BOOL valid;
 
-@property (strong, nonatomic, readonly) NSSet <TKStation *> *stations;
+@property (nonatomic, readonly) NSSet <TKStation *> *stations;
 
 - (void)loadStations;
 
 @end
+
+NS_ASSUME_NONNULL_END

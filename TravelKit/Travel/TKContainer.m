@@ -7,8 +7,7 @@
 
 #import "TKContainer.h"
 #import "TKDatabase.h"
-#import "TKDBQuery.h"
-#import "TKDBCursor.h"
+#import "TKStatement.h"
 #import "TKItem_Private.h"
 #import "TKConstants_Private.h"
 #import "NSError+TravelKit.h"
@@ -19,10 +18,6 @@
 }
 
 #pragma mark - Initialization
-
-- (instancetype)init {
-    return [self initWithURL:nil error:nil];
-}
 
 - (instancetype)initWithPath:(NSString *)path error:(NSError **)error {
     return [self initWithURL:[NSURL fileURLWithPath:path] error:error];
@@ -56,14 +51,16 @@
 }
 
 - (void)loadStations {
-    TKDBCursor *cursor = [_db executeQuery:[TKDBQuery queryWithTable:kTKTableStation]];
+    TKStatement *statement = [[TKStatement alloc] initWithDatabase:_db format:@"select * from %@", kTKTableStation];
     
-    for (id<TKDBRow> row in cursor) {
-        TKStation *station = [[TKStation alloc] initWithRow:row];
-        [(NSMutableSet *)_stations addObject:station];
+    if ([statement prepareWithError:nil]) {
+        for (id<TKDBRow> row in statement) {
+            TKStation *station = [[TKStation alloc] initWithRow:row];
+            [(NSMutableSet *)_stations addObject:station];
+        }
     }
     
-    [cursor close];
+    [statement close];
 }
 
 #pragma mark -

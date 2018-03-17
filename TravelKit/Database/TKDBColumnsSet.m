@@ -26,20 +26,7 @@
 #pragma mark By Name
 
 - (TKDBValueType)valueTypeForColumn:(NSString *)columnName {
-    switch (sqlite3_column_type(_stmt, sqlite3_column_type(_stmt, (int)[_columnMap indexOfObject:columnName]))) {
-        case SQLITE_INTEGER:
-            return TKDBValueTypeInteger;
-        case SQLITE_FLOAT:
-            return TKDBValueTypeFloat;
-        case SQLITE_BLOB:
-            return TKDBValueTypeBlob;
-        case SQLITE_NULL:
-            return TKDBValueTypeNull;
-        case SQLITE_TEXT:
-            return TKDBValueTypeText;
-    }
-    
-    return TKDBValueTypeUnknown;
+    return (TKDBValueType)sqlite3_column_type(_stmt, sqlite3_column_type(_stmt, (int)[_columnMap indexOfObject:columnName]));
 }
 
 - (const void*)blobForColumn:(NSString *)columnName {
@@ -65,20 +52,7 @@
 #pragma mark By Index
 
 - (TKDBValueType)valueTypeForColumnAtIndex:(NSInteger)columnIndex; {
-    switch (sqlite3_column_type(_stmt, sqlite3_column_type(_stmt, (int)columnIndex))) {
-        case SQLITE_INTEGER:
-            return TKDBValueTypeInteger;
-        case SQLITE_FLOAT:
-            return TKDBValueTypeFloat;
-        case SQLITE_BLOB:
-            return TKDBValueTypeBlob;
-        case SQLITE_NULL:
-            return TKDBValueTypeNull;
-        case SQLITE_TEXT:
-            return TKDBValueTypeText;
-    }
-    
-    return TKDBValueTypeUnknown;
+    return (TKDBValueType)sqlite3_column_type(_stmt, sqlite3_column_type(_stmt, (int)columnIndex));
 }
 
 - (const void*)blobForColumnAtIndex:(NSInteger)columnIndex {

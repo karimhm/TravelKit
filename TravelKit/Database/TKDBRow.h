@@ -5,16 +5,8 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
+#import <TravelKit/TKDefines.h>
 #import <Foundation/Foundation.h>
-
-typedef NS_ENUM(NSInteger, TKDBValueType) {
-    TKDBValueTypeUnknown = -1,
-    TKDBValueTypeNull = 0,
-    TKDBValueTypeInteger,
-    TKDBValueTypeFloat,
-    TKDBValueTypeText,
-    TKDBValueTypeBlob
-};
 
 @protocol TKDBRow <NSObject>
 @required;

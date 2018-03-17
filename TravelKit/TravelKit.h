@@ -11,4 +11,8 @@
 
 #import <TravelKit/TKContainer.h>
 
+#import <TravelKit/TKLine.h>
 #import <TravelKit/TKStation.h>
+#import <TravelKit/TKTrain.h>
+#import <TravelKit/TKPath.h>
+#import <TravelKit/TKStop.h>

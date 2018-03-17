@@ -6,9 +6,10 @@
  */
 
 #import "TKDatabase.h"
+#import "TKDatabase_Private.h"
+#import "TKStatement.h"
 #import "TKUtilities.h"
 #import "TKDefines.h"
-#import "TKDBCursor_Private.h"
 #import "NSError+TravelKit.h"
 #import <sqlite3.h>
 
@@ -40,10 +41,6 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
     
     return 0;
 }
-
-@interface TKDatabase () <TKDBErrorReporter>
-
-@end
 
 @implementation TKDatabase {
     sqlite3 *_db;
@@ -130,6 +127,7 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
                                      NULL);
         if (status == SQLITE_OK) {
             _open = true;
+            _sqlitePtr = _db;
             _valid = [self checkDatabase];
             self.busyTimeout = TKDefaultBusyTimeout;
         } else {
@@ -159,6 +157,7 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
     if (status == SQLITE_OK) {
         closed = true;
         _db = nil;
+        _sqlitePtr = nil;
         _open = false;
     } else {
         [self reportError:[NSError tk_sqliteErrorWith:status]];
@@ -168,12 +167,12 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
 }
 
 - (BOOL)checkDatabase {
-    TKDBCursor *cursor = [self executeQueryWithFormat:@"SELECT name FROM sqlite_master WHERE [type] = 'table'"];
+    TKStatement *statement = [[TKStatement alloc] initWithDatabase:self text:@"SELECT name FROM sqlite_master WHERE [type] = 'table'"];
     BOOL valid = false;
     
-    if (cursor) {
-        valid = ([cursor next] != nil);
-        [cursor close];
+    if ([statement prepareWithError:nil]) {
+        _valid = [statement next] != nil;
+        [statement close];
     }
     
     return valid;
@@ -203,67 +202,33 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
     }
 }
 
-#pragma mark - Query
-
-- (TKDBCursor *)executeQuery:(TKDBQuery *)query {
-    return [self executeQuery:query error:nil];
-}
-
-- (TKDBCursor *)executeQuery:(TKDBQuery *)query error:(NSError **)error {
-    return [self executeQueryWithString:query.sqlString error:error];
-}
-
-- (TKDBCursor *)executeQueryWithFormat:(NSString *)format, ... {
-    va_list args;
-    va_start(args, format);
-    NSString *queryString = [[NSString alloc] initWithFormat:format arguments:args];
-    va_end(args);
-    
-    return [self executeQueryWithString:queryString error:nil];
-}
-
-- (TKDBCursor *)executeQueryWithString:(NSString *)string error:(NSError **)error {
-    sqlite3_stmt *stmt;
-    int status = sqlite3_prepare_v2(_db, string.UTF8String, -1, &stmt, NULL);
-    
-    if (status == SQLITE_OK) {
-        TKDBCursor *cursor = [[TKDBCursor alloc] initWithStmt:stmt];
-        return cursor;
-    } else {
-        sqlite3_finalize(stmt);
-        NSError *executeError = [NSError tk_sqliteErrorWith:status];
-        if (error) {
-            *error = executeError;
-        }
-        [self reportError:executeError];
-    }
-    
-    return nil;
-}
-
 #pragma mark - Checking
 
 - (BOOL)tableExists:(NSString*)tableName {
-    TKDBCursor *cursor = [self executeQueryWithFormat:@"SELECT name FROM sqlite_master WHERE [type] = 'table' AND name = '%@'", tableName];
+    TKStatement *statement = [[TKStatement alloc] initWithDatabase:self format:@"SELECT name FROM sqlite_master WHERE [type] = 'table' AND name = '%@'", tableName];
     BOOL exists = false;
     
-    if (cursor && ([cursor next] != nil)) {
-        exists = true;
-        [cursor close];
+    if ([statement prepareWithError:nil]) {
+        if (statement && ([statement next] != nil)) {
+            exists = true;
+            [statement close];
+        }
     }
     
     return exists;
 }
 
 - (BOOL)columnExists:(NSString*)columnName inTableWithName:(NSString*)tableName {
-    TKDBCursor *cursor = [self executeQueryWithFormat:@"PRAGMA table_info('%@')", tableName];
+    TKStatement *statement = [[TKStatement alloc] initWithDatabase:self format:@"PRAGMA table_info('%@')", tableName];
     BOOL exists = false;
     
-    for (id<TKDBRow> row in cursor) {
-        if ([[[row stringForColumn:@"name"] lowercaseString] isEqualToString:[columnName lowercaseString]]) {
-            exists = true;
-            [cursor close];
-            break;
+    if ([statement prepareWithError:nil]) {
+        for (id<TKDBRow> row in statement) {
+            if ([[[row stringForColumn:@"name"] lowercaseString] isEqualToString:[columnName lowercaseString]]) {
+                exists = true;
+                [statement close];
+                break;
+            }
         }
     }
     
