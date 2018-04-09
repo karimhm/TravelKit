@@ -33,7 +33,7 @@
 		8AA0142A207B00CB0066AC23 /* TKDBFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6E0FD720448B050047B6FF /* TKDBFunction.h */; };
 		8AA0142B207B02900066AC23 /* TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5A88612033325300998074 /* TravelKit.h */; };
 		8AA5C0CB20351404001821DA /* TKContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA5C0C920351404001821DA /* TKContainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8AA5C0CC20351404001821DA /* TKContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5C0CA20351404001821DA /* TKContainer.m */; };
+		8AA5C0CC20351404001821DA /* TKContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5C0CA20351404001821DA /* TKContainer.mm */; };
 		8AC46DDB203A0D750040E385 /* TKDBErrorReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC46DD3203978860040E385 /* TKDBErrorReporter.h */; };
 		8AF505262036B26400E95ED0 /* TKDBRow_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF505252036B0AF00E95ED0 /* TKDBRow_Private.h */; };
 		8AF505272036B26800E95ED0 /* TKDBVerify.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF5C8502035F7E200715995 /* TKDBVerify.h */; };
@@ -84,7 +84,7 @@
 		8AA01419207B001E0066AC23 /* tkm.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = tkm.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AA0141B207B001E0066AC23 /* TravelKitModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TravelKitModule.h; sourceTree = "<group>"; };
 		8AA5C0C920351404001821DA /* TKContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKContainer.h; sourceTree = "<group>"; };
-		8AA5C0CA20351404001821DA /* TKContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKContainer.m; sourceTree = "<group>"; };
+		8AA5C0CA20351404001821DA /* TKContainer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TKContainer.mm; sourceTree = "<group>"; };
 		8AA5C0D82035BB09001821DA /* TKDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDefines.h; sourceTree = "<group>"; };
 		8AA5C0DA2035BBEE001821DA /* TKError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKError.h; sourceTree = "<group>"; };
 		8AC46DD3203978860040E385 /* TKDBErrorReporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDBErrorReporter.h; sourceTree = "<group>"; };
@@ -151,7 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				8AA5C0C920351404001821DA /* TKContainer.h */,
-				8AA5C0CA20351404001821DA /* TKContainer.m */,
+				8AA5C0CA20351404001821DA /* TKContainer.mm */,
 				8A63F50E20349D6D00742FE5 /* TKItem.h */,
 				8A63F50F20349D6D00742FE5 /* TKItem.m */,
 				8A40FDE1203389AC00FB9C2F /* TKStation.h */,
@@ -225,8 +225,16 @@
 			isa = PBXGroup;
 			children = (
 				8AA0141B207B001E0066AC23 /* TravelKitModule.h */,
+				8AA01430207B97E00066AC23 /* Functions */,
 			);
 			path = TravelKitModule;
+			sourceTree = "<group>";
+		};
+		8AA01430207B97E00066AC23 /* Functions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Functions;
 			sourceTree = "<group>";
 		};
 		8AA5C0D52035B75E001821DA /* Private */ = {
@@ -438,7 +446,7 @@
 				8A9646032037B12200A39571 /* TKDBColumnsSet.m in Sources */,
 				8A7B5D8A204BFB79002BA641 /* TKStatement.m in Sources */,
 				8A6E2C7B2039316A006A240F /* TKUtilities.m in Sources */,
-				8AA5C0CC20351404001821DA /* TKContainer.m in Sources */,
+				8AA5C0CC20351404001821DA /* TKContainer.mm in Sources */,
 				8A63F51120349D6D00742FE5 /* TKItem.m in Sources */,
 				8AF5C84A2035D6DE00715995 /* TKConstants.m in Sources */,
 			);

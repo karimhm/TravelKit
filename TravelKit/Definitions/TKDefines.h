@@ -14,7 +14,23 @@
 #define TK_EXTERN extern __attribute__((visibility("default")))
 #endif
 
+#if defined(__BIG_ENDIAN__)
+#define TK_BIG_ENDIAN
+#elif defined(__BIG_ENDIAN__)
+#define TK_LITTLE_ENDIAN
+#else
+#define TK_UNKNOWN_ENDIAN
+#endif
+
 #define TK_INLINE static inline
+
+TK_INLINE uint32_t TKAligned32(uint32_t data) {
+#if defined(TK_BIG_ENDIAN)
+    return data;
+#else
+    return _OSSwapInt32(data);
+#endif
+}
 
 typedef NS_ENUM(NSInteger, TKDBValueType) {
     TKDBValueTypeUnknown = -1,

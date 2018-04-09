@@ -20,6 +20,14 @@
 - (BOOL)bindData:(NSData *)value index:(NSInteger)index error:(NSError **)error;
 - (BOOL)bindNullWithIndex:(NSInteger)index error:(NSError **)error;
 
+/*
+ *  expandedQuery
+ *
+ *  Discussion:
+ *    May return a NULL string.
+ */
+- (NSString *)expandedQuery;
+
 @property (nonatomic, readonly) NSInteger columnCount;
 @property (nonatomic, readonly) NSArray <NSString *> *columnNames;
 
@@ -34,8 +42,13 @@
 
 - (id<TKDBRow>)next;
 - (BOOL)hasNext;
+
 - (BOOL)clearBindings;
 - (BOOL)reset;
 - (BOOL)close;
+
+- (BOOL)clearBindingsWithError:(NSError **)error;
+- (BOOL)resetWithError:(NSError **)error;
+- (BOOL)closeWithError:(NSError **)error;
 
 @end

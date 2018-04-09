@@ -11,10 +11,15 @@
 #import "TKItem_Private.h"
 #import "TKConstants_Private.h"
 #import "NSError+TravelKit.h"
+#import <objc/objc.h>
+#import <map>
+
+typedef std::map<int64_t, id> TKObjcMap;
 
 @implementation TKContainer {
     TKDatabase *_db;
     NSURL *_url;
+    TKObjcMap _stationsMap;
 }
 
 #pragma mark - Initialization
@@ -27,7 +32,6 @@
     if (self = [super init]) {
         _url = url;
         _db = [[TKDatabase alloc] initWithURL:url];
-        _stations = [[NSMutableSet alloc] initWithCapacity:0];
         
         [self openDatabase:error];
     }
@@ -50,29 +54,50 @@
     return [TKStation isDatabaseValid:database];
 }
 
-- (void)loadStations {
-    TKStatement *statement = [[TKStatement alloc] initWithDatabase:_db format:@"select * from %@", kTKTableStation];
+#pragma mark - Fetch
+
+- (void)fetchStationsMatchingName:(NSString *)name limit:(NSInteger)limit completion:(TKStationFetchHandler)completion {
+    TKStatement *statement = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ LIKE ?1 LIMIT ?2", kTKTableStation, kTKColumnName];
+    NSError *error = nil;
     
-    if ([statement prepareWithError:nil]) {
-        for (id<TKDBRow> row in statement) {
-            TKStation *station = [[TKStation alloc] initWithRow:row];
-            [(NSMutableSet *)_stations addObject:station];
-        }
+    if (![statement prepareWithError:&error]) {
+        completion(nil, error);
+        return;
     }
     
-    [statement close];
+    if (![statement bindString:[NSString stringWithFormat:@"%@%%", name] index:1 error:&error]) {
+        completion(nil, error);
+        return;
+    }
+    
+    if (![statement bindInteger:limit index:2 error:&error]) {
+        completion(nil, error);
+        return;
+    }
+    
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:1];
+    
+    for (id<TKDBRow> row in statement) {
+        TKStation *station = _stationsMap[[row int64ForColumn:kTKColumnID]];
+        
+        if (!station) {
+            station = [[TKStation alloc] initWithRow:row];
+            _stationsMap[[row int64ForColumn:kTKColumnID]] = station;
+        }
+        
+        [result addObject:station];
+    }
+    
+    completion(result, nil);
 }
 
 #pragma mark -
 
 - (void)dealloc {
-    [(NSMutableSet *)_stations removeAllObjects];
-    
     if (_db.isOpen) {
         [_db close];
     }
     
-    _stations = nil;
     _db.delegate = nil;
     _db = nil;
     _url = nil;

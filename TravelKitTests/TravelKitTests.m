@@ -98,4 +98,25 @@ static TFExpectedValues values = {types, sizeof(types) / sizeof(TKDBValueType)};
     XCTAssertTrue(value == 1, "Expected value is '1' current value is %lli", value);
 }
 
+- (void)testFetchingStations {
+    NSError *error = nil;
+    TKContainer *container = [[TKContainer alloc] initWithURL:self.dbURL error:&error];
+    
+    XCTAssertNil(error, "Container initialization did fail error: %@", error);
+    
+    [container fetchStationsMatchingName:@"" limit:-1 completion:^(NSArray<TKStation *> * response, NSError * rerror){
+        XCTAssertNil(error, "Fetching did fail with error: %@", rerror);
+    }];
+}
+
+- (void)testFetchingStationsPerformance {
+    NSError *error = nil;
+    TKContainer *container = [[TKContainer alloc] initWithURL:self.dbURL error:&error];
+    
+    [self measureBlock:^{
+        [container fetchStationsMatchingName:@"" limit:-1 completion:^(NSArray<TKStation *> * response, NSError * rerror){
+        }];
+    }];
+}
+
 @end

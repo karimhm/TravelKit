@@ -98,7 +98,9 @@
 }
 
 - (BOOL)bindString:(NSString *)value index:(NSInteger)index error:(NSError **)error {
-    int status = sqlite3_bind_text64(_stmt, (int)index, value.UTF8String, -1, SQLITE_TRANSIENT, SQLITE_UTF8);
+    const char* text = value.UTF8String;
+    size_t length = strlen(text);
+    int status = sqlite3_bind_text64(_stmt, (int)index, text, (sqlite3_uint64)length, SQLITE_TRANSIENT, SQLITE_UTF8);
     return [self checkSQLStatus:status error:error];
 }
 
@@ -112,11 +114,32 @@
     return [self checkSQLStatus:status error:error];
 }
 
+- (NSString *)expandedQuery {
+    if (@available(iOS 10.0, *)) {
+        return [NSString stringWithUTF8String:sqlite3_expanded_sql(_stmt)];
+    } else {
+        return nil;
+    }
+}
+
 #pragma mark - Execute
 
 - (BOOL)executeWithError:(NSError **)error {
     int status = sqlite3_step(_stmt);
-    return (status == SQLITE_DONE);
+    
+    if (status == SQLITE_DONE) {
+        if (error) {
+            *error = nil;
+        }
+        return true;
+    } else {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWith:status];
+        } else {
+            [_db reportError:[NSError tk_sqliteErrorWith:status]];
+        }
+        return false;
+    }
 }
 
 - (id <TKDBRow>)next {
@@ -144,29 +167,55 @@
 }
 
 - (BOOL)clearBindings {
+    return [self clearBindingsWithError:nil];
+}
+
+- (BOOL)reset {
+    return [self resetWithError:nil];
+}
+
+- (BOOL)close {
+    return [self closeWithError:nil];
+}
+
+- (BOOL)clearBindingsWithError:(NSError **)error {
     int status = sqlite3_clear_bindings(_stmt);
     
     if (status == SQLITE_OK) {
+        if (error) {
+            *error = nil;
+        }
         return true;
     } else {
-        [_db reportError:[NSError tk_sqliteErrorWith:status]];
+        if (error) {
+            *error = [NSError tk_sqliteErrorWith:status];
+        } else {
+            [_db reportError:[NSError tk_sqliteErrorWith:status]];
+        }
         return false;
     }
 }
 
-- (BOOL)reset {
+- (BOOL)resetWithError:(NSError **)error {
     int status = sqlite3_reset(_stmt);
     
     if (status == SQLITE_OK) {
         _hasNext = true;
+        if (error) {
+            *error = nil;
+        }
         return true;
     } else {
-        [_db reportError:[NSError tk_sqliteErrorWith:status]];
+        if (error) {
+            *error = [NSError tk_sqliteErrorWith:status];
+        } else {
+            [_db reportError:[NSError tk_sqliteErrorWith:status]];
+        }
         return false;
     }
 }
 
-- (BOOL)close {
+- (BOOL)closeWithError:(NSError **)error {
     if (_closed || !_stmt) {
         return true;
     }
@@ -176,9 +225,16 @@
     if (status == SQLITE_OK) {
         _closed = true;
         _stmt = NULL;
+        if (error) {
+            *error = nil;
+        }
         return true;
     } else {
-        [_db reportError:[NSError tk_sqliteErrorWith:status]];
+        if (error) {
+            *error = [NSError tk_sqliteErrorWith:status];
+        } else {
+            [_db reportError:[NSError tk_sqliteErrorWith:status]];
+        }
         return false;
     }
 }

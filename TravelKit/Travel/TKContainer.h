@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void (^TKStationFetchHandler)(NSArray<TKStation *> * __nullable response, NSError * __nullable error);
+
 @interface TKContainer : NSObject
 
 - (instancetype)initWithPath:(NSString *)path error:(NSError **)error;
@@ -18,9 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly, getter=isValid) BOOL valid;
 
-@property (nonatomic, readonly) NSSet <TKStation *> *stations;
-
-- (void)loadStations;
+- (void)fetchStationsMatchingName:(NSString *)name limit:(NSInteger)limit completion:(TKStationFetchHandler)completion;
 
 @end
 
