@@ -27,7 +27,7 @@ TK_INLINE int TKDBValueGetBytes(TKDBValueRef value) {
 }
 
 TK_INLINE double TKDBValueGetDouble(TKDBValueRef value) {
-    return sqlite3_value_bytes(value);
+    return sqlite3_value_double(value);
 }
 
 TK_INLINE int64_t TKDBValueGetInt64(TKDBValueRef value) {
@@ -74,6 +74,10 @@ TK_INLINE void TKDBContextResultConstBlob(TKDBContextRef context, const void* bl
 
 TK_INLINE void TKDBContextResultDouble(TKDBContextRef context, double val) {
     sqlite3_result_double(context, val);
+}
+
+TK_INLINE void TKDBContextResultInt(TKDBContextRef context, int val) {
+    sqlite3_result_int(context, val);
 }
 
 TK_INLINE void TKDBContextResultInt64(TKDBContextRef context, int64_t val) {

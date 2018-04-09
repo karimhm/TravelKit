@@ -8,6 +8,8 @@
 #import <XCTest/XCTest.h>
 #import "TKDatabase.h"
 #import "TKContainer.h"
+#import "TKDBFunction.h"
+#import "TKStatement.h"
 
 @interface TravelKitTests : XCTestCase
 
@@ -48,6 +50,52 @@
     [self measureBlock:^{
         [cont loadStations];
     }];
+}
+
+typedef struct {
+    TKDBValueType *types;
+    int count;
+} TFExpectedValues;
+
+void TKDBTestFuction(TKDBContextRef context, int valuesCount, TKDBValueRef _Nonnull * _Nonnull values) {
+    if (valuesCount == 1 && TKDBValueGetType(values[0]) == TKDBValueTypeText) {
+        TKDBContextResultInt64(context, 1);
+    } else {
+        TKDBContextResultNull(context);
+    }
+}
+
+static TKDBValueType types[] = {TKDBValueTypeNull, TKDBValueTypeInteger, TKDBValueTypeFloat, TKDBValueTypeText, TKDBValueTypeBlob};
+static TFExpectedValues values = {types, sizeof(types) / sizeof(TKDBValueType)};
+
+- (void)testCustomFunction {
+    NSError *error = nil;
+    TKDatabase *db = [[TKDatabase alloc] initWithURL:self.dbURL];
+    
+    BOOL openStatus = [db open];
+    XCTAssertTrue(openStatus, "Unable to open the database");
+    
+    TKDBFunctionContext testFunction = {NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL};
+    testFunction.name = "tkTestFunction";
+    testFunction.valuesCount = 1;
+    testFunction.deterministic = true;
+    testFunction.execute = TKDBTestFuction;
+    testFunction.info = &values;
+    
+    [db addFunction:testFunction error:&error];
+    XCTAssertNil(error, "Adding a custom function did fail");
+    
+    TKStatement *statement = [[TKStatement alloc] initWithDatabase:db format:@"select tkTestFunction('Kar') as testValue"];
+    [statement prepareWithError:&error];
+    XCTAssertNil(error, "Preparing the statement did fail");
+    
+    id<TKDBRow> row = [statement next];
+    
+    TKDBValueType type = [row valueTypeForColumn:@"testValue"];
+    XCTAssertTrue(type == TKDBValueTypeInteger, "Expected type is 'Integer'");
+    
+    int64_t value = [row int64ForColumn:@"testValue"];
+    XCTAssertTrue(value == 1, "Expected value is '1' current value is %lli", value);
 }
 
 @end

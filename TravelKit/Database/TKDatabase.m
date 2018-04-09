@@ -194,6 +194,29 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
     }
 }
 
+- (BOOL)addFunction:(TKDBFunctionContext)function error:(NSError **)error {
+    int status = sqlite3_create_function_v2(_db,
+                                            function.name,
+                                            function.valuesCount,
+                                            function.deterministic ? (SQLITE_UTF8 | SQLITE_DETERMINISTIC) : (SQLITE_UTF8),
+                                            function.info,
+                                            function.execute,
+                                            function.step,
+                                            function.finalize,
+                                            function.destroy);
+    if (status == SQLITE_OK) {
+        if (error) {
+            *error = nil;
+        }
+        return true;
+    } else {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWith:status];
+        }
+        return false;
+    }
+}
+
 #pragma mark - TKDBErrorReporter
 
 - (void)reportError:(NSError *)error {

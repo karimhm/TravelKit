@@ -49,6 +49,8 @@ typedef NS_OPTIONS(NSUInteger, TKDBOptions) {
 - (BOOL)tableExists:(NSString*)tableName;
 - (BOOL)columnExists:(NSString*)columnName inTableWithName:(NSString*)tableName;
 
+- (BOOL)addFunction:(TKDBFunctionContext)function error:(NSError **)error;
+
 @end
 
 NS_ASSUME_NONNULL_END

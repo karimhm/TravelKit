@@ -26,7 +26,7 @@
 #pragma mark By Name
 
 - (TKDBValueType)valueTypeForColumn:(NSString *)columnName {
-    return (TKDBValueType)sqlite3_column_type(_stmt, sqlite3_column_type(_stmt, (int)[_columnMap indexOfObject:columnName]));
+    return (TKDBValueType)sqlite3_column_type(_stmt, (int)[_columnMap indexOfObject:columnName]);
 }
 
 - (const void*)blobForColumn:(NSString *)columnName {
@@ -52,7 +52,7 @@
 #pragma mark By Index
 
 - (TKDBValueType)valueTypeForColumnAtIndex:(NSInteger)columnIndex; {
-    return (TKDBValueType)sqlite3_column_type(_stmt, sqlite3_column_type(_stmt, (int)columnIndex));
+    return (TKDBValueType)sqlite3_column_type(_stmt, (int)columnIndex);
 }
 
 - (const void*)blobForColumnAtIndex:(NSInteger)columnIndex {
