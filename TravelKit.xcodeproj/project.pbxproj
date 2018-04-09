@@ -28,6 +28,10 @@
 		8A9646022037B12200A39571 /* TKDBColumnsSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9646002037B12200A39571 /* TKDBColumnsSet.h */; };
 		8A9646032037B12200A39571 /* TKDBColumnsSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A9646012037B12200A39571 /* TKDBColumnsSet.m */; };
 		8A9646042038746A00A39571 /* TKConstants_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9645FA20372B1D00A39571 /* TKConstants_Private.h */; };
+		8AA0141C207B001E0066AC23 /* TravelKitModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA0141B207B001E0066AC23 /* TravelKitModule.h */; };
+		8AA01423207B00990066AC23 /* TravelKitModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA0141B207B001E0066AC23 /* TravelKitModule.h */; };
+		8AA0142A207B00CB0066AC23 /* TKDBFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6E0FD720448B050047B6FF /* TKDBFunction.h */; };
+		8AA0142B207B02900066AC23 /* TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5A88612033325300998074 /* TravelKit.h */; };
 		8AA5C0CB20351404001821DA /* TKContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA5C0C920351404001821DA /* TKContainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AA5C0CC20351404001821DA /* TKContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5C0CA20351404001821DA /* TKContainer.m */; };
 		8AC46DDB203A0D750040E385 /* TKDBErrorReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC46DD3203978860040E385 /* TKDBErrorReporter.h */; };
@@ -77,6 +81,8 @@
 		8A9645FE20374D5A00A39571 /* TKDBRow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDBRow.h; sourceTree = "<group>"; };
 		8A9646002037B12200A39571 /* TKDBColumnsSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDBColumnsSet.h; sourceTree = "<group>"; };
 		8A9646012037B12200A39571 /* TKDBColumnsSet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKDBColumnsSet.m; sourceTree = "<group>"; };
+		8AA01419207B001E0066AC23 /* tkm.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = tkm.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		8AA0141B207B001E0066AC23 /* TravelKitModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TravelKitModule.h; sourceTree = "<group>"; };
 		8AA5C0C920351404001821DA /* TKContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKContainer.h; sourceTree = "<group>"; };
 		8AA5C0CA20351404001821DA /* TKContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKContainer.m; sourceTree = "<group>"; };
 		8AA5C0D82035BB09001821DA /* TKDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDefines.h; sourceTree = "<group>"; };
@@ -100,6 +106,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8A5A885A2033325300998074 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8AA01416207B001E0066AC23 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -152,6 +165,7 @@
 			children = (
 				8A5A88602033325300998074 /* TravelKit */,
 				8A2252C1203F2154003C1D97 /* TravelKitTests */,
+				8AA0141A207B001E0066AC23 /* TravelKitModule */,
 				8A5A885F2033325300998074 /* Products */,
 				8A63F4B82033913E00742FE5 /* Frameworks */,
 			);
@@ -162,6 +176,7 @@
 			children = (
 				8A5A885E2033325300998074 /* TravelKit.framework */,
 				8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */,
+				8AA01419207B001E0066AC23 /* tkm.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,6 +219,14 @@
 				8A5A88622033325300998074 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8AA0141A207B001E0066AC23 /* TravelKitModule */ = {
+			isa = PBXGroup;
+			children = (
+				8AA0141B207B001E0066AC23 /* TravelKitModule.h */,
+			);
+			path = TravelKitModule;
 			sourceTree = "<group>";
 		};
 		8AA5C0D52035B75E001821DA /* Private */ = {
@@ -256,6 +279,7 @@
 				8A40FDE3203389AC00FB9C2F /* TKStation.h in Headers */,
 				8AF5C84C2035D78C00715995 /* TKDefines.h in Headers */,
 				8AF5C84D2035D79100715995 /* TKError.h in Headers */,
+				8AA01423207B00990066AC23 /* TravelKitModule.h in Headers */,
 				8A9645FF20374D5A00A39571 /* TKDBRow.h in Headers */,
 				8AC46DDB203A0D750040E385 /* TKDBErrorReporter.h in Headers */,
 				8A5A88632033325300998074 /* TravelKit.h in Headers */,
@@ -266,6 +290,16 @@
 				8AA5C0CB20351404001821DA /* TKContainer.h in Headers */,
 				8A551856205255AA0049671D /* TKDatabase_Private.h in Headers */,
 				8A63F51020349D6D00742FE5 /* TKItem.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8AA01417207B001E0066AC23 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8AA0142B207B02900066AC23 /* TravelKit.h in Headers */,
+				8AA0142A207B00CB0066AC23 /* TKDBFunction.h in Headers */,
+				8AA0141C207B001E0066AC23 /* TravelKitModule.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +342,23 @@
 			productReference = 8A5A885E2033325300998074 /* TravelKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		8AA01418207B001E0066AC23 /* TravelKitModule */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8AA01421207B001E0066AC23 /* Build configuration list for PBXNativeTarget "TravelKitModule" */;
+			buildPhases = (
+				8AA01415207B001E0066AC23 /* Sources */,
+				8AA01416207B001E0066AC23 /* Frameworks */,
+				8AA01417207B001E0066AC23 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TravelKitModule;
+			productName = TravelKitModule;
+			productReference = 8AA01419207B001E0066AC23 /* tkm.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -325,6 +376,10 @@
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Manual;
 					};
+					8AA01418207B001E0066AC23 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 8A5A88582033325300998074 /* Build configuration list for PBXProject "TravelKit" */;
@@ -341,6 +396,7 @@
 			targets = (
 				8A5A885D2033325300998074 /* TravelKit */,
 				8A2252BF203F2154003C1D97 /* TravelKitTests */,
+				8AA01418207B001E0066AC23 /* TravelKitModule */,
 			);
 		};
 /* End PBXProject section */
@@ -385,6 +441,13 @@
 				8AA5C0CC20351404001821DA /* TKContainer.m in Sources */,
 				8A63F51120349D6D00742FE5 /* TKItem.m in Sources */,
 				8AF5C84A2035D6DE00715995 /* TKConstants.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8AA01415207B001E0066AC23 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,6 +646,36 @@
 			};
 			name = Release;
 		};
+		8AA0141F207B001E0066AC23 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = tkm;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8AA01420207B001E0066AC23 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = tkm;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -609,6 +702,15 @@
 			buildConfigurations = (
 				8A5A88672033325300998074 /* Debug */,
 				8A5A88682033325300998074 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8AA01421207B001E0066AC23 /* Build configuration list for PBXNativeTarget "TravelKitModule" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8AA0141F207B001E0066AC23 /* Debug */,
+				8AA01420207B001E0066AC23 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
