@@ -11,7 +11,8 @@
 #import "TKItem_Private.h"
 #import "TKConstants_Private.h"
 #import "NSError+TravelKit.h"
-#import <objc/objc.h>
+#import "TKDistanceFunction.h"
+#import <CoreLocation/CoreLocation.h>
 #import <map>
 
 typedef std::map<int64_t, id> TKObjcMap;
@@ -32,26 +33,39 @@ typedef std::map<int64_t, id> TKObjcMap;
     if (self = [super init]) {
         _url = url;
         _db = [[TKDatabase alloc] initWithURL:url];
+        BOOL success = false;
         
-        [self openDatabase:error];
+        success = [self openDatabase:error];
+        
+        if (success == true) {
+            [self addFunctions:error];
+        }
+        
+        _valid = success;
     }
     return self;
 }
 
 #pragma mark - Loading
 
-- (void)openDatabase:(NSError **)error {
+- (BOOL)openDatabase:(NSError **)error {
     if ([_db openWithOptions:TKDBOptionsOpenReadOnly error:error]) {
         if ([self verifyDatabase:_db]) {
-            _valid = true;
+            return true;
         } else {
             *error = [NSError tk_badDatabaseError];
         }
     }
+    
+    return false;
 }
 
 - (BOOL)verifyDatabase:(TKDatabase *)database {
     return [TKStation isDatabaseValid:database];
+}
+
+- (BOOL)addFunctions:(NSError **)error {
+    return [_db addFunction:TKGetDistanceFunction() error:error];
 }
 
 #pragma mark - Fetch
@@ -75,7 +89,47 @@ typedef std::map<int64_t, id> TKObjcMap;
         return;
     }
     
-    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:1];
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    for (id<TKDBRow> row in statement) {
+        TKStation *station = _stationsMap[[row int64ForColumn:kTKColumnID]];
+        
+        if (!station) {
+            station = [[TKStation alloc] initWithRow:row];
+            _stationsMap[[row int64ForColumn:kTKColumnID]] = station;
+        }
+        
+        [result addObject:station];
+    }
+    
+    completion(result, nil);
+}
+
+- (void)fetchStationsNearLocation:(CLLocation *)location limit:(NSInteger)limit completion:(TKStationFetchHandler)completion {
+    TKStatement *statement = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ GROUP BY tkDistance(?1, ?2, latitude, longitude) LIMIT ?3", kTKTableStation];
+    NSError *error = nil;
+    
+    if (![statement prepareWithError:&error]) {
+        completion(nil, error);
+        return;
+    }
+    
+    if (![statement bindDouble:location.coordinate.latitude index:1 error:&error]) {
+        completion(nil, error);
+        return;
+    }
+    
+    if (![statement bindDouble:location.coordinate.longitude index:2 error:&error]) {
+        completion(nil, error);
+        return;
+    }
+    
+    if (![statement bindInteger:limit index:3 error:&error]) {
+        completion(nil, error);
+        return;
+    }
+    
+    NSMutableArray *result = [[NSMutableArray alloc] init];
     
     for (id<TKDBRow> row in statement) {
         TKStation *station = _stationsMap[[row int64ForColumn:kTKColumnID]];

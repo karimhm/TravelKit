@@ -43,15 +43,6 @@
     XCTAssertTrue(db.valid, "Container is marked as non valid");
 }
 
-- (void)testPerformanceLoadingStations {
-    NSError *error = nil;
-    TKContainer *cont = [[TKContainer alloc] initWithURL:self.dbURL error:&error];
-    
-    [self measureBlock:^{
-        [cont loadStations];
-    }];
-}
-
 typedef struct {
     TKDBValueType *types;
     int count;
@@ -104,7 +95,7 @@ static TFExpectedValues values = {types, sizeof(types) / sizeof(TKDBValueType)};
     
     XCTAssertNil(error, "Container initialization did fail error: %@", error);
     
-    [container fetchStationsMatchingName:@"" limit:-1 completion:^(NSArray<TKStation *> * response, NSError * rerror){
+    [container fetchStationsMatchingName:@"" limit:-1 completion:^(NSArray<TKStation *> * result, NSError * rerror){
         XCTAssertNil(error, "Fetching did fail with error: %@", rerror);
     }];
 }
@@ -114,7 +105,18 @@ static TFExpectedValues values = {types, sizeof(types) / sizeof(TKDBValueType)};
     TKContainer *container = [[TKContainer alloc] initWithURL:self.dbURL error:&error];
     
     [self measureBlock:^{
-        [container fetchStationsMatchingName:@"" limit:-1 completion:^(NSArray<TKStation *> * response, NSError * rerror){
+        [container fetchStationsMatchingName:@"" limit:-1 completion:^(NSArray<TKStation *> * result, NSError * rerror){
+        }];
+    }];
+}
+
+- (void)testFetchingStationsByLocationPerformance {
+    NSError *error = nil;
+    TKContainer *container = [[TKContainer alloc] initWithURL:self.dbURL error:&error];
+    
+    [self measureBlock:^{
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:0 longitude:0];
+        [container fetchStationsNearLocation:location limit:100 completion:^(NSArray<TKStation *> * result, NSError * rerror){
         }];
     }];
 }

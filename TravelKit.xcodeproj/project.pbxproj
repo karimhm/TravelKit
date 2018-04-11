@@ -30,11 +30,16 @@
 		8A9646042038746A00A39571 /* TKConstants_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9645FA20372B1D00A39571 /* TKConstants_Private.h */; };
 		8AA0141C207B001E0066AC23 /* TravelKitModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA0141B207B001E0066AC23 /* TravelKitModule.h */; };
 		8AA01423207B00990066AC23 /* TravelKitModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA0141B207B001E0066AC23 /* TravelKitModule.h */; };
-		8AA0142A207B00CB0066AC23 /* TKDBFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6E0FD720448B050047B6FF /* TKDBFunction.h */; };
 		8AA0142B207B02900066AC23 /* TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5A88612033325300998074 /* TravelKit.h */; };
 		8AA5C0CB20351404001821DA /* TKContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA5C0C920351404001821DA /* TKContainer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AA5C0CC20351404001821DA /* TKContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8AA5C0CA20351404001821DA /* TKContainer.mm */; };
 		8AC46DDB203A0D750040E385 /* TKDBErrorReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC46DD3203978860040E385 /* TKDBErrorReporter.h */; };
+		8ADADC6F207C36AA0012CBB1 /* TKDistanceFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADADC6D207C36AA0012CBB1 /* TKDistanceFunction.h */; };
+		8ADADC70207C36AA0012CBB1 /* TKDistanceFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* TKDistanceFunction.m */; };
+		8ADADC90207CD21E0012CBB1 /* TKDistanceFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADADC6D207C36AA0012CBB1 /* TKDistanceFunction.h */; };
+		8ADADC91207CD2210012CBB1 /* TKDistanceFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* TKDistanceFunction.m */; };
+		8ADADC92207CD26B0012CBB1 /* TKDBFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6E0FD720448B050047B6FF /* TKDBFunction.h */; };
+		8ADADC93207CD27A0012CBB1 /* TKDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA5C0D82035BB09001821DA /* TKDefines.h */; };
 		8AF505262036B26400E95ED0 /* TKDBRow_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF505252036B0AF00E95ED0 /* TKDBRow_Private.h */; };
 		8AF505272036B26800E95ED0 /* TKDBVerify.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF5C8502035F7E200715995 /* TKDBVerify.h */; };
 		8AF5C8492035D6DE00715995 /* TKConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF5C8472035D6DE00715995 /* TKConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -88,6 +93,8 @@
 		8AA5C0D82035BB09001821DA /* TKDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDefines.h; sourceTree = "<group>"; };
 		8AA5C0DA2035BBEE001821DA /* TKError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKError.h; sourceTree = "<group>"; };
 		8AC46DD3203978860040E385 /* TKDBErrorReporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDBErrorReporter.h; sourceTree = "<group>"; };
+		8ADADC6D207C36AA0012CBB1 /* TKDistanceFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDistanceFunction.h; sourceTree = "<group>"; };
+		8ADADC6E207C36AA0012CBB1 /* TKDistanceFunction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKDistanceFunction.m; sourceTree = "<group>"; };
 		8AF505252036B0AF00E95ED0 /* TKDBRow_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDBRow_Private.h; sourceTree = "<group>"; };
 		8AF5C8472035D6DE00715995 /* TKConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKConstants.h; sourceTree = "<group>"; };
 		8AF5C8482035D6DE00715995 /* TKConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKConstants.m; sourceTree = "<group>"; };
@@ -188,6 +195,7 @@
 				8AA5C0D52035B75E001821DA /* Private */,
 				8AF5C85D20361A7500715995 /* Categories */,
 				8A40FDE02033898A00FB9C2F /* Travel */,
+				8ADADC94207CDA930012CBB1 /* Functions */,
 				8A6E2C7720393157006A240F /* General */,
 				8A40FDDA2033807A00FB9C2F /* Database */,
 				8AA5C0D72035BAED001821DA /* Definitions */,
@@ -225,16 +233,8 @@
 			isa = PBXGroup;
 			children = (
 				8AA0141B207B001E0066AC23 /* TravelKitModule.h */,
-				8AA01430207B97E00066AC23 /* Functions */,
 			);
 			path = TravelKitModule;
-			sourceTree = "<group>";
-		};
-		8AA01430207B97E00066AC23 /* Functions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Functions;
 			sourceTree = "<group>";
 		};
 		8AA5C0D52035B75E001821DA /* Private */ = {
@@ -259,6 +259,15 @@
 				8AF5C8482035D6DE00715995 /* TKConstants.m */,
 			);
 			path = Definitions;
+			sourceTree = "<group>";
+		};
+		8ADADC94207CDA930012CBB1 /* Functions */ = {
+			isa = PBXGroup;
+			children = (
+				8ADADC6D207C36AA0012CBB1 /* TKDistanceFunction.h */,
+				8ADADC6E207C36AA0012CBB1 /* TKDistanceFunction.m */,
+			);
+			path = Functions;
 			sourceTree = "<group>";
 		};
 		8AF5C85D20361A7500715995 /* Categories */ = {
@@ -291,6 +300,7 @@
 				8A9645FF20374D5A00A39571 /* TKDBRow.h in Headers */,
 				8AC46DDB203A0D750040E385 /* TKDBErrorReporter.h in Headers */,
 				8A5A88632033325300998074 /* TravelKit.h in Headers */,
+				8ADADC90207CD21E0012CBB1 /* TKDistanceFunction.h in Headers */,
 				8A9646042038746A00A39571 /* TKConstants_Private.h in Headers */,
 				8AF5C8492035D6DE00715995 /* TKConstants.h in Headers */,
 				8A63F50D20349D4A00742FE5 /* TKItem_Private.h in Headers */,
@@ -306,8 +316,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AA0142B207B02900066AC23 /* TravelKit.h in Headers */,
-				8AA0142A207B00CB0066AC23 /* TKDBFunction.h in Headers */,
+				8ADADC6F207C36AA0012CBB1 /* TKDistanceFunction.h in Headers */,
 				8AA0141C207B001E0066AC23 /* TravelKitModule.h in Headers */,
+				8ADADC93207CD27A0012CBB1 /* TKDefines.h in Headers */,
+				8ADADC92207CD26B0012CBB1 /* TKDBFunction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,6 +453,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AF5C85C203618B500715995 /* NSError+TravelKit.m in Sources */,
+				8ADADC91207CD2210012CBB1 /* TKDistanceFunction.m in Sources */,
 				8A40FDDE2033808C00FB9C2F /* TKDatabase.m in Sources */,
 				8A40FDE4203389AC00FB9C2F /* TKStation.m in Sources */,
 				8A9646032037B12200A39571 /* TKDBColumnsSet.m in Sources */,
@@ -456,6 +469,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8ADADC70207C36AA0012CBB1 /* TKDistanceFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
