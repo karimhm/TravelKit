@@ -22,7 +22,7 @@
 #define TK_UNKNOWN_ENDIAN
 #endif
 
-#define TK_INLINE static inline
+#define TK_INLINE static inline __attribute__((always_inline))
 
 TK_INLINE uint32_t TKAligned32(uint32_t data) {
 #if defined(TK_BIG_ENDIAN)
