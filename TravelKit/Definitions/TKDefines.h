@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
+#import <stdio.h>
 
 #if defined(__cplusplus)
 #define TK_EXTERN extern "C" __attribute__((visibility("default")))
@@ -22,9 +23,11 @@
 #define TK_UNKNOWN_ENDIAN
 #endif
 
-#define TK_INLINE static inline __attribute__((always_inline))
+#define TK_ALWAYS_INLINE static inline __attribute__((always_inline))
 
-TK_INLINE uint32_t TKAligned32(uint32_t data) {
+#define TK_INLINE static inline
+
+TK_ALWAYS_INLINE uint32_t TKAligned32(uint32_t data) {
 #if defined(TK_BIG_ENDIAN)
     return data;
 #else

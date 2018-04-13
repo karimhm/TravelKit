@@ -106,7 +106,7 @@ static void TKDistanceFunctionExecute(TKDBContextRef context, int valuesCount, T
                                                     TKDBValueGetDouble(values[2]),
                                                     TKDBValueGetDouble(values[3])));
     } else {
-        TKDBContextResultNull(context);
+        TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
 }
 
