@@ -6,6 +6,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <sqlite3.h>
 
 @interface NSError (TravelKit)
 
@@ -16,6 +17,6 @@
 + (instancetype)tk_badDatabaseError;
 + (instancetype)tk_databaseBusyError;
 
-+ (instancetype)tk_sqliteErrorWith:(int)code;
++ (instancetype)tk_sqliteErrorWith:(int)code db:(sqlite3*)db;
 
 @end
