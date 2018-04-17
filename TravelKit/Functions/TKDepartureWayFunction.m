@@ -17,7 +17,7 @@ static void TKStationIndexFunctionExecute(TKDBContextRef context, int valuesCoun
         int64_t first = TKDBValueGetInt64(values[0]);
         int64_t second = TKDBValueGetInt64(values[1]);
         
-        TKDBContextResultInt64(context, (first < second) ? 0:1);
+        TKDBContextResultInt64(context, (first < second) ? 0 : ((first > second) ? 1 : 2));
     } else {
         TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
