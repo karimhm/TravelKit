@@ -17,7 +17,7 @@ static void TKLineContainsFunctionExecute(TKDBContextRef context, int valuesCoun
         && TKDBValueGetType(values[2]) == TKDBValueTypeInteger)
     {
         int32_t bytes = TKDBValueGetBytes(values[0]);
-        int32_t length = (bytes &~ 7) / 8;
+        int32_t length = (bytes &~ 7) >> 3;
         TKStationNode *stations = (TKStationNode*)TKDBValueGetBlob(values[0]);
         
         bool firstFound = false;
