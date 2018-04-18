@@ -33,6 +33,10 @@
     return sqlite3_column_blob(_stmt, (int)[_columnMap indexOfObject:columnName]);
 }
 
+- (int)bytesForColumn:(NSString *)columnName {
+    return sqlite3_column_bytes(_stmt, (int)[_columnMap indexOfObject:columnName]);
+}
+
 - (double)doubleForColumn:(NSString *)columnName {
     return sqlite3_column_double(_stmt, (int)[_columnMap indexOfObject:columnName]);
 }
@@ -58,6 +62,11 @@
 - (const void*)blobForColumnAtIndex:(NSInteger)columnIndex {
     return sqlite3_column_blob(_stmt, (int)columnIndex);
 }
+
+- (int)bytesForColumnAtIndex:(NSInteger)columnIndex {
+    return sqlite3_column_bytes(_stmt, (int)columnIndex);
+}
+
 - (double)doubleForColumnAtIndex:(NSInteger)columnIndex {
     return sqlite3_column_double(_stmt, (int)columnIndex);
 }

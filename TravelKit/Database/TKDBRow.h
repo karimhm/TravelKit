@@ -15,10 +15,12 @@
 - (TKDBValueType)valueTypeForColumnAtIndex:(NSInteger)columnIndex;
 
 - (const void*)blobForColumn:(NSString *)columnName;
+- (int)bytesForColumn:(NSString *)columnName;
 - (double)doubleForColumn:(NSString *)columnName;
 - (int64_t)int64ForColumn:(NSString *)columnName;
 - (const char *)textForColumn:(NSString *)columnName;
 - (const void*)blobForColumnAtIndex:(NSInteger)columnIndex;
+- (int)bytesForColumnAtIndex:(NSInteger)columnIndex;
 - (double)doubleForColumnAtIndex:(NSInteger)columnIndex;
 - (int64_t)int64ForColumnAtIndex:(NSInteger)columnIndex;
 - (const char *)textForColumnAtIndex:(NSInteger)columnIndex;
