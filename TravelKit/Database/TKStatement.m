@@ -79,7 +79,7 @@
         return true;
     } else {
         if (error) {
-            *error = [NSError tk_sqliteErrorWith:status];
+            *error = [NSError tk_sqliteErrorWith:status db:_db.sqlitePtr];
         }
         return false;
     }
@@ -134,9 +134,9 @@
         return true;
     } else {
         if (error) {
-            *error = [NSError tk_sqliteErrorWith:status];
+            *error = [NSError tk_sqliteErrorWith:status db:_db.sqlitePtr];
         } else {
-            [_db reportError:[NSError tk_sqliteErrorWith:status]];
+            [_db reportError:[NSError tk_sqliteErrorWith:status db:_db.sqlitePtr]];
         }
         return false;
     }
@@ -154,7 +154,7 @@
             [_db reportError:[NSError tk_databaseBusyError]];
             _hasNext = false;
         } else {
-            [_db reportError:[NSError tk_sqliteErrorWith:status]];
+            [_db reportError:[NSError tk_sqliteErrorWith:status db:_db.sqlitePtr]];
             _hasNext = false;
         }
     }
@@ -164,6 +164,10 @@
 
 - (BOOL)hasNext {
     return _hasNext;
+}
+
+- (BOOL)clearAndReset {
+    return [self clearAndResetWithError:nil];
 }
 
 - (BOOL)clearBindings {
@@ -178,6 +182,17 @@
     return [self closeWithError:nil];
 }
 
+
+- (BOOL)clearAndResetWithError:(NSError **)error {
+    BOOL status = [self clearBindingsWithError:error];
+    
+    if (status) {
+        status = [self resetWithError:error];
+    }
+    
+    return status;
+}
+
 - (BOOL)clearBindingsWithError:(NSError **)error {
     int status = sqlite3_clear_bindings(_stmt);
     
@@ -188,9 +203,9 @@
         return true;
     } else {
         if (error) {
-            *error = [NSError tk_sqliteErrorWith:status];
+            *error = [NSError tk_sqliteErrorWith:status db:_db.sqlitePtr];
         } else {
-            [_db reportError:[NSError tk_sqliteErrorWith:status]];
+            [_db reportError:[NSError tk_sqliteErrorWith:status db:_db.sqlitePtr]];
         }
         return false;
     }
@@ -207,10 +222,11 @@
         return true;
     } else {
         if (error) {
-            *error = [NSError tk_sqliteErrorWith:status];
+            *error = [NSError tk_sqliteErrorWith:status db:_db.sqlitePtr];
         } else {
-            [_db reportError:[NSError tk_sqliteErrorWith:status]];
+            [_db reportError:[NSError tk_sqliteErrorWith:status db:_db.sqlitePtr]];
         }
+        NSLog(@"res %@", *error);
         return false;
     }
 }
@@ -231,9 +247,9 @@
         return true;
     } else {
         if (error) {
-            *error = [NSError tk_sqliteErrorWith:status];
+            *error = [NSError tk_sqliteErrorWith:status db:_db.sqlitePtr];
         } else {
-            [_db reportError:[NSError tk_sqliteErrorWith:status]];
+            [_db reportError:[NSError tk_sqliteErrorWith:status db:_db.sqlitePtr]];
         }
         return false;
     }

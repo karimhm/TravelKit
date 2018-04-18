@@ -43,10 +43,12 @@
 - (id<TKDBRow>)next;
 - (BOOL)hasNext;
 
+- (BOOL)clearAndReset;
 - (BOOL)clearBindings;
 - (BOOL)reset;
 - (BOOL)close;
 
+- (BOOL)clearAndResetWithError:(NSError **)error;
 - (BOOL)clearBindingsWithError:(NSError **)error;
 - (BOOL)resetWithError:(NSError **)error;
 - (BOOL)closeWithError:(NSError **)error;
