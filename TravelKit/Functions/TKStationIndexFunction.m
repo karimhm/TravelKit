@@ -16,7 +16,7 @@ static void TKStationIndexFunctionExecute(TKDBContextRef context, int valuesCoun
         && TKDBValueGetType(values[1]) == TKDBValueTypeInteger)
     {
         int32_t bytes = TKDBValueGetBytes(values[0]);
-        int32_t length = (bytes &~ 7) / 8;
+        int32_t length = (bytes &~ 7) >> 3;
         TKStationNode *stations = (TKStationNode*)TKDBValueGetBlob(values[0]);
         
         uint32_t stationId = TKAligned32((uint32_t)TKDBValueGetInt64(values[1]));
@@ -30,6 +30,7 @@ static void TKStationIndexFunctionExecute(TKDBContextRef context, int valuesCoun
             
             if (stations[mid].stationId == stationId) {
                 TKDBContextResultInt64(context, TKAligned32(stations[mid].index));
+                return;
                 break;
             } else if (stations[mid].stationId < stationId) {
                 low = mid + 1;
@@ -37,6 +38,8 @@ static void TKStationIndexFunctionExecute(TKDBContextRef context, int valuesCoun
                 high = mid;
             }
         }
+        
+        TKDBContextResultNull(context);
     } else {
         TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
