@@ -132,7 +132,7 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
             self.busyTimeout = TKDefaultBusyTimeout;
         } else {
             valid = false;
-            NSError *openError = [NSError tk_sqliteErrorWith:status];
+            NSError *openError = [NSError tk_sqliteErrorWith:status db:_db];
             if (error) {
                 *error = openError;
             }
@@ -160,7 +160,7 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
         _sqlitePtr = nil;
         _open = false;
     } else {
-        [self reportError:[NSError tk_sqliteErrorWith:status]];
+        [self reportError:[NSError tk_sqliteErrorWith:status db:_db]];
     }
     
     return closed;
@@ -189,7 +189,7 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
         if (status == SQLITE_OK) {
             _busyHandlerSet = true;
         } else {
-            [self reportError:[NSError tk_sqliteErrorWith:status]];
+            [self reportError:[NSError tk_sqliteErrorWith:status db:_db]];
         }
     }
 }
@@ -211,7 +211,7 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
         return true;
     } else {
         if (error) {
-            *error = [NSError tk_sqliteErrorWith:status];
+            *error = [NSError tk_sqliteErrorWith:status db:_db];
         }
         return false;
     }
