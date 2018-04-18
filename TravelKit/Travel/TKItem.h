@@ -9,4 +9,6 @@
 
 @interface TKItem : NSObject
 
+@property (nonatomic, readonly) int64_t identifier;
+
 @end

@@ -10,8 +10,11 @@
 
 @implementation TKItem
 
-- (instancetype)initWithRow:(id <TKDBRow>)row {
-    return [self init];
+- (instancetype)initWithRow:(id <TKDBRow>)row manager:(TKItemManager *)manager {
+    if (self = [super init]) {
+        _identifier = [row int64ForColumn:kTKColumnID];
+    }
+    return self;
 }
 
 #pragma mark - TKDBVerify
