@@ -10,9 +10,10 @@
 #import <TravelKit/TKError.h>
 
 #import <TravelKit/TKContainer.h>
+#import <TravelKit/TKPathRequest.h>
+#import <TravelKit/TKPathResponse.h>
 
 #import <TravelKit/TKLine.h>
 #import <TravelKit/TKStation.h>
-#import <TravelKit/TKTrain.h>
-#import <TravelKit/TKPath.h>
+#import <TravelKit/TKDeparture.h>
 #import <TravelKit/TKStop.h>

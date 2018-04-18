@@ -10,13 +10,18 @@
 
 @implementation TKStation
 
-- (instancetype)initWithRow:(id <TKDBRow>)row {
-    if (self = [super initWithRow:row]) {
+- (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
+    if (self = [super initWithRow:row manager:manager]) {
         _name = [row stringForColumn:kTKColumnName];
         _location = [[CLLocation alloc] initWithLatitude:[row doubleForColumn:kTKColumnLatitude]
                                                longitude:[row doubleForColumn:kTKColumnLongitude]];
+        
     }
     return self;
+}
+
+- (NSString *)tableName {
+    return kTKTableStation;
 }
 
 #pragma mark - TKDBVerify

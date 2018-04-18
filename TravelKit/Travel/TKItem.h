@@ -10,5 +10,6 @@
 @interface TKItem : NSObject
 
 @property (nonatomic, readonly) int64_t identifier;
+@property (nonatomic, readonly, getter=isValid) BOOL valid;
 
 @end

@@ -10,8 +10,16 @@
 #import "TKDBRow.h"
 #import "TKConstants_Private.h"
 
+@protocol TKItemManager <NSObject>
+
+- (__kindof TKItem *)itemWithIdentifier:(int64_t)identifier table:(NSString *)table error:(NSError **)error;
+
+@end
+
 @interface TKItem () <TKDBVerify>
 
-- (instancetype)initWithRow:(id <TKDBRow>)row;
+- (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager;
+
+- (NSString *)tableName;
 
 @end

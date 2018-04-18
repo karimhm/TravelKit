@@ -9,10 +9,12 @@
 #import "TKItem_Private.h"
 
 @implementation TKItem
+@synthesize valid = _valid;
 
-- (instancetype)initWithRow:(id <TKDBRow>)row manager:(TKItemManager *)manager {
+- (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super init]) {
         _identifier = [row int64ForColumn:kTKColumnID];
+        _valid = true;
     }
     return self;
 }
@@ -42,6 +44,10 @@
     }
     
     return valid;
+}
+
+- (NSString *)tableName {
+    return nil;
 }
 
 + (TKDBVerifySet *)requiredTablesAndColumns {
