@@ -116,10 +116,13 @@
 
 - (NSString *)expandedQuery {
     if (@available(iOS 10.0, *)) {
-        return [NSString stringWithUTF8String:sqlite3_expanded_sql(_stmt)];
-    } else {
-        return nil;
+        const char* expanded = sqlite3_expanded_sql(_stmt);
+        if (expanded) {
+            return [NSString stringWithUTF8String:sqlite3_expanded_sql(_stmt)];
+        }
     }
+    
+    return nil;
 }
 
 #pragma mark - Execute
@@ -226,7 +229,6 @@
         } else {
             [_db reportError:[NSError tk_sqliteErrorWith:status db:_db.sqlitePtr]];
         }
-        NSLog(@"res %@", *error);
         return false;
     }
 }

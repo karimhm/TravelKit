@@ -13,7 +13,7 @@
 #import <TravelKit/TKPathRequest.h>
 #import <TravelKit/TKPathResponse.h>
 
-#import <TravelKit/TKLine.h>
 #import <TravelKit/TKStation.h>
 #import <TravelKit/TKDeparture.h>
 #import <TravelKit/TKStop.h>
+#import <TravelKit/TKAvailability.h>

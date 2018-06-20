@@ -7,7 +7,9 @@
 
 #import "TKContainer.h"
 #import "TKDatabase.h"
+#import "TKAvailability.h"
 #import "TKStatement.h"
+#import "TKUtilities.h"
 #import "TKItem_Private.h"
 #import "TKContainer_Private.h"
 #import "TKConstants_Private.h"
@@ -17,6 +19,7 @@
 #import "TKStationIndexFunction.h"
 #import "TKDepartureWayFunction.h"
 #import "TKDepartureAvailableFunction.h"
+#import "TKMatchFunction.h"
 #import "NSError+TravelKit.h"
 #import <CoreLocation/CoreLocation.h>
 #import <map>
@@ -28,9 +31,11 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
     TKDatabase *_db;
     NSURL *_url;
     TKCacheMap _cache;
+    NSMutableArray *_availability;
     TKStatement *_fetchStStmt;
     TKStatement *_fetchStMtchNameStmt;
     TKStatement *_fetchStNearLocStmt;
+    TKStatement *_fetchAvailabilityStmt;
     TKStatement *_fetchPathStmt;
 }
 
@@ -44,6 +49,7 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
     if (self = [super init]) {
         _url = url;
         _db = [[TKDatabase alloc] initWithURL:url];
+        _availability = [[NSMutableArray alloc] init];
         
         BOOL status = [self openDatabase:error];
         
@@ -53,6 +59,10 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
         
         if (status == true) {
             status = [self prepareStatements:error];
+        }
+        
+        if (status == true) {
+            status = [self loadAvailability];
         }
         
         _valid = status;
@@ -81,6 +91,10 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
         status = [TKDeparture isDatabaseValid:database];
     }
     
+    if (status) {
+        status = [TKAvailability isDatabaseValid:database];
+    }
+    
     return status;
 }
 
@@ -107,6 +121,10 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
         goto cleanup;
     }
     
+    if (!(status = [_db addFunction:TKGetMatchFunction() error:error])) {
+        goto cleanup;
+    }
+    
 cleanup:
     return status;
 }
@@ -117,22 +135,23 @@ cleanup:
     _fetchStStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ = ?1", kTKTableStation, kTKColumnID];
     _fetchStMtchNameStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ LIKE ?1 LIMIT ?2", kTKTableStation, kTKColumnName];
     _fetchStNearLocStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ GROUP BY tkDistance(?1, ?2, latitude, longitude) LIMIT ?3", kTKTableStation];
+    _fetchAvailabilityStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@", kTKTableAvailability];
     _fetchPathStmt = [[TKStatement alloc] initWithDatabase:_db format:@""
-                      "with PossibleLines as ("
-                        "select stations, id, "
+                      "WITH PossibleLines as ("
+                        "SELECT stations, id, "
                         "tkStationIndex(stations, ?1) as sIndex, "
                         "tkStationIndex(stations, ?2) as dIndex "
-                        "from Line where tkLineContains(stations, ?1, ?2)"
+                        "FROM Line WHERE tkLineContains(stations, ?1, ?2)"
                       ")"
-                      "select * from [%@] join [PossibleLines] "
-                      "where "
+                      "SELECT *, tkMatch([Departure].availabilityId, ?3) as available "
+                      "FROM [%@] JOIN [PossibleLines] "
+                      "WHERE "
                         "[%@].lineId = [PossibleLines].id "
-                      "and "
+                      "AND "
                         "[%@].way = tkDepartureWay(sIndex, dIndex) "
-                      "and "
-                        "tkDepartureAvailable(stops, ?3, sIndex, dIndex)", kTKTableDeparture, kTKTableDeparture, kTKTableDeparture];
+                      "AND "
+                        "tkDepartureAvailable(stops, ?4, sIndex, dIndex)", kTKTableDeparture, kTKTableDeparture, kTKTableDeparture];
 
-    
     if (!(status = [_fetchStStmt prepareWithError:error])) {
         goto cleanup;
     }
@@ -145,6 +164,10 @@ cleanup:
         goto cleanup;
     }
     
+    if (!(status = [_fetchAvailabilityStmt prepareWithError:error])) {
+        goto cleanup;
+    }
+    
     if (!(status = [_fetchPathStmt prepareWithError:error])) {
         goto cleanup;
     }
@@ -152,6 +175,14 @@ cleanup:
 cleanup:
     return status;
     
+}
+
+- (BOOL)loadAvailability {
+    for (id<TKDBRow> row in _fetchAvailabilityStmt) {
+        TKAvailability *availability = [[TKAvailability alloc] initWithRow:row manager:self];
+        [_availability addObject:availability];
+    }
+    return (_availability.count > 0);
 }
 
 #pragma mark - Fetch
@@ -265,8 +296,21 @@ cleanup:
         return;
     }
     
-    NSInteger daystamp = ((NSInteger)request.departureDate.timeIntervalSince1970 % 86400);
-    if (![_fetchPathStmt bindInteger:daystamp index:3 error:&error]) {
+    NSData *availabilityData = [self availabilityForDate:request.departureDate];
+    
+    if (!availabilityData) {
+        completion(nil, error);
+        return;
+    }
+    
+    if (![_fetchPathStmt bindData:availabilityData index:3 error:&error]) {
+        completion(nil, error);
+        return;
+    }
+    
+    TKTimeInfo timeInfo = TKTimeInfoCreate(request.departureDate.timeIntervalSince1970);
+    
+    if (![_fetchPathStmt bindInteger:TKTimeInfoGetDaystamp(timeInfo) index:4 error:&error]) {
         completion(nil, error);
         return;
     }
@@ -280,6 +324,39 @@ cleanup:
     
     TKPathResponse *response = [[TKPathResponse alloc] initWithDepartures:departures source:request.source destination:request.destination];
     completion(response, nil);
+}
+
+
+- (NSData *)availabilityForDate:(NSDate *)date {
+    NSData *availabilityData = nil;
+    
+    int32_t availabilities[_availability.count];
+    int32_t index = 0;
+    
+    /* Add the available ones */
+    for (TKAvailability *availability in _availability) {
+        if ([availability availableAtDate:date]) {
+            availabilities[index] = (int32_t)availability.identifier;
+            index++;
+        }
+    }
+    
+    /* Bubble sort the ids */
+    for (int32_t i = index; i >= 0; i--) {
+        for (int32_t j = 1; j <= i; j++) {
+            if (availabilities[j-1] > availabilities[j]) {
+                int32_t temp = availabilities[j-1];
+                availabilities[j-1] = availabilities[j];
+                availabilities[j] = temp;
+            }
+        }
+    }
+    
+    if (index > 0) {
+        availabilityData = [NSData dataWithBytes:&availabilities length:index * sizeof(int32_t)];
+    }
+    
+    return availabilityData;
 }
 
 #pragma mark - Caching
@@ -311,19 +388,24 @@ cleanup:
         [_db close];
     }
     
-    _cache.clear();[_fetchStStmt close];
+    _cache.clear();
+    
+    [_fetchStStmt close];
     [_fetchStMtchNameStmt close];
     [_fetchStNearLocStmt close];
     [_fetchPathStmt close];
+    [_fetchAvailabilityStmt close];
     
     _db.delegate = nil;
     _db = nil;
     _url = nil;
+    _availability = nil;
     
     _fetchStStmt = nil;
     _fetchStMtchNameStmt = nil;
     _fetchStNearLocStmt = nil;
     _fetchPathStmt = nil;
+    _fetchAvailabilityStmt = nil;
 }
 
 @end

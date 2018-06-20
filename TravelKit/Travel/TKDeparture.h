@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, TKWay) {
 @interface TKDeparture : TKItem
 
 @property (nonatomic, readonly) TKWay way;
+@property (nonatomic, readonly) BOOL available;
 @property (nonatomic, readonly) NSArray <TKStop *> *stops;
 
 @end

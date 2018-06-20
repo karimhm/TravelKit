@@ -8,6 +8,7 @@
 #import "TKDeparture.h"
 #import "TKStructs.h"
 #import "TKItem_Private.h"
+#import "TKStop_Private.h"
 
 TK_ALWAYS_INLINE int32_t TKAdjustedIndex(int32_t index, int32_t length) {
     return (length - 1) - index;
@@ -19,6 +20,7 @@ TK_ALWAYS_INLINE int32_t TKAdjustedIndex(int32_t index, int32_t length) {
 - (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super initWithRow:row manager:manager]) {
         _way = [row int64ForColumn:kTKColumnWay] ? TKWayBackward:TKWayForward;
+        _available = ([row int64ForColumn:kTKColumnAvailable] != 0);
         
         int32_t spLength = ([row bytesForColumn:kTKColumnStops] &~ 3) >> 2;
         int32_t stLength = ([row bytesForColumn:kTKColumnStations] &~ 7) >> 3;
@@ -42,7 +44,7 @@ TK_ALWAYS_INLINE int32_t TKAdjustedIndex(int32_t index, int32_t length) {
                 
                 if (hours >= 0) {
                     TKStation *station = [manager itemWithIdentifier:TKAligned32(stations[i].stationId) table:kTKTableStation error:nil];
-                    TKStop *stop = [TKStop stopWithStation:station time:(TKTimeInfo){hours / 3600, (hours % 3600) / 60}];
+                    TKStop *stop = [TKStop stopWithStation:station time:hours];
                     [stopsArray addObject:stop];
                 }
             }
@@ -52,7 +54,7 @@ TK_ALWAYS_INLINE int32_t TKAdjustedIndex(int32_t index, int32_t length) {
                 
                 if (hours >= 0) {
                     TKStation *station = [manager itemWithIdentifier:TKAligned32(stations[TKAdjustedIndex(i, spLength)].stationId) table:kTKTableStation error:nil];
-                    TKStop *stop = [TKStop stopWithStation:station time:(TKTimeInfo){hours / 3600, (hours % 3600) / 60}];
+                    TKStop *stop = [TKStop stopWithStation:station time:hours];
                     [stopsArray addObject:stop];
                 }
             }

@@ -7,10 +7,12 @@
 
 #import "TKStop.h"
 
-@implementation TKStop
+@implementation TKStop {
+    int32_t _time;
+}
 @synthesize localizedTime = _localizedTime;
 
-+ (instancetype)stopWithStation:(TKStation *)station time:(TKTimeInfo)time {
++ (instancetype)stopWithStation:(TKStation *)station time:(int32_t)time {
     TKStop *stop = [TKStop new];
     stop.station = station;
     stop.time = time;
@@ -22,13 +24,13 @@
     _station = station;
 }
 
-- (void)setTime:(TKTimeInfo)time {
+- (void)setTime:(int32_t)time {
     _time = time;
 }
 
 - (NSString *)localizedTime {
     if (!_localizedTime) {
-        _localizedTime = [NSDateFormatter localizedStringFromDate:[NSDate dateWithTimeIntervalSince1970:(_time.hour * 3600) + (_time.minute * 60)]
+        _localizedTime = [NSDateFormatter localizedStringFromDate:[NSDate dateWithTimeIntervalSince1970:_time]
                                                         dateStyle:NSDateFormatterNoStyle
                                                         timeStyle:NSDateFormatterShortStyle];
     }
