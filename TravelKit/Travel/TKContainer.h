@@ -24,6 +24,7 @@ typedef void (^TKPathRequestHandler)(TKPathResponse * __nullable result, NSError
 
 - (TKStation *)fetchStationWithId:(int64_t)stationId error:(NSError **)error;
 - (void)fetchStationsMatchingName:(NSString *)name limit:(NSInteger)limit completion:(TKStationFetchHandler)completion;
+- (void)fetchStationsMatchingName:(NSString *)name excluding:(int64_t)stationId limit:(NSInteger)limit completion:(TKStationFetchHandler)completion;
 - (void)fetchStationsNearLocation:(CLLocation *)location limit:(NSInteger)limit completion:(TKStationFetchHandler)completion;
 - (void)fetchPathWithRequest:(TKPathRequest *)request completion:(TKPathRequestHandler)completion;
 

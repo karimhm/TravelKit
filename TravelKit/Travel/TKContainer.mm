@@ -133,7 +133,7 @@ cleanup:
     BOOL status = true;
     
     _fetchStStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ = ?1", kTKTableStation, kTKColumnID];
-    _fetchStMtchNameStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ LIKE ?1 LIMIT ?2", kTKTableStation, kTKColumnName];
+    _fetchStMtchNameStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ LIKE ?1 AND %@ != ?2 LIMIT ?3", kTKTableStation, kTKColumnName, kTKColumnID];
     _fetchStNearLocStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ GROUP BY tkDistance(?1, ?2, latitude, longitude) LIMIT ?3", kTKTableStation];
     _fetchAvailabilityStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@", kTKTableAvailability];
     _fetchPathStmt = [[TKStatement alloc] initWithDatabase:_db format:@""
@@ -206,6 +206,10 @@ cleanup:
 }
 
 - (void)fetchStationsMatchingName:(NSString *)name limit:(NSInteger)limit completion:(TKStationFetchHandler)completion {
+    [self fetchStationsMatchingName:name excluding:-1 limit:limit completion:completion];
+}
+
+- (void)fetchStationsMatchingName:(NSString *)name excluding:(int64_t)stationId limit:(NSInteger)limit completion:(TKStationFetchHandler)completion {
     NSError *error = nil;
     
     if (![_fetchStMtchNameStmt clearAndResetWithError:&error]) {
@@ -218,7 +222,12 @@ cleanup:
         return;
     }
     
-    if (![_fetchStMtchNameStmt bindInteger:limit index:2 error:&error]) {
+    if (![_fetchStMtchNameStmt bindInteger:stationId index:2 error:&error]) {
+        completion(nil, error);
+        return;
+    }
+    
+    if (![_fetchStMtchNameStmt bindInteger:limit index:3 error:&error]) {
         completion(nil, error);
         return;
     }
