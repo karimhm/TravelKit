@@ -43,7 +43,7 @@ TK_ALWAYS_INLINE int32_t TKAdjustedIndex(int32_t index, int32_t length) {
                 int32_t hours = TKAligned32(stops[i]);
                 
                 if (hours >= 0) {
-                    TKStation *station = [manager itemWithIdentifier:TKAligned32(stations[i].stationId) table:kTKTableStation error:nil];
+                    TKStation *station = [manager itemWithIdentifier:(TKItemID)TKAligned32(stations[i].stationId) table:kTKTableStation error:nil];
                     TKStop *stop = [TKStop stopWithStation:station time:hours];
                     [stopsArray addObject:stop];
                 }
@@ -53,7 +53,7 @@ TK_ALWAYS_INLINE int32_t TKAdjustedIndex(int32_t index, int32_t length) {
                 int32_t hours = TKAligned32(stops[TKAdjustedIndex(i, spLength)]);
                 
                 if (hours >= 0) {
-                    TKStation *station = [manager itemWithIdentifier:TKAligned32(stations[TKAdjustedIndex(i, spLength)].stationId) table:kTKTableStation error:nil];
+                    TKStation *station = [manager itemWithIdentifier:(TKItemID)TKAligned32(stations[TKAdjustedIndex(i, spLength)].stationId) table:kTKTableStation error:nil];
                     TKStop *stop = [TKStop stopWithStation:station time:hours];
                     [stopsArray addObject:stop];
                 }

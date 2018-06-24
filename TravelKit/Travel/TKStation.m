@@ -20,14 +20,6 @@
     return self;
 }
 
-- (BOOL)isEqual:(id)object {
-    if (object != nil && [object class] == [self class]) {
-        return [self identifier] == [(TKStation *)object identifier];
-    } else {
-        return false;
-    }
-}
-
 - (NSString *)tableName {
     return kTKTableStation;
 }

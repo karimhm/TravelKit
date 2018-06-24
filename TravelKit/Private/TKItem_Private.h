@@ -12,7 +12,7 @@
 
 @protocol TKItemManager <NSObject>
 
-- (__kindof TKItem *)itemWithIdentifier:(int64_t)identifier table:(NSString *)table error:(NSError **)error;
+- (__kindof TKItem *)itemWithIdentifier:(TKItemID)identifier table:(NSString *)table error:(NSError **)error;
 
 @end
 

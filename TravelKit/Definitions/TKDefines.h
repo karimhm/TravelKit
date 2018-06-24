@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
 #import <stdio.h>
-#include <machine/endian.h>
+#import <machine/endian.h>
 
 #if defined(__cplusplus)
 #define TK_EXTERN extern "C" __attribute__((visibility("default")))
@@ -54,3 +54,5 @@ typedef NS_ENUM(NSInteger, TKDBValueType) {
     TKDBValueTypeText = SQLITE_TEXT,
     TKDBValueTypeBlob = SQLITE_BLOB
 };
+
+typedef int64_t TKItemID;

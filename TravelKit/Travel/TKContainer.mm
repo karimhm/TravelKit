@@ -187,7 +187,7 @@ cleanup:
 
 #pragma mark - Fetch
 
-- (TKStation *)fetchStationWithId:(int64_t)stationId error:(NSError **)error {
+- (TKStation *)fetchStationWithId:(TKItemID)stationId error:(NSError **)error {
     TKStation *station = _cache[kTKTableStation.hash][stationId];
     
     if (!station) {
@@ -209,7 +209,7 @@ cleanup:
     [self fetchStationsMatchingName:name excluding:-1 limit:limit completion:completion];
 }
 
-- (void)fetchStationsMatchingName:(NSString *)name excluding:(int64_t)stationId limit:(NSInteger)limit completion:(TKStationFetchHandler)completion {
+- (void)fetchStationsMatchingName:(NSString *)name excluding:(TKItemID)stationId limit:(NSInteger)limit completion:(TKStationFetchHandler)completion {
     NSError *error = nil;
     
     if (![_fetchStMtchNameStmt clearAndResetWithError:&error]) {
@@ -235,7 +235,7 @@ cleanup:
     NSMutableArray *result = [[NSMutableArray alloc] init];
     
     for (id<TKDBRow> row in _fetchStMtchNameStmt) {
-        TKStation *station = [self itemWithIdentifier:[row int64ForColumn:kTKColumnID] table:kTKTableStation error:nil];
+        TKStation *station = [self itemWithIdentifier:(TKItemID)[row int64ForColumn:kTKColumnID] table:kTKTableStation error:nil];
         
         if (!station) {
             station = [[TKStation alloc] initWithRow:row manager:self];
@@ -274,7 +274,7 @@ cleanup:
     NSMutableArray *result = [[NSMutableArray alloc] init];
     
     for (id<TKDBRow> row in _fetchStNearLocStmt) {
-        TKStation *station = [self itemWithIdentifier:[row int64ForColumn:kTKColumnID] table:kTKTableStation error:nil];
+        TKStation *station = [self itemWithIdentifier:(TKItemID)[row int64ForColumn:kTKColumnID] table:kTKTableStation error:nil];
         
         if (!station) {
             station = [[TKStation alloc] initWithRow:row manager:self];
@@ -382,7 +382,7 @@ cleanup:
     _cache[[item tableName].hash][item.identifier] = nullptr;
 }
 
-- (__kindof TKItem *)itemWithIdentifier:(int64_t)identifier table:(NSString *)table error:(NSError **)error {
+- (__kindof TKItem *)itemWithIdentifier:(TKItemID)identifier table:(NSString *)table error:(NSError **)error {
     if ([table isEqualToString:kTKTableStation]) {
         return [self fetchStationWithId:identifier error:error];
     } else {

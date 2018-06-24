@@ -13,10 +13,18 @@
 
 - (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super init]) {
-        _identifier = [row int64ForColumn:kTKColumnID];
+        _identifier = (TKItemID)[row int64ForColumn:kTKColumnID];
         _valid = true;
     }
     return self;
+}
+
+- (BOOL)isEqual:(id)object {
+    if (object != nil && [object class] == [self class]) {
+        return [self identifier] == [(__kindof TKItem *)object identifier];
+    } else {
+        return false;
+    }
 }
 
 #pragma mark - TKDBVerify
