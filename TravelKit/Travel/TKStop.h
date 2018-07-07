@@ -11,6 +11,6 @@
 @interface TKStop : NSObject
 
 @property (nonatomic, readonly) TKStation *station;
-@property (nonatomic, readonly) NSString *localizedTime;
+@property (nonatomic, readonly) NSDateComponents *dateComponents;
 
 @end

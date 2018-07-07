@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8A2252C3203F2154003C1D97 /* TravelKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2252C2203F2154003C1D97 /* TravelKitTests.m */; };
 		8A2252C5203F2154003C1D97 /* TravelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5A885E2033325300998074 /* TravelKit.framework */; };
+		8A2409E320EFA3810049EC01 /* NSDateComponents+TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2409E120EFA3810049EC01 /* NSDateComponents+TravelKit.h */; };
+		8A2409E420EFA3810049EC01 /* NSDateComponents+TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2409E220EFA3810049EC01 /* NSDateComponents+TravelKit.m */; };
 		8A40FDDD2033808C00FB9C2F /* TKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A40FDDB2033808C00FB9C2F /* TKDatabase.h */; };
 		8A40FDDE2033808C00FB9C2F /* TKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A40FDDC2033808C00FB9C2F /* TKDatabase.m */; };
 		8A40FDE3203389AC00FB9C2F /* TKStation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A40FDE1203389AC00FB9C2F /* TKStation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -100,6 +102,8 @@
 		8A2252C2203F2154003C1D97 /* TravelKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TravelKitTests.m; sourceTree = "<group>"; };
 		8A2252C4203F2154003C1D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A2252CB203F23FF003C1D97 /* data.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.db; sourceTree = "<group>"; };
+		8A2409E120EFA3810049EC01 /* NSDateComponents+TravelKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDateComponents+TravelKit.h"; sourceTree = "<group>"; };
+		8A2409E220EFA3810049EC01 /* NSDateComponents+TravelKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDateComponents+TravelKit.m"; sourceTree = "<group>"; };
 		8A40FDDB2033808C00FB9C2F /* TKDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDatabase.h; sourceTree = "<group>"; };
 		8A40FDDC2033808C00FB9C2F /* TKDatabase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKDatabase.m; sourceTree = "<group>"; };
 		8A40FDE1203389AC00FB9C2F /* TKStation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKStation.h; sourceTree = "<group>"; };
@@ -360,6 +364,8 @@
 			children = (
 				8AF5C859203618B500715995 /* NSError+TravelKit.h */,
 				8AF5C85A203618B500715995 /* NSError+TravelKit.m */,
+				8A2409E120EFA3810049EC01 /* NSDateComponents+TravelKit.h */,
+				8A2409E220EFA3810049EC01 /* NSDateComponents+TravelKit.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -391,6 +397,7 @@
 				8AF5C84D2035D79100715995 /* TKError.h in Headers */,
 				8AA01423207B00990066AC23 /* TravelKitModule.h in Headers */,
 				8A9645FF20374D5A00A39571 /* TKDBRow.h in Headers */,
+				8A2409E320EFA3810049EC01 /* NSDateComponents+TravelKit.h in Headers */,
 				8A7A4B702080291A00EF562D /* TKDepartureWayFunction.h in Headers */,
 				8AC46DDB203A0D750040E385 /* TKDBErrorReporter.h in Headers */,
 				8A7A4B8820806F6900EF562D /* TKDeparture.h in Headers */,
@@ -562,6 +569,7 @@
 				8ABA745A20881770000AD523 /* TKAvailability.mm in Sources */,
 				8A7A4B8720806F6900EF562D /* TKDeparture.m in Sources */,
 				8A7A4B502080192200EF562D /* TKLineContainsFunction.m in Sources */,
+				8A2409E420EFA3810049EC01 /* NSDateComponents+TravelKit.m in Sources */,
 				8A40FDDE2033808C00FB9C2F /* TKDatabase.m in Sources */,
 				8A40FDE4203389AC00FB9C2F /* TKStation.m in Sources */,
 				8A9646032037B12200A39571 /* TKDBColumnsSet.m in Sources */,
