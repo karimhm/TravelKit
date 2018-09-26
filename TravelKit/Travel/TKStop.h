@@ -8,7 +8,7 @@
 #import <TravelKit/TKStation.h>
 #import <Foundation/Foundation.h>
 
-@interface TKStop : NSObject
+@interface TKStop : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
 @property (nonatomic, readonly) TKStation *station;
 @property (nonatomic, readonly) NSDateComponents *dateComponents;

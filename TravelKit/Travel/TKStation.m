@@ -10,6 +10,28 @@
 
 @implementation TKStation
 
+- (instancetype)copyWithZone:(NSZone *)zone {
+    TKStation *station = [super copyWithZone:zone];
+    station->_name = self.name;
+    station->_location = self.location;
+    
+    return station;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [super encodeWithCoder:aCoder];
+    TK_ENCODE_OBJ(aCoder, name);
+    TK_ENCODE_OBJ(aCoder, location);
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        TK_DECODE_OBJ_CLASS(aDecoder, name, NSString);
+        TK_DECODE_OBJ_CLASS(aDecoder, location, CLLocation);
+    }
+    return self;
+}
+
 - (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super initWithRow:row manager:manager]) {
         _name = [row stringForColumn:kTKColumnName];

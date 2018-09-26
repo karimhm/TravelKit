@@ -17,6 +17,31 @@ TK_ALWAYS_INLINE int32_t TKAdjustedIndex(int32_t index, int32_t length) {
 @implementation TKDeparture
 @synthesize valid = _valid;
 
+- (instancetype)copyWithZone:(NSZone *)zone {
+    TKDeparture *departute = [super copyWithZone:zone];
+    departute->_way = self.way;
+    departute->_available = self.available;
+    departute->_stops = self.stops;
+    
+    return departute;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [super encodeWithCoder:aCoder];
+    TK_ENCODE_INTEGER(aCoder, way);
+    TK_ENCODE_BOOL(aCoder, available);
+    TK_ENCODE_OBJ(aCoder, stops);
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        TK_DECODE_INTEGER(aDecoder, way);
+        TK_DECODE_BOOL(aDecoder, available);
+        TK_DECODE_OBJ_ARRAY(aDecoder, stops, TKStop);
+    }
+    return self;
+}
+
 - (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super initWithRow:row manager:manager]) {
         _way = [row int64ForColumn:kTKColumnWay] ? TKWayBackward:TKWayForward;

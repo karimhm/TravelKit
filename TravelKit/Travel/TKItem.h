@@ -8,7 +8,7 @@
 #import <TravelKit/TKDefines.h>
 #import <Foundation/Foundation.h>
 
-@interface TKItem : NSObject
+@interface TKItem : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
 @property (nonatomic, readonly) TKItemID identifier;
 @property (nonatomic, readonly, getter=isValid) BOOL valid;
