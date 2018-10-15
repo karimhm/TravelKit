@@ -14,11 +14,11 @@
 - (instancetype)initWithDatabase:(TKDatabase *)database text:(NSString *)text;
 - (instancetype)initWithDatabase:(TKDatabase *)database format:(NSString *)format, ...;
 
-- (BOOL)bindDouble:(double)value index:(NSInteger)index error:(NSError **)error;
-- (BOOL)bindInteger:(NSInteger)value index:(NSInteger)index error:(NSError **)error;
-- (BOOL)bindString:(NSString *)value index:(NSInteger)index error:(NSError **)error;
-- (BOOL)bindData:(NSData *)value index:(NSInteger)index error:(NSError **)error;
-- (BOOL)bindNullWithIndex:(NSInteger)index error:(NSError **)error;
+- (BOOL)bindDouble:(double)value index:(TKInt)index error:(NSError **)error;
+- (BOOL)bindInteger:(TKInt)value index:(TKInt)index error:(NSError **)error;
+- (BOOL)bindString:(NSString *)value index:(TKInt)index error:(NSError **)error;
+- (BOOL)bindData:(NSData *)value index:(TKInt)index error:(NSError **)error;
+- (BOOL)bindNullWithIndex:(TKInt)index error:(NSError **)error;
 
 /*
  *  expandedQuery
@@ -28,7 +28,7 @@
  */
 - (NSString *)expandedQuery;
 
-@property (nonatomic, readonly) NSInteger columnCount;
+@property (nonatomic, readonly) TKInt columnCount;
 @property (nonatomic, readonly) NSArray <NSString *> *columnNames;
 
 @property (nonatomic, readonly, getter=isReadOnly) BOOL readOnly;

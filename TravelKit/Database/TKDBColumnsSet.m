@@ -55,31 +55,31 @@
 
 #pragma mark By Index
 
-- (TKDBValueType)valueTypeForColumnAtIndex:(NSInteger)columnIndex; {
+- (TKDBValueType)valueTypeForColumnAtIndex:(TKInt)columnIndex; {
     return (TKDBValueType)sqlite3_column_type(_stmt, (int)columnIndex);
 }
 
-- (const void*)blobForColumnAtIndex:(NSInteger)columnIndex {
+- (const void*)blobForColumnAtIndex:(TKInt)columnIndex {
     return sqlite3_column_blob(_stmt, (int)columnIndex);
 }
 
-- (int)bytesForColumnAtIndex:(NSInteger)columnIndex {
+- (int)bytesForColumnAtIndex:(TKInt)columnIndex {
     return sqlite3_column_bytes(_stmt, (int)columnIndex);
 }
 
-- (double)doubleForColumnAtIndex:(NSInteger)columnIndex {
+- (double)doubleForColumnAtIndex:(TKInt)columnIndex {
     return sqlite3_column_double(_stmt, (int)columnIndex);
 }
 
-- (int64_t)int64ForColumnAtIndex:(NSInteger)columnIndex {
+- (int64_t)int64ForColumnAtIndex:(TKInt)columnIndex {
     return (int64_t)sqlite3_column_int64(_stmt, (int)columnIndex);
 }
 
-- (const char *)textForColumnAtIndex:(NSInteger)columnIndex {
+- (const char *)textForColumnAtIndex:(TKInt)columnIndex {
     return (const char *)sqlite3_column_text(_stmt, (int)columnIndex);
 }
 
-- (NSString *)stringForColumnAtIndex:(NSInteger)columnIndex {
+- (NSString *)stringForColumnAtIndex:(TKInt)columnIndex {
     return [NSString stringWithUTF8String:[self textForColumnAtIndex:columnIndex]];
 }
 

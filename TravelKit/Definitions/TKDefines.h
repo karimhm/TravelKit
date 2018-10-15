@@ -77,3 +77,4 @@ typedef NS_ENUM(NSInteger, TKDBValueType) {
 };
 
 typedef int64_t TKItemID;
+typedef int64_t TKInt;

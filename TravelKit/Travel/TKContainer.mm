@@ -242,11 +242,11 @@ cleanup:
     return station;
 }
 
-- (void)fetchStationsMatchingName:(NSString *)name limit:(NSInteger)limit completion:(TKStationFetchHandler)completion {
+- (void)fetchStationsMatchingName:(NSString *)name limit:(TKInt)limit completion:(TKStationFetchHandler)completion {
     [self fetchStationsMatchingName:name excluding:-1 limit:limit completion:completion];
 }
 
-- (void)fetchStationsMatchingName:(NSString *)name excluding:(TKItemID)stationId limit:(NSInteger)limit completion:(TKStationFetchHandler)completion {
+- (void)fetchStationsMatchingName:(NSString *)name excluding:(TKItemID)stationId limit:(TKInt)limit completion:(TKStationFetchHandler)completion {
     NSError *error = nil;
     
     if (![_fetchStMtchNameStmt clearAndResetWithError:&error]) {
@@ -285,7 +285,7 @@ cleanup:
     completion(result, nil);
 }
 
-- (void)fetchStationsNearLocation:(CLLocation *)location limit:(NSInteger)limit completion:(TKStationFetchHandler)completion {
+- (void)fetchStationsNearLocation:(CLLocation *)location limit:(TKInt)limit completion:(TKStationFetchHandler)completion {
     NSError *error = nil;
     
     if (![_fetchStNearLocStmt clearAndResetWithError:&error]) {

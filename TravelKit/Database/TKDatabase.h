@@ -42,7 +42,7 @@ typedef NS_OPTIONS(NSUInteger, TKDBOptions) {
 
 @property (nonatomic, readonly) sqlite3* sqlitePtr;
 
-@property (nonatomic) NSInteger busyTimeout;
+@property (nonatomic) TKInt busyTimeout;
 
 @property (weak, nonatomic) id<TKDatabaseDelegate> delegate;
 

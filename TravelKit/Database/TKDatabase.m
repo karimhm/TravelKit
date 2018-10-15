@@ -13,7 +13,7 @@
 #import "NSError+TravelKit.h"
 #import <sqlite3.h>
 
-static NSInteger TKDefaultBusyTimeout = 250;
+static TKInt TKDefaultBusyTimeout = 250;
 
 int TKDBOptionsToSQLiteFlags(TKDBOptions options) {
     int flags = 0;
@@ -178,7 +178,7 @@ int TKDatabaseBusyHandler(void *ptr, int count) {
     return valid;
 }
 
-- (void)setBusyTimeout:(NSInteger)busyTimeout {
+- (void)setBusyTimeout:(TKInt)busyTimeout {
     _busyTimeout = busyTimeout;
     
     if (busyTimeout == 0) {
