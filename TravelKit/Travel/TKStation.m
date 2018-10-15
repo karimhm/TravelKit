@@ -62,4 +62,10 @@
     _location = nil;
 }
 
+#ifdef DEBUG
+- (NSString*)description {
+    return [NSString stringWithFormat:@"<%@: %p; id: %lli; name: %@ latitude: %f, longitude: %f>", [self class], self, self.identifier, _name, _location.coordinate.latitude, _location.coordinate.longitude];
+}
+#endif
+
 @end
