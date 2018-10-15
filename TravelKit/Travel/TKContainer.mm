@@ -129,6 +129,16 @@ cleanup:
     return status;
 }
 
+- (BOOL)closeDatabase {
+    NSError *error = nil;
+    if ([self closeStatements:&error]) {
+        _valid = false;
+        return [_db close];
+    }else {
+        return false;
+    }
+}
+
 - (BOOL)prepareStatements:(NSError **)error {
     BOOL status = true;
     
@@ -175,6 +185,33 @@ cleanup:
 cleanup:
     return status;
     
+}
+
+- (BOOL)closeStatements:(NSError **)error {
+    BOOL status = true;
+    
+    if (!(status = [_fetchStStmt closeWithError:error])) {
+        goto cleanup;
+    }
+    
+    if (!(status = [_fetchStMtchNameStmt closeWithError:error])) {
+        goto cleanup;
+    }
+    
+    if (!(status = [_fetchStNearLocStmt closeWithError:error])) {
+        goto cleanup;
+    }
+    
+    if (!(status = [_fetchAvailabilityStmt closeWithError:error])) {
+        goto cleanup;
+    }
+    
+    if (!(status = [_fetchPathStmt closeWithError:error])) {
+        goto cleanup;
+    }
+    
+cleanup:
+    return status;
 }
 
 - (BOOL)loadAvailability {

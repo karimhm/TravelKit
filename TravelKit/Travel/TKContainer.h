@@ -20,6 +20,8 @@ typedef void (^TKPathRequestHandler)(TKPathResponse * __nullable result, NSError
 - (instancetype)initWithPath:(NSString *)path error:(NSError **)error;
 - (instancetype)initWithURL:(NSURL *)url error:(NSError **)error;
 
+- (BOOL)closeDatabase;
+
 @property (nonatomic, readonly, getter=isValid) BOOL valid;
 
 - (TKStation *)fetchStationWithId:(TKItemID)stationId error:(NSError **)error;
