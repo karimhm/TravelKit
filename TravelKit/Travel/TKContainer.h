@@ -24,6 +24,8 @@ typedef void (^TKPathRequestHandler)(TKPathResponse * __nullable result, NSError
 
 @property (nonatomic, readonly, getter=isValid) BOOL valid;
 
+@property (nonatomic, readonly) NSDictionary <NSString *, id> *properties;
+
 - (TKStation *)fetchStationWithId:(TKItemID)stationId error:(NSError **)error;
 - (void)fetchStationsMatchingName:(NSString *)name limit:(TKInt)limit completion:(TKStationFetchHandler)completion;
 - (void)fetchStationsMatchingName:(NSString *)name excluding:(TKItemID)stationId limit:(TKInt)limit completion:(TKStationFetchHandler)completion;

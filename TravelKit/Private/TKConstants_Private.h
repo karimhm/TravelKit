@@ -15,6 +15,7 @@ static NSString *kTKTableTrain              = @"Train";
 static NSString *kTKTablePath               = @"Path";
 static NSString *kTKTableDeparture          = @"Departure";
 static NSString *kTKTableAvailability       = @"Availability";
+static NSString *kTKTableProperties         = @"Properties";
 
 static NSString *kTKColumnID                = @"id";
 static NSString *kTKColumnName              = @"name";
@@ -37,3 +38,4 @@ static NSString *kTKColumnExcludeDate       = @"excludeDate";
 static NSString *kTKColumnIncludeDate       = @"includeDate";
 static NSString *kTKColumnSIndex            = @"sIndex";
 static NSString *kTKColumnDIndex            = @"dIndex";
+static NSString *kTKColumnValue             = @"value";

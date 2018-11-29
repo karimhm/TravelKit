@@ -35,6 +35,7 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
     DBKStatement *_fetchStMtchNameStmt;
     DBKStatement *_fetchStNearLocStmt;
     DBKStatement *_fetchAvailabilityStmt;
+    DBKStatement *_fetchPropertiesStmt;
     DBKStatement *_fetchPathStmt;
 }
 
@@ -49,6 +50,7 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
         _url = url;
         _db = [[DBKDatabase alloc] initWithURL:url];
         _availability = [[NSMutableArray alloc] init];
+        _properties = [[NSMutableDictionary alloc] init];
         
         BOOL status = [self openDatabase:error];
         
@@ -62,6 +64,10 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
         
         if (status == true) {
             status = [self loadAvailability];
+        }
+        
+        if (status == true) {
+            status = [self loadProperties];
         }
         
         _valid = status;
@@ -145,22 +151,23 @@ cleanup:
     _fetchStMtchNameStmt = [[DBKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ LIKE ?1 AND %@ != ?2 LIMIT ?3", kTKTableStation, kTKColumnName, kTKColumnID];
     _fetchStNearLocStmt = [[DBKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ GROUP BY tkDistance(?1, ?2, latitude, longitude) LIMIT ?3", kTKTableStation];
     _fetchAvailabilityStmt = [[DBKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@", kTKTableAvailability];
+    _fetchPropertiesStmt = [[DBKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@", kTKTableProperties];
     _fetchPathStmt = [[DBKStatement alloc] initWithDatabase:_db format:@""
                       "WITH PossibleLines as ("
-                        "SELECT stations, id, "
-                        "tkStationIndex(stations, ?1) as sIndex, "
-                        "tkStationIndex(stations, ?2) as dIndex "
-                        "FROM Line WHERE tkLineContains(stations, ?1, ?2)"
+                      "SELECT stations, id, "
+                      "tkStationIndex(stations, ?1) as sIndex, "
+                      "tkStationIndex(stations, ?2) as dIndex "
+                      "FROM Line WHERE tkLineContains(stations, ?1, ?2)"
                       ")"
                       "SELECT *, tkMatch([Departure].availabilityId, ?3) as available "
                       "FROM [%@] JOIN [PossibleLines] "
                       "WHERE "
-                        "[%@].lineId = [PossibleLines].id "
+                      "[%@].lineId = [PossibleLines].id "
                       "AND "
-                        "[%@].way = tkDepartureWay(sIndex, dIndex) "
+                      "[%@].way = tkDepartureWay(sIndex, dIndex) "
                       "AND "
-                        "tkDepartureAvailable(stops, ?4, sIndex, dIndex)", kTKTableDeparture, kTKTableDeparture, kTKTableDeparture];
-
+                      "tkDepartureAvailable(stops, ?4, sIndex, dIndex)", kTKTableDeparture, kTKTableDeparture, kTKTableDeparture];
+    
     if (!(status = [_fetchStStmt prepareWithError:error])) {
         goto cleanup;
     }
@@ -174,6 +181,10 @@ cleanup:
     }
     
     if (!(status = [_fetchAvailabilityStmt prepareWithError:error])) {
+        goto cleanup;
+    }
+    
+    if (!(status = [_fetchPropertiesStmt prepareWithError:error])) {
         goto cleanup;
     }
     
@@ -205,6 +216,10 @@ cleanup:
         goto cleanup;
     }
     
+    if (!(status = [_fetchPropertiesStmt closeWithError:error])) {
+        goto cleanup;
+    }
+    
     if (!(status = [_fetchPathStmt closeWithError:error])) {
         goto cleanup;
     }
@@ -219,6 +234,28 @@ cleanup:
         [_availability addObject:availability];
     }
     return (_availability.count > 0);
+}
+
+- (BOOL)loadProperties {
+    for (id<DBKRow> row in _fetchPropertiesStmt) {
+        DBKValueType valueType = [row valueTypeForColumn:kTKColumnValue];
+        NSString *propertyID = [row stringForColumn:kTKColumnID];
+        
+        if (propertyID) {
+            id value = nil;
+            
+            if (valueType == DBKValueTypeText) {
+                value = [row stringForColumn:kTKColumnValue];
+            } else if (valueType == DBKValueTypeFloat) {
+                value = @([row doubleForColumn:kTKColumnValue]);
+            } else if (valueType == DBKValueTypeInteger) {
+                value = @([row int64ForColumn:kTKColumnValue]);
+            }
+            
+            [(NSMutableDictionary *)_properties setValue:value ?: [NSNull null] forKey:propertyID];
+        }
+    }
+    return [_fetchPropertiesStmt didComplete];
 }
 
 #pragma mark - Fetch
@@ -440,6 +477,7 @@ cleanup:
     [_fetchStNearLocStmt close];
     [_fetchPathStmt close];
     [_fetchAvailabilityStmt close];
+    [_fetchPropertiesStmt close];
     
     _db.delegate = nil;
     _db = nil;
@@ -451,6 +489,7 @@ cleanup:
     _fetchStNearLocStmt = nil;
     _fetchPathStmt = nil;
     _fetchAvailabilityStmt = nil;
+    _fetchPropertiesStmt = nil;
 }
 
 @end
