@@ -8,39 +8,39 @@
 #import "TKDepartureAvailableFunction.h"
 #import "TKStop.h"
 
-static TKDBFunctionContext _departureAvailableFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
+static DBKFunctionContext _departureAvailableFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
 static BOOL _didInit = false;
 
-static void TKDepartureAvailableExecute(TKDBContextRef context, int valuesCount, TKDBValueRef _Nonnull * _Nonnull values) {
-    if (TKDBValueGetType(values[0]) == TKDBValueTypeBlob
-        && TKDBValueGetType(values[1]) == TKDBValueTypeInteger
-        && TKDBValueGetType(values[2]) == TKDBValueTypeInteger
-        && TKDBValueGetType(values[3]) == TKDBValueTypeInteger)
+static void TKDepartureAvailableExecute(DBKContextRef context, int valuesCount, DBKValueRef _Nonnull * _Nonnull values) {
+    if (DBKValueGetType(values[0]) == DBKValueTypeBlob
+        && DBKValueGetType(values[1]) == DBKValueTypeInteger
+        && DBKValueGetType(values[2]) == DBKValueTypeInteger
+        && DBKValueGetType(values[3]) == DBKValueTypeInteger)
     {
-        int32_t bytes = TKDBValueGetBytes(values[0]);
+        int32_t bytes = DBKValueGetBytes(values[0]);
         int32_t length = (bytes &~ 3) >> 2;
         
-        int32_t* stops = (int32_t*)TKDBValueGetBlob(values[0]);
-        int32_t departureTime = (int32_t)TKDBValueGetInt64(values[1]);
-        int32_t departureIndex = (int32_t)TKDBValueGetInt64(values[2]);
-        int32_t arrivalIndex = (int32_t)TKDBValueGetInt64(values[3]);
+        int32_t* stops = (int32_t*)DBKValueGetBlob(values[0]);
+        int32_t departureTime = (int32_t)DBKValueGetInt64(values[1]);
+        int32_t departureIndex = (int32_t)DBKValueGetInt64(values[2]);
+        int32_t arrivalIndex = (int32_t)DBKValueGetInt64(values[3]);
         
         if (departureIndex >= length || arrivalIndex >= length) {
-            TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
+            DBKContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
         } else if ((int32_t)TKAligned32(stops[arrivalIndex]) >= 0
                    && (int32_t)TKAligned32(stops[departureIndex]) >= 0
                    && (TKAligned32(stops[departureIndex]) >= departureTime))
         {
-            TKDBContextResultInt64(context, stops[departureIndex]);
+            DBKContextResultInt64(context, stops[departureIndex]);
         } else {
-            TKDBContextResultNull(context);
+            DBKContextResultNull(context);
         }
     } else {
-        TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
+        DBKContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
 }
 
-TK_EXTERN TKDBFunctionContext TKGetDepartureAvailableFunction(void) {
+TK_EXTERN DBKFunctionContext TKGetDepartureAvailableFunction(void) {
     if (!_didInit) {
         _departureAvailableFunction.name = "tkDepartureAvailable";
         _departureAvailableFunction.valuesCount = 4;

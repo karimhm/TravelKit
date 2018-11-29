@@ -17,7 +17,7 @@ typedef std::vector<TKDateCondition> TKConditionVector;
     TKConditionVector _conditions;
 }
 
-- (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
+- (instancetype)initWithRow:(id <DBKRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super initWithRow:row manager:manager]) {
         _name = [row stringForColumn:kTKColumnName];
         _days = (uint32_t)[row int64ForColumn:kTKColumnDays];

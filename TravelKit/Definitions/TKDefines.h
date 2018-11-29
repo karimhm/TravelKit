@@ -67,14 +67,5 @@ TK_ALWAYS_INLINE uint64_t TKAligned64(uint64_t data) {
 #endif
 }
 
-typedef NS_ENUM(NSInteger, TKDBValueType) {
-    TKDBValueTypeUnknown = -1,
-    TKDBValueTypeNull = SQLITE_NULL,
-    TKDBValueTypeInteger = SQLITE_INTEGER,
-    TKDBValueTypeFloat = SQLITE_FLOAT,
-    TKDBValueTypeText = SQLITE_TEXT,
-    TKDBValueTypeBlob = SQLITE_BLOB
-};
-
 typedef int64_t TKItemID;
 typedef int64_t TKInt;

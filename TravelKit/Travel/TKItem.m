@@ -11,7 +11,7 @@
 @implementation TKItem
 @synthesize valid = _valid;
 
-- (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
+- (instancetype)initWithRow:(id <DBKRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super init]) {
         _identifier = (TKItemID)[row int64ForColumn:kTKColumnID];
         _valid = true;
@@ -29,7 +29,7 @@
 
 #pragma mark - TKDBVerify
 
-+ (BOOL)isDatabaseValid:(TKDatabase *)database {
++ (BOOL)isDatabaseValid:(DBKDatabase *)database {
     TKDBVerifySet *set = [self requiredTablesAndColumns];
     BOOL valid = true;
     

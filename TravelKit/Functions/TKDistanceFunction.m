@@ -92,25 +92,25 @@ static double TKDistance(double lat1, double lon1, double lat2, double lon2) {
     return (b * A * (sigma - deltaSigma));
 }
 
-static TKDBFunctionContext _distanceFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
+static DBKFunctionContext _distanceFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
 static BOOL _didInit = false;
 
-static void TKDistanceFunctionExecute(TKDBContextRef context, int valuesCount, TKDBValueRef _Nonnull * _Nonnull values) {
-    if (TKDBValueGetType(values[0]) == TKDBValueTypeFloat
-        && TKDBValueGetType(values[1]) == TKDBValueTypeFloat
-        && TKDBValueGetType(values[2]) == TKDBValueTypeFloat
-        && TKDBValueGetType(values[3]) == TKDBValueTypeFloat)
+static void TKDistanceFunctionExecute(DBKContextRef context, int valuesCount, DBKValueRef _Nonnull * _Nonnull values) {
+    if (DBKValueGetType(values[0]) == DBKValueTypeFloat
+        && DBKValueGetType(values[1]) == DBKValueTypeFloat
+        && DBKValueGetType(values[2]) == DBKValueTypeFloat
+        && DBKValueGetType(values[3]) == DBKValueTypeFloat)
     {
-        TKDBContextResultDouble(context, TKDistance(TKDBValueGetDouble(values[0]),
-                                                    TKDBValueGetDouble(values[1]),
-                                                    TKDBValueGetDouble(values[2]),
-                                                    TKDBValueGetDouble(values[3])));
+        DBKContextResultDouble(context, TKDistance(DBKValueGetDouble(values[0]),
+                                                    DBKValueGetDouble(values[1]),
+                                                    DBKValueGetDouble(values[2]),
+                                                    DBKValueGetDouble(values[3])));
     } else {
-        TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
+        DBKContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
 }
 
-TKDBFunctionContext TKGetDistanceFunction(void) {
+DBKFunctionContext TKGetDistanceFunction(void) {
     if (!_didInit) {
         _distanceFunction.name = "tkDistance";
         _distanceFunction.valuesCount = 4;

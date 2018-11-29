@@ -7,8 +7,8 @@
 
 #import "TKItem.h"
 #import "TKDBVerify.h"
-#import "TKDBRow.h"
 #import "TKConstants_Private.h"
+#import <DBKit/DBKRow.h>
 
 @protocol TKItemManager <NSObject>
 
@@ -18,7 +18,7 @@
 
 @interface TKItem () <TKDBVerify>
 
-- (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager;
+- (instancetype)initWithRow:(id <DBKRow>)row manager:(id <TKItemManager>)manager;
 
 - (NSString *)tableName;
 

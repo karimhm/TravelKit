@@ -5,4 +5,4 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#import "TKDBFunction.h"
+#import <DBKit/DBKFunction.h>

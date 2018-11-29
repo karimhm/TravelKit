@@ -7,24 +7,24 @@
 
 #import "TKDepartureWayFunction.h"
 
-static TKDBFunctionContext _departureWayFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
+static DBKFunctionContext _departureWayFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
 static BOOL _didInit = false;
 
-static void TKStationIndexFunctionExecute(TKDBContextRef context, int valuesCount, TKDBValueRef _Nonnull * _Nonnull values) {
-    if (TKDBValueGetType(values[0]) == TKDBValueTypeInteger
-        && TKDBValueGetType(values[1]) == TKDBValueTypeInteger)
+static void TKStationIndexFunctionExecute(DBKContextRef context, int valuesCount, DBKValueRef _Nonnull * _Nonnull values) {
+    if (DBKValueGetType(values[0]) == DBKValueTypeInteger
+        && DBKValueGetType(values[1]) == DBKValueTypeInteger)
     {
-        int64_t first = TKDBValueGetInt64(values[0]);
-        int64_t second = TKDBValueGetInt64(values[1]);
+        int64_t first = DBKValueGetInt64(values[0]);
+        int64_t second = DBKValueGetInt64(values[1]);
         
-        TKDBContextResultInt64(context, (first < second) ? 0 : ((first > second) ? 1 : 2));
+        DBKContextResultInt64(context, (first < second) ? 0 : ((first > second) ? 1 : 2));
     } else {
-        TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
+        DBKContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
     
 }
 
-TK_EXTERN TKDBFunctionContext TKGetDepartureWayFunction(void) {
+TK_EXTERN DBKFunctionContext TKGetDepartureWayFunction(void) {
     if (!_didInit) {
         _departureWayFunction.name = "tkDepartureWay";
         _departureWayFunction.valuesCount = 2;

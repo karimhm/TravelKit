@@ -8,4 +8,3 @@
 #import "TKConstants.h"
 
 NSString *const TKErrorDomain                    = @"com.karhm.TravelKit.ErrorDomain";
-NSString *const TKSQLiteErrorDomain              = @"com.karhm.TravelKit.SQLiteErrorDomain";

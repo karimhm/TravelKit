@@ -5,6 +5,7 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#import "TKDBFunction.h"
+#import <TravelKit/TKDefines.h>
+#import <DBKit/DBKFunction.h>
 
-TK_EXTERN TKDBFunctionContext TKGetDepartureWayFunction(void);
+TK_EXTERN DBKFunctionContext TKGetDepartureWayFunction(void);

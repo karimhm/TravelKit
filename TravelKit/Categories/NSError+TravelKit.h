@@ -10,13 +10,6 @@
 
 @interface NSError (TravelKit)
 
-+ (instancetype)tk_noSuchFileError;
-+ (instancetype)tk_invalidPathError;
-+ (instancetype)tk_noReadPermissionError;
-+ (instancetype)tk_noWritePermissionError;
 + (instancetype)tk_badDatabaseError;
-+ (instancetype)tk_databaseBusyError;
-
-+ (instancetype)tk_sqliteErrorWith:(int)code db:(sqlite3*)db;
 
 @end

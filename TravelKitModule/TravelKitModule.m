@@ -15,7 +15,7 @@
 
 SQLITE_EXTENSION_INIT1
 
-static int TKDBAddFunction(TKDBFunctionContext function, sqlite3* db) {
+static int TKDBAddFunction(DBKFunctionContext function, sqlite3* db) {
     return sqlite3_create_function_v2(db,
                                       function.name,
                                       function.valuesCount,

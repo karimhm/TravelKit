@@ -42,7 +42,7 @@ TK_ALWAYS_INLINE int32_t TKAdjustedIndex(int32_t index, int32_t length) {
     return self;
 }
 
-- (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
+- (instancetype)initWithRow:(id <DBKRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super initWithRow:row manager:manager]) {
         _way = [row int64ForColumn:kTKColumnWay] ? TKWayBackward:TKWayForward;
         _available = ([row int64ForColumn:kTKColumnAvailable] != 0);

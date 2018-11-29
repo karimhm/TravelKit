@@ -7,17 +7,17 @@
 
 #import "TKMatchFunction.h"
 
-static TKDBFunctionContext _matchFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
+static DBKFunctionContext _matchFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
 static BOOL _didInit = false;
 
-static void TKMatchFunctionExecute(TKDBContextRef context, int valuesCount, TKDBValueRef _Nonnull * _Nonnull values) {
-    if (TKDBValueGetType(values[0]) == TKDBValueTypeInteger
-        && TKDBValueGetType(values[1]) == TKDBValueTypeBlob)
+static void TKMatchFunctionExecute(DBKContextRef context, int valuesCount, DBKValueRef _Nonnull * _Nonnull values) {
+    if (DBKValueGetType(values[0]) == DBKValueTypeInteger
+        && DBKValueGetType(values[1]) == DBKValueTypeBlob)
     {
-        int32_t toMatch = (int32_t)TKDBValueGetInt64(values[0]);
-        int32_t bytes = TKDBValueGetBytes(values[1]);
+        int32_t toMatch = (int32_t)DBKValueGetInt64(values[0]);
+        int32_t bytes = DBKValueGetBytes(values[1]);
         int32_t length = (bytes &~ 3) >> 2;
-        int32_t* ids = (int32_t*)TKDBValueGetBlob(values[1]);
+        int32_t* ids = (int32_t*)DBKValueGetBlob(values[1]);
         
         int32_t low = 0;
         int32_t high = length;
@@ -26,7 +26,7 @@ static void TKMatchFunctionExecute(TKDBContextRef context, int valuesCount, TKDB
         while (low < high) {
             mid = low + (high - low) / 2;
             if (ids[mid] == toMatch) {
-                return TKDBContextResultInt64(context, 1);
+                return DBKContextResultInt64(context, 1);
             } else if (ids[mid] < toMatch) {
                 low = mid + 1;
             } else {
@@ -34,13 +34,13 @@ static void TKMatchFunctionExecute(TKDBContextRef context, int valuesCount, TKDB
             }
         }
         
-        TKDBContextResultNull(context);
+        DBKContextResultNull(context);
     } else {
-        TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
+        DBKContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
 }
 
-TK_EXTERN TKDBFunctionContext TKGetMatchFunction(void) {
+TK_EXTERN DBKFunctionContext TKGetMatchFunction(void) {
     if (!_didInit) {
         _matchFunction.name = "tkMatch";
         _matchFunction.valuesCount = 2;

@@ -6,9 +6,7 @@
  */
 
 #import "TKContainer.h"
-#import "TKDatabase.h"
 #import "TKAvailability.h"
-#import "TKStatement.h"
 #import "TKUtilities.h"
 #import "TKItem_Private.h"
 #import "TKContainer_Private.h"
@@ -21,6 +19,7 @@
 #import "TKDepartureAvailableFunction.h"
 #import "TKMatchFunction.h"
 #import "NSError+TravelKit.h"
+#import <DBKit/DBKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <map>
 
@@ -28,15 +27,15 @@ typedef std::map<int64_t, id> TKObjcMap;
 typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
 
 @implementation TKContainer {
-    TKDatabase *_db;
+    DBKDatabase *_db;
     NSURL *_url;
     TKCacheMap _cache;
     NSMutableArray *_availability;
-    TKStatement *_fetchStStmt;
-    TKStatement *_fetchStMtchNameStmt;
-    TKStatement *_fetchStNearLocStmt;
-    TKStatement *_fetchAvailabilityStmt;
-    TKStatement *_fetchPathStmt;
+    DBKStatement *_fetchStStmt;
+    DBKStatement *_fetchStMtchNameStmt;
+    DBKStatement *_fetchStNearLocStmt;
+    DBKStatement *_fetchAvailabilityStmt;
+    DBKStatement *_fetchPathStmt;
 }
 
 #pragma mark - Initialization
@@ -48,7 +47,7 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
 - (instancetype)initWithURL:(NSURL *)url error:(NSError **)error {
     if (self = [super init]) {
         _url = url;
-        _db = [[TKDatabase alloc] initWithURL:url];
+        _db = [[DBKDatabase alloc] initWithURL:url];
         _availability = [[NSMutableArray alloc] init];
         
         BOOL status = [self openDatabase:error];
@@ -73,7 +72,7 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
 #pragma mark - Loading
 
 - (BOOL)openDatabase:(NSError **)error {
-    if ([_db openWithOptions:TKDBOptionsOpenReadOnly error:error]) {
+    if ([_db openWithOptions:DBKOptionsOpenReadOnly error:error]) {
         if ([self verifyDatabase:_db]) {
             return true;
         } else {
@@ -84,7 +83,7 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
     return false;
 }
 
-- (BOOL)verifyDatabase:(TKDatabase *)database {
+- (BOOL)verifyDatabase:(DBKDatabase *)database {
     BOOL status = [TKStation isDatabaseValid:database];
     
     if (status) {
@@ -142,11 +141,11 @@ cleanup:
 - (BOOL)prepareStatements:(NSError **)error {
     BOOL status = true;
     
-    _fetchStStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ = ?1", kTKTableStation, kTKColumnID];
-    _fetchStMtchNameStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ LIKE ?1 AND %@ != ?2 LIMIT ?3", kTKTableStation, kTKColumnName, kTKColumnID];
-    _fetchStNearLocStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ GROUP BY tkDistance(?1, ?2, latitude, longitude) LIMIT ?3", kTKTableStation];
-    _fetchAvailabilityStmt = [[TKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@", kTKTableAvailability];
-    _fetchPathStmt = [[TKStatement alloc] initWithDatabase:_db format:@""
+    _fetchStStmt = [[DBKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ = ?1", kTKTableStation, kTKColumnID];
+    _fetchStMtchNameStmt = [[DBKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ WHERE %@ LIKE ?1 AND %@ != ?2 LIMIT ?3", kTKTableStation, kTKColumnName, kTKColumnID];
+    _fetchStNearLocStmt = [[DBKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@ GROUP BY tkDistance(?1, ?2, latitude, longitude) LIMIT ?3", kTKTableStation];
+    _fetchAvailabilityStmt = [[DBKStatement alloc] initWithDatabase:_db format:@"SELECT * FROM %@", kTKTableAvailability];
+    _fetchPathStmt = [[DBKStatement alloc] initWithDatabase:_db format:@""
                       "WITH PossibleLines as ("
                         "SELECT stations, id, "
                         "tkStationIndex(stations, ?1) as sIndex, "
@@ -215,7 +214,7 @@ cleanup:
 }
 
 - (BOOL)loadAvailability {
-    for (id<TKDBRow> row in _fetchAvailabilityStmt) {
+    for (id<DBKRow> row in _fetchAvailabilityStmt) {
         TKAvailability *availability = [[TKAvailability alloc] initWithRow:row manager:self];
         [_availability addObject:availability];
     }
@@ -271,7 +270,7 @@ cleanup:
     
     NSMutableArray *result = [[NSMutableArray alloc] init];
     
-    for (id<TKDBRow> row in _fetchStMtchNameStmt) {
+    for (id<DBKRow> row in _fetchStMtchNameStmt) {
         TKStation *station = [self itemWithIdentifier:(TKItemID)[row int64ForColumn:kTKColumnID] table:kTKTableStation error:nil];
         
         if (!station) {
@@ -310,7 +309,7 @@ cleanup:
     
     NSMutableArray *result = [[NSMutableArray alloc] init];
     
-    for (id<TKDBRow> row in _fetchStNearLocStmt) {
+    for (id<DBKRow> row in _fetchStNearLocStmt) {
         TKStation *station = [self itemWithIdentifier:(TKItemID)[row int64ForColumn:kTKColumnID] table:kTKTableStation error:nil];
         
         if (!station) {
@@ -363,7 +362,7 @@ cleanup:
     
     NSMutableArray *departures = [[NSMutableArray alloc] init];
     
-    for (id<TKDBRow> row in _fetchPathStmt) {
+    for (id<DBKRow> row in _fetchPathStmt) {
         TKDeparture *departure = [[TKDeparture alloc] initWithRow:row manager:self];
         [departures addObject:departure];
     }

@@ -32,7 +32,7 @@
     return self;
 }
 
-- (instancetype)initWithRow:(id <TKDBRow>)row manager:(id <TKItemManager>)manager {
+- (instancetype)initWithRow:(id <DBKRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super initWithRow:row manager:manager]) {
         _name = [row stringForColumn:kTKColumnName];
         _location = [[CLLocation alloc] initWithLatitude:[row doubleForColumn:kTKColumnLatitude]

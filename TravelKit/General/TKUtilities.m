@@ -7,18 +7,6 @@
 
 #import "TKUtilities.h"
 
-BOOL TKFileExists(NSString *path) {
-    return (access(path.fileSystemRepresentation, F_OK ) != -1);
-}
-
-BOOL TKFileReadable(NSString *path) {
-    return (access(path.fileSystemRepresentation, R_OK ) != -1);
-}
-
-BOOL TKFileWritable(NSString *path) {
-    return (access(path.fileSystemRepresentation, W_OK ) != -1);
-}
-
 TKTimeInfo TKTimeInfoCreate(NSTimeInterval time) {
     TKTimeInfo timeInfo;
     

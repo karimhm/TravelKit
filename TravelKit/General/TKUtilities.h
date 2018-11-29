@@ -9,9 +9,5 @@
 #import <TravelKit/TKDefines.h>
 #import <Foundation/Foundation.h>
 
-TK_EXTERN BOOL TKFileExists(NSString *path);
-TK_EXTERN BOOL TKFileReadable(NSString *path);
-TK_EXTERN BOOL TKFileWritable(NSString *path);
-
 TK_EXTERN TKTimeInfo TKTimeInfoCreate(NSTimeInterval time);
 TK_EXTERN int64_t TKTimeInfoGetDaystamp(TKTimeInfo timeInfo);

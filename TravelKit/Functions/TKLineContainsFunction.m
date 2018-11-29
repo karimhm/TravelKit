@@ -8,23 +8,23 @@
 #import "TKLineContainsFunction.h"
 #import "TKStructs.h"
 
-static TKDBFunctionContext _containsFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
+static DBKFunctionContext _containsFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
 static BOOL _didInit = false;
 
-static void TKLineContainsFunctionExecute(TKDBContextRef context, int valuesCount, TKDBValueRef _Nonnull * _Nonnull values) {
-    if (TKDBValueGetType(values[0]) == TKDBValueTypeBlob
-        && TKDBValueGetType(values[1]) == TKDBValueTypeInteger
-        && TKDBValueGetType(values[2]) == TKDBValueTypeInteger)
+static void TKLineContainsFunctionExecute(DBKContextRef context, int valuesCount, DBKValueRef _Nonnull * _Nonnull values) {
+    if (DBKValueGetType(values[0]) == DBKValueTypeBlob
+        && DBKValueGetType(values[1]) == DBKValueTypeInteger
+        && DBKValueGetType(values[2]) == DBKValueTypeInteger)
     {
-        int32_t bytes = TKDBValueGetBytes(values[0]);
+        int32_t bytes = DBKValueGetBytes(values[0]);
         int32_t length = (bytes &~ 7) >> 3;
-        TKStationNode *stations = (TKStationNode*)TKDBValueGetBlob(values[0]);
+        TKStationNode *stations = (TKStationNode*)DBKValueGetBlob(values[0]);
         
         bool firstFound = false;
         bool secondFound = false;
         
-        uint32_t first = TKAligned32((uint32_t)TKDBValueGetInt64(values[1]));
-        uint32_t second = TKAligned32((uint32_t)TKDBValueGetInt64(values[2]));
+        uint32_t first = TKAligned32((uint32_t)DBKValueGetInt64(values[1]));
+        uint32_t second = TKAligned32((uint32_t)DBKValueGetInt64(values[2]));
         
         int32_t low = 0;
         int32_t high = length;
@@ -44,10 +44,10 @@ static void TKLineContainsFunctionExecute(TKDBContextRef context, int valuesCoun
         }
         
         if (!firstFound) {
-            TKDBContextResultNull(context);
+            DBKContextResultNull(context);
             return;
         } else if (first == second) {
-            TKDBContextResultInt64(context, 1);
+            DBKContextResultInt64(context, 1);
             return;
         }
         
@@ -69,17 +69,17 @@ static void TKLineContainsFunctionExecute(TKDBContextRef context, int valuesCoun
         }
         
         if (secondFound) {
-            TKDBContextResultInt64(context, 1);
+            DBKContextResultInt64(context, 1);
         }else {
-            TKDBContextResultNull(context);
+            DBKContextResultNull(context);
         }
         
     } else {
-        TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
+        DBKContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
 }
 
-TKDBFunctionContext TKGetLineContainsFunction(void) {
+DBKFunctionContext TKGetLineContainsFunction(void) {
     if (!_didInit) {
         _containsFunction.name = "tkLineContains";
         _containsFunction.valuesCount = 3;

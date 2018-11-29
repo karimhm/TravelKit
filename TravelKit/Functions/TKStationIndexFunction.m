@@ -8,18 +8,18 @@
 #import "TKStationIndexFunction.h"
 #import "TKStructs.h"
 
-static TKDBFunctionContext _stationIndexFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
+static DBKFunctionContext _stationIndexFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
 static BOOL _didInit = false;
 
-static void TKStationIndexFunctionExecute(TKDBContextRef context, int valuesCount, TKDBValueRef _Nonnull * _Nonnull values) {
-    if (TKDBValueGetType(values[0]) == TKDBValueTypeBlob
-        && TKDBValueGetType(values[1]) == TKDBValueTypeInteger)
+static void TKStationIndexFunctionExecute(DBKContextRef context, int valuesCount, DBKValueRef _Nonnull * _Nonnull values) {
+    if (DBKValueGetType(values[0]) == DBKValueTypeBlob
+        && DBKValueGetType(values[1]) == DBKValueTypeInteger)
     {
-        int32_t bytes = TKDBValueGetBytes(values[0]);
+        int32_t bytes = DBKValueGetBytes(values[0]);
         int32_t length = (bytes &~ 7) >> 3;
-        TKStationNode *stations = (TKStationNode*)TKDBValueGetBlob(values[0]);
+        TKStationNode *stations = (TKStationNode*)DBKValueGetBlob(values[0]);
         
-        uint32_t stationId = TKAligned32((uint32_t)TKDBValueGetInt64(values[1]));
+        uint32_t stationId = TKAligned32((uint32_t)DBKValueGetInt64(values[1]));
         
         int32_t low = 0;
         int32_t high = length;
@@ -29,7 +29,7 @@ static void TKStationIndexFunctionExecute(TKDBContextRef context, int valuesCoun
             mid = low + (high - low) / 2;
             
             if (stations[mid].stationId == stationId) {
-                TKDBContextResultInt64(context, TKAligned32(stations[mid].index));
+                DBKContextResultInt64(context, TKAligned32(stations[mid].index));
                 return;
                 break;
             } else if (stations[mid].stationId < stationId) {
@@ -39,13 +39,13 @@ static void TKStationIndexFunctionExecute(TKDBContextRef context, int valuesCoun
             }
         }
         
-        TKDBContextResultNull(context);
+        DBKContextResultNull(context);
     } else {
-        TKDBContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
+        DBKContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
 }
 
-TKDBFunctionContext TKGetStationIndexFunction(void) {
+DBKFunctionContext TKGetStationIndexFunction(void) {
     if (!_didInit) {
         _stationIndexFunction.name = "tkStationIndex";
         _stationIndexFunction.valuesCount = 2;
