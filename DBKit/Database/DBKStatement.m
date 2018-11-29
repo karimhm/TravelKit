@@ -18,6 +18,7 @@
     NSMutableArray <NSString *> *_columnMap;
     DBKColumnsSet *_columnsSet;
     BOOL _hasNext;
+    BOOL _didComplete;
 }
 
 - (instancetype)initWithDatabase:(DBKDatabase *)database text:(NSString *)text {
@@ -44,6 +45,7 @@
     if (status == SQLITE_OK) {
         _columnCount = sqlite3_column_count(_stmt);
         _hasNext = (_columnCount > 0);
+        _didComplete = false;
         
         for (int colIdx = 0; colIdx < _columnCount; colIdx++) {
             [_columnMap addObject:[NSString stringWithUTF8String:sqlite3_column_name(_stmt, colIdx)]];
@@ -134,6 +136,7 @@
         if (error) {
             *error = nil;
         }
+        _didComplete = true;
         return true;
     } else {
         if (error) {
@@ -153,12 +156,15 @@
             return _columnsSet;
         } else if (status == SQLITE_DONE) {
             _hasNext = false;
+            _didComplete = true;
         } else if (status == SQLITE_BUSY || status == SQLITE_LOCKED) {
             [_db reportError:[NSError dbk_databaseBusyError]];
             _hasNext = false;
+            _didComplete = false;
         } else {
             [_db reportError:[NSError dbk_sqliteErrorWith:status db:_db.sqlitePtr]];
             _hasNext = false;
+            _didComplete = false;
         }
     }
     
@@ -167,6 +173,10 @@
 
 - (BOOL)hasNext {
     return _hasNext;
+}
+
+- (BOOL)didComplete {
+    return _didComplete;
 }
 
 - (BOOL)clearAndReset {
@@ -218,6 +228,7 @@
     
     if (status == SQLITE_OK) {
         _hasNext = true;
+        _didComplete = false;
         if (error) {
             *error = nil;
         }

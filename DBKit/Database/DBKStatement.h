@@ -42,6 +42,7 @@
 
 - (id<DBKRow>)next;
 - (BOOL)hasNext;
+- (BOOL)didComplete;
 
 - (BOOL)clearAndReset;
 - (BOOL)clearBindings;
