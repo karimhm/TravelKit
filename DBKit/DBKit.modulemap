@@ -1,0 +1,6 @@
+framework module DBKit {
+    umbrella header "DBKit.h"
+    
+    export *
+    module * { export * }
+}

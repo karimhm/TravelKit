@@ -7,6 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A02C2EB21AAF33C008675E3 /* DBKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C2E921AAF33C008675E3 /* DBKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A02C2F521AAF407008675E3 /* DBKDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C2F421AAF407008675E3 /* DBKDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A02C2F721AAF4F8008675E3 /* DBKError.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C2F621AAF4F8008675E3 /* DBKError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A02C2F921AAF550008675E3 /* DBKError.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C2F821AAF550008675E3 /* DBKError.m */; };
+		8A02C31421AAF63E008675E3 /* DBKColumnsSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C30C21AAF63D008675E3 /* DBKColumnsSet.h */; };
+		8A02C31521AAF63E008675E3 /* DBKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C30D21AAF63D008675E3 /* DBKDatabase.m */; };
+		8A02C31621AAF63E008675E3 /* DBKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C30E21AAF63D008675E3 /* DBKDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A02C31721AAF63E008675E3 /* DBKRow.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C30F21AAF63D008675E3 /* DBKRow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A02C31821AAF63E008675E3 /* DBKFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C31021AAF63D008675E3 /* DBKFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A02C31921AAF63E008675E3 /* DBKStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C31121AAF63D008675E3 /* DBKStatement.m */; };
+		8A02C31A21AAF63E008675E3 /* DBKColumnsSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C31221AAF63D008675E3 /* DBKColumnsSet.m */; };
+		8A02C31B21AAF63E008675E3 /* DBKStatement.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C31321AAF63E008675E3 /* DBKStatement.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A02C32021AAF83B008675E3 /* DBKDatabase_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C31D21AAF83B008675E3 /* DBKDatabase_Private.h */; };
+		8A02C32121AAF83B008675E3 /* DBKErrorReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C31E21AAF83B008675E3 /* DBKErrorReporter.h */; };
+		8A02C32521AAFA5D008675E3 /* NSError+DBKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C32321AAFA5D008675E3 /* NSError+DBKit.h */; };
+		8A02C32621AAFA5D008675E3 /* NSError+DBKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C32421AAFA5D008675E3 /* NSError+DBKit.m */; };
 		8A2252C3203F2154003C1D97 /* TravelKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2252C2203F2154003C1D97 /* TravelKitTests.m */; };
 		8A2252C5203F2154003C1D97 /* TravelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5A885E2033325300998074 /* TravelKit.framework */; };
 		8A2409E320EFA3810049EC01 /* NSDateComponents+TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2409E120EFA3810049EC01 /* NSDateComponents+TravelKit.h */; };
@@ -98,6 +114,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8A02C2E721AAF33C008675E3 /* DBKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DBKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A02C2E921AAF33C008675E3 /* DBKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBKit.h; sourceTree = "<group>"; };
+		8A02C2EA21AAF33C008675E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A02C2F321AAF3AB008675E3 /* DBKit.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = DBKit.modulemap; sourceTree = "<group>"; };
+		8A02C2F421AAF407008675E3 /* DBKDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBKDefines.h; sourceTree = "<group>"; };
+		8A02C2F621AAF4F8008675E3 /* DBKError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBKError.h; sourceTree = "<group>"; };
+		8A02C2F821AAF550008675E3 /* DBKError.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBKError.m; sourceTree = "<group>"; };
+		8A02C30C21AAF63D008675E3 /* DBKColumnsSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKColumnsSet.h; sourceTree = "<group>"; };
+		8A02C30D21AAF63D008675E3 /* DBKDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBKDatabase.m; sourceTree = "<group>"; };
+		8A02C30E21AAF63D008675E3 /* DBKDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKDatabase.h; sourceTree = "<group>"; };
+		8A02C30F21AAF63D008675E3 /* DBKRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKRow.h; sourceTree = "<group>"; };
+		8A02C31021AAF63D008675E3 /* DBKFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKFunction.h; sourceTree = "<group>"; };
+		8A02C31121AAF63D008675E3 /* DBKStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBKStatement.m; sourceTree = "<group>"; };
+		8A02C31221AAF63D008675E3 /* DBKColumnsSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBKColumnsSet.m; sourceTree = "<group>"; };
+		8A02C31321AAF63E008675E3 /* DBKStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKStatement.h; sourceTree = "<group>"; };
+		8A02C31D21AAF83B008675E3 /* DBKDatabase_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKDatabase_Private.h; sourceTree = "<group>"; };
+		8A02C31E21AAF83B008675E3 /* DBKErrorReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKErrorReporter.h; sourceTree = "<group>"; };
+		8A02C32321AAFA5D008675E3 /* NSError+DBKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+DBKit.h"; sourceTree = "<group>"; };
+		8A02C32421AAFA5D008675E3 /* NSError+DBKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+DBKit.m"; sourceTree = "<group>"; };
 		8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A2252C2203F2154003C1D97 /* TravelKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TravelKitTests.m; sourceTree = "<group>"; };
 		8A2252C4203F2154003C1D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -168,6 +203,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		8A02C2E321AAF33C008675E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A2252BD203F2154003C1D97 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -193,6 +235,71 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A02C2E821AAF33C008675E3 /* DBKit */ = {
+			isa = PBXGroup;
+			children = (
+				8A02C2E921AAF33C008675E3 /* DBKit.h */,
+				8A02C32221AAF8FC008675E3 /* Categories */,
+				8A02C2F221AAF366008675E3 /* Private */,
+				8A02C2FB21AAF5EC008675E3 /* Database */,
+				8A02C2F121AAF359008675E3 /* Definitions */,
+				8A02C2EF21AAF346008675E3 /* Supporting Files */,
+			);
+			path = DBKit;
+			sourceTree = "<group>";
+		};
+		8A02C2EF21AAF346008675E3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8A02C2F321AAF3AB008675E3 /* DBKit.modulemap */,
+				8A02C2EA21AAF33C008675E3 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8A02C2F121AAF359008675E3 /* Definitions */ = {
+			isa = PBXGroup;
+			children = (
+				8A02C2F421AAF407008675E3 /* DBKDefines.h */,
+				8A02C2F621AAF4F8008675E3 /* DBKError.h */,
+				8A02C2F821AAF550008675E3 /* DBKError.m */,
+			);
+			path = Definitions;
+			sourceTree = "<group>";
+		};
+		8A02C2F221AAF366008675E3 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				8A02C31D21AAF83B008675E3 /* DBKDatabase_Private.h */,
+				8A02C31E21AAF83B008675E3 /* DBKErrorReporter.h */,
+				8A02C30C21AAF63D008675E3 /* DBKColumnsSet.h */,
+				8A02C31221AAF63D008675E3 /* DBKColumnsSet.m */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		8A02C2FB21AAF5EC008675E3 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				8A02C31021AAF63D008675E3 /* DBKFunction.h */,
+				8A02C30E21AAF63D008675E3 /* DBKDatabase.h */,
+				8A02C30D21AAF63D008675E3 /* DBKDatabase.m */,
+				8A02C30F21AAF63D008675E3 /* DBKRow.h */,
+				8A02C31321AAF63E008675E3 /* DBKStatement.h */,
+				8A02C31121AAF63D008675E3 /* DBKStatement.m */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		8A02C32221AAF8FC008675E3 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				8A02C32321AAFA5D008675E3 /* NSError+DBKit.h */,
+				8A02C32421AAFA5D008675E3 /* NSError+DBKit.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		8A2252C1203F2154003C1D97 /* TravelKitTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +354,7 @@
 				8A5A88602033325300998074 /* TravelKit */,
 				8A2252C1203F2154003C1D97 /* TravelKitTests */,
 				8AA0141A207B001E0066AC23 /* TravelKitModule */,
+				8A02C2E821AAF33C008675E3 /* DBKit */,
 				8A5A885F2033325300998074 /* Products */,
 				8A63F4B82033913E00742FE5 /* Frameworks */,
 			);
@@ -258,6 +366,7 @@
 				8A5A885E2033325300998074 /* TravelKit.framework */,
 				8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */,
 				8AA01419207B001E0066AC23 /* tkm.dylib */,
+				8A02C2E721AAF33C008675E3 /* DBKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -373,6 +482,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		8A02C2E421AAF33C008675E3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A02C31821AAF63E008675E3 /* DBKFunction.h in Headers */,
+				8A02C31421AAF63E008675E3 /* DBKColumnsSet.h in Headers */,
+				8A02C32121AAF83B008675E3 /* DBKErrorReporter.h in Headers */,
+				8A02C31621AAF63E008675E3 /* DBKDatabase.h in Headers */,
+				8A02C2EB21AAF33C008675E3 /* DBKit.h in Headers */,
+				8A02C2F521AAF407008675E3 /* DBKDefines.h in Headers */,
+				8A02C31721AAF63E008675E3 /* DBKRow.h in Headers */,
+				8A02C2F721AAF4F8008675E3 /* DBKError.h in Headers */,
+				8A02C32521AAFA5D008675E3 /* NSError+DBKit.h in Headers */,
+				8A02C32021AAF83B008675E3 /* DBKDatabase_Private.h in Headers */,
+				8A02C31B21AAF63E008675E3 /* DBKStatement.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A5A885B2033325300998074 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -437,6 +564,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		8A02C2E621AAF33C008675E3 /* DBKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A02C2EE21AAF33C008675E3 /* Build configuration list for PBXNativeTarget "DBKit" */;
+			buildPhases = (
+				8A02C2E221AAF33C008675E3 /* Sources */,
+				8A02C2E321AAF33C008675E3 /* Frameworks */,
+				8A02C2E421AAF33C008675E3 /* Headers */,
+				8A02C2E521AAF33C008675E3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DBKit;
+			productName = DBKit;
+			productReference = 8A02C2E721AAF33C008675E3 /* DBKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		8A2252BF203F2154003C1D97 /* TravelKitTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A2252CA203F2154003C1D97 /* Build configuration list for PBXNativeTarget "TravelKitTests" */;
@@ -499,6 +644,10 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Karim;
 				TargetAttributes = {
+					8A02C2E621AAF33C008675E3 = {
+						CreatedOnToolsVersion = 9.4.1;
+						ProvisioningStyle = Manual;
+					};
 					8A2252BF203F2154003C1D97 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Manual;
@@ -528,11 +677,19 @@
 				8A5A885D2033325300998074 /* TravelKit */,
 				8A2252BF203F2154003C1D97 /* TravelKitTests */,
 				8AA01418207B001E0066AC23 /* TravelKitModule */,
+				8A02C2E621AAF33C008675E3 /* DBKit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		8A02C2E521AAF33C008675E3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A2252BE203F2154003C1D97 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -551,6 +708,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		8A02C2E221AAF33C008675E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A02C2F921AAF550008675E3 /* DBKError.m in Sources */,
+				8A02C31A21AAF63E008675E3 /* DBKColumnsSet.m in Sources */,
+				8A02C32621AAFA5D008675E3 /* NSError+DBKit.m in Sources */,
+				8A02C31521AAF63E008675E3 /* DBKDatabase.m in Sources */,
+				8A02C31921AAF63E008675E3 /* DBKStatement.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A2252BC203F2154003C1D97 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -612,6 +781,62 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		8A02C2EC21AAF33C008675E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				INFOPLIST_FILE = DBKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = DBKit/DBKit.modulemap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karhm.DBKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = all;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8A02C2ED21AAF33C008675E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				INFOPLIST_FILE = DBKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = DBKit/DBKit.modulemap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.karhm.DBKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = all;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		8A2252C8203F2154003C1D97 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -671,7 +896,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -729,7 +954,6 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -755,7 +979,6 @@
 		8A5A88672033325300998074 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -829,6 +1052,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		8A02C2EE21AAF33C008675E3 /* Build configuration list for PBXNativeTarget "DBKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A02C2EC21AAF33C008675E3 /* Debug */,
+				8A02C2ED21AAF33C008675E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8A2252CA203F2154003C1D97 /* Build configuration list for PBXNativeTarget "TravelKitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
