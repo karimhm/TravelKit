@@ -41,19 +41,30 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
 
 #pragma mark - Initialization
 
-- (instancetype)initWithPath:(NSString *)path error:(NSError **)error {
-    return [self initWithURL:[NSURL fileURLWithPath:path] error:error];
+- (instancetype)initWithPath:(NSString *)path {
+    return [self initWithURL:[NSURL fileURLWithPath:path]];
 }
 
-- (instancetype)initWithURL:(NSURL *)url error:(NSError **)error {
-    if (self = [super init]) {
+- (instancetype)initWithURL:(NSURL *)url {
+    if (!url) {
+        return nil;
+    } else if (self = [super init]) {
         _url = url;
         _db = [[DBKDatabase alloc] initWithURL:url];
         _availability = [[NSMutableArray alloc] init];
         _properties = [[NSMutableDictionary alloc] init];
-        
-        BOOL status = [self openDatabase:error];
-        
+    }
+    return self;
+}
+
+#pragma mark - Loading
+
+- (BOOL)openDatabase:(NSError **)error {
+    BOOL status = true;
+    
+    if ([_db openWithOptions:DBKOptionsOpenReadOnly error:error]) {
+        BOOL status = [self verifyDatabase:_db];
+            
         if (status == true) {
             status = [self addFunctions:error];
         }
@@ -69,24 +80,13 @@ typedef std::map<NSUInteger, TKObjcMap> TKCacheMap;
         if (status == true) {
             status = [self loadProperties];
         }
-        
-        _valid = status;
-    }
-    return self;
-}
-
-#pragma mark - Loading
-
-- (BOOL)openDatabase:(NSError **)error {
-    if ([_db openWithOptions:DBKOptionsOpenReadOnly error:error]) {
-        if ([self verifyDatabase:_db]) {
-            return true;
-        } else {
-            *error = [NSError tk_badDatabaseError];
-        }
+    } else {
+        status = false;
+        *error = [NSError tk_badDatabaseError];
     }
     
-    return false;
+    _valid = status;
+    return status;
 }
 
 - (BOOL)verifyDatabase:(DBKDatabase *)database {

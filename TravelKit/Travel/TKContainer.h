@@ -17,9 +17,10 @@ typedef void (^TKPathRequestHandler)(TKPathResponse * __nullable result, NSError
 
 @interface TKContainer : NSObject
 
-- (instancetype)initWithPath:(NSString *)path error:(NSError **)error;
-- (instancetype)initWithURL:(NSURL *)url error:(NSError **)error;
+- (instancetype)initWithPath:(NSString *)path;
+- (instancetype)initWithURL:(NSURL *)url;
 
+- (BOOL)openDatabase:(NSError **)error;
 - (BOOL)closeDatabase;
 
 @property (nonatomic, readonly, getter=isValid) BOOL valid;
