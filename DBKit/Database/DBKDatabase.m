@@ -139,7 +139,7 @@ BOOL DBKFileWritable(NSString *path) {
         if (status == SQLITE_OK) {
             _open = true;
             _sqlitePtr = _db;
-            _valid = [self checkDatabase];
+            valid = [self checkDatabase];
             self.busyTimeout = DBKDefaultBusyTimeout;
         } else {
             valid = false;
@@ -182,7 +182,7 @@ BOOL DBKFileWritable(NSString *path) {
     BOOL valid = false;
     
     if ([statement prepareWithError:nil]) {
-        _valid = [statement next] != nil;
+        valid = [statement hasNext];
         [statement close];
     }
     
