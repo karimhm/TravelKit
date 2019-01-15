@@ -9,6 +9,8 @@
 #import <DBKit/DBKRow.h>
 #import <sqlite3.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface DBKStatement : NSEnumerator
 
 - (instancetype)initWithDatabase:(DBKDatabase *)database text:(NSString *)text;
@@ -54,4 +56,11 @@
 - (BOOL)resetWithError:(NSError **)error;
 - (BOOL)closeWithError:(NSError **)error;
 
+- (nullable id)objectForKeyedSubscript:(nullable NSString *)key;
+
+- (void)setObject:(nullable id)obj forKeyedSubscript:(NSString *)key;
+- (void)setObject:(nullable id)obj atIndexedSubscript:(NSUInteger)index;
+
 @end
+
+NS_ASSUME_NONNULL_END

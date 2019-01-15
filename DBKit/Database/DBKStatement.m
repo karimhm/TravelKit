@@ -9,6 +9,9 @@
 #import "DBKColumnsSet.h"
 #import "DBKDatabase_Private.h"
 #import "NSError+DBKit.h"
+#import <objc/runtime.h>
+
+#define _DBK_C_LDBL 'D'
 
 @implementation DBKStatement {
     DBKDatabase *_db;
@@ -19,6 +22,7 @@
     DBKColumnsSet *_columnsSet;
     BOOL _hasNext;
     BOOL _didComplete;
+    NSMutableDictionary *_parameters;
 }
 
 - (instancetype)initWithDatabase:(DBKDatabase *)database text:(NSString *)text {
@@ -26,6 +30,7 @@
         _db = database;
         _text = text;
         _columnMap = [[NSMutableArray alloc] init];
+        _parameters = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -209,6 +214,8 @@
 - (BOOL)clearBindingsWithError:(NSError **)error {
     int status = sqlite3_clear_bindings(_stmt);
     
+    [_parameters removeAllObjects];
+    
     if (status == SQLITE_OK) {
         if (error) {
             *error = nil;
@@ -247,6 +254,8 @@
         return true;
     }
     
+    [_parameters removeAllObjects];
+    
     int status = sqlite3_finalize(_stmt);
     
     if (status == SQLITE_OK) {
@@ -263,6 +272,40 @@
             [_db reportError:[NSError dbk_sqliteErrorWith:status db:_db.sqlitePtr]];
         }
         return false;
+    }
+}
+
+#pragma mark - Key Value coding
+
+- (nullable id)objectForKeyedSubscript:(nullable NSString *)key {
+    return _parameters[key];
+}
+
+- (void)setObject:(nullable id)obj forKeyedSubscript:(NSString *)key {
+    int index = sqlite3_bind_parameter_index(_stmt, key.UTF8String);
+    if (index) {
+        [self setObject:obj atIndexedSubscript:index];
+        if (obj) {
+            _parameters[key] = obj;
+        }
+    }
+}
+    
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)index {
+    if (!obj || [obj isKindOfClass:[NSNull class]]) {
+        [self bindNullWithIndex:index error:nil];
+    } else if ([obj isKindOfClass:[NSNumber class]]) {
+        char objCType = *[(NSNumber *)obj objCType];
+        
+        if (objCType == _C_FLT || objCType == _C_DBL || objCType == _DBK_C_LDBL) {
+            [self bindDouble:[(NSNumber *)obj doubleValue] index:index error:nil];
+        } else {
+            [self bindInteger:[(NSNumber *)obj integerValue] index:index error:nil];
+        }
+    } else if ([obj isKindOfClass:[NSString class]]) {
+        [self bindString:(NSString *)obj index:index error:nil];
+    } else if ([obj isKindOfClass:[NSData class]]) {
+        [self bindData:(NSData *)obj index:index error:nil];
     }
 }
 
