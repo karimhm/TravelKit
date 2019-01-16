@@ -1,0 +1,9 @@
+language: objective-c
+osx_image: xcode10.1
+xcode_project: TravelKit.xcodeproj
+xcode_scheme: TravelKit
+xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone X
+after_failure:
+ - cat -n ~/Library/Logs/scan/*
+ - cat -n $TMPDIR/com.apple.dt.XCTest-status/Session*.log
+ - cat -n ~/Library/Logs/DiagnosticReports/xctest*.crash
