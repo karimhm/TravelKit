@@ -1,8 +1,8 @@
 # TravelKit
 
-*TravelKit* is a  public transportation routing framework.
-
 [![Build Status](https://travis-ci.com/karimhm/TravelKit.svg?token=Eo1DcU7271eYfUkoq6gT&branch=master)](https://travis-ci.com/karimhm/TravelKit)
+
+*TravelKit* is a  public transportation routing framework.
 
 ### Table of Contents
 - [Requirements](#requirements)
