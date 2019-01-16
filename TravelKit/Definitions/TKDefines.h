@@ -5,9 +5,9 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#import <Foundation/Foundation.h>
 #import <sqlite3.h>
 #import <stdio.h>
+#import <unistd.h>
 #import <machine/endian.h>
 
 #if defined(__cplusplus)
@@ -26,11 +26,42 @@
 #error "Unable to determine the machine endianness"
 #endif
 
-#define TK_ALWAYS_INLINE static inline __attribute__((always_inline))
+#define TK_ALWAYS_INLINE inline __attribute__((always_inline))
+
+#define TK_RETURNS_NONNULL __attribute__((returns_nonnull))
+
+#define TK_WARN_UNUSED_RETURN __attribute__((__warn_unused_result__))
 
 #define TK_INLINE static inline
 
+#define TK_ASSUME_NONNULL_BEGIN _Pragma("clang assume_nonnull begin")
+#define TK_ASSUME_NONNULL_END   _Pragma("clang assume_nonnull end")
+
+#define TK_LIKE_PRINTF(f, a) __attribute__((format(__printf__, f, a)))
+
 #define TK_STRINGIFY(x) #x
+
+TK_ALWAYS_INLINE uint32_t TKAligned32(uint32_t data) {
+#if defined(TK_BIG_ENDIAN)
+    return data;
+#elif defined(TK_LITTLE_ENDIAN)
+    return _OSSwapInt32(data);
+#endif
+}
+
+TK_ALWAYS_INLINE uint64_t TKAligned64(uint64_t data) {
+#if defined(TK_BIG_ENDIAN)
+    return data;
+#elif defined(TK_LITTLE_ENDIAN)
+    return _OSSwapInt64(data);
+#endif
+}
+
+typedef int64_t TKItemID;
+typedef int64_t TKInt;
+
+#ifdef __OBJC__
+#import <Foundation/Foundation.h>
 
 #define TK_ENCODE_OBJ(c,x)  [c encodeObject:_ ## x forKey:@TK_STRINGIFY(x)]
 #define TK_DECODE_OBJ_CLASS(d,x,cl)  _ ## x = (cl *)[d decodeObjectOfClass:[cl class] forKey:@TK_STRINGIFY(x)]
@@ -51,21 +82,4 @@
 #define TK_ENCODE_INT64(c,x)  [c encodeInt64:_ ## x forKey:@TK_STRINGIFY(x)]
 #define TK_DECODE_INT64(d,x) _ ## x = [d decodeInt64ForKey:@TK_STRINGIFY(x)]
 
-TK_ALWAYS_INLINE uint32_t TKAligned32(uint32_t data) {
-#if defined(TK_BIG_ENDIAN)
-    return data;
-#elif defined(TK_LITTLE_ENDIAN)
-    return _OSSwapInt32(data);
 #endif
-}
-
-TK_ALWAYS_INLINE uint64_t TKAligned64(uint64_t data) {
-#if defined(TK_BIG_ENDIAN)
-    return data;
-#elif defined(TK_LITTLE_ENDIAN)
-    return _OSSwapInt64(data);
-#endif
-}
-
-typedef int64_t TKItemID;
-typedef int64_t TKInt;
