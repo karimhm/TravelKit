@@ -57,7 +57,25 @@ TK_ALWAYS_INLINE uint64_t TKAligned64(uint64_t data) {
 #endif
 }
 
-typedef int64_t TKItemID;
+TK_ALWAYS_INLINE uint64_t TKSToU64(int64_t data) {
+    union utos {
+        uint64_t uValue;
+        int64_t sValue;
+    } utos;
+    utos.sValue = data;
+    return utos.uValue;
+}
+
+TK_ALWAYS_INLINE int64_t TKUToS64(uint64_t data) {
+    union utos {
+        uint64_t uValue;
+        int64_t sValue;
+    } utos;
+    utos.uValue = data;
+    return utos.sValue;
+}
+
+typedef uint64_t TKItemID;
 typedef int64_t TKInt;
 
 #ifdef __OBJC__

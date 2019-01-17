@@ -56,7 +56,7 @@ using namespace tk;
     XCTAssertTrue(stmt->prepare().isOK(), "Failed to prepare the statement");
     XCTAssertTrue(stmt->bind(value, 1).isOK(), "Failed to bind the parameter number '1'");
     XCTAssertTrue(stmt->expandedQuery() == "SELECT value, id FROM test WHERE id = 1;", "The query is incorrect");
-    XCTAssertTrue(stmt->next(), "Failed to call next");
+    XCTAssertTrue(stmt->next().isRow(), "Failed to call next");
     XCTAssertTrue((*stmt)["value"].stringValue() == "text", "The statement 'id' value is incorrent");
     XCTAssertTrue((*stmt)["id"].int64Value() == value, "The statement 'id' value is incorrent");
     XCTAssertTrue(stmt->close().isOK(), "Unable to close the statament");
@@ -75,7 +75,7 @@ using namespace tk;
     Ref<Statement> stmt = makeRef<Statement>(db, "SELECT value, id FROM test");
     
     XCTAssertTrue(stmt->prepare().isOK(), "Failed to prepare the statement");
-    XCTAssertTrue(stmt->next(), "Failed to call next");
+    XCTAssertTrue(stmt->next().isRow() , "Failed to call next");
     
     XCTAssertTrue(stmt->columnMap().size() == 2, "The columnMap should contain 2 columns");
     
