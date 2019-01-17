@@ -29,62 +29,11 @@ Status Statement::prepare() {
     
     if (status.isOK()) {
         int32_t columnCount_ = sqlite3_column_count(statement_);
-        hasNext_ = (columnCount_ > 0);
         
         for (int32_t colIndex = 0; colIndex < columnCount_; colIndex++) {
             std::string columnName = std::string(sqlite3_column_name(statement_, colIndex));
             columnMap_[columnName] = colIndex;
         }
-    }
-    
-    return status;
-}
-
-Status Statement::execute() {
-    Status status = sqlite3_step(statement_);
-    
-    return status;
-}
-
-bool Statement::next() {
-    if (statement_ && hasNext_) {
-        Status status = sqlite3_step(statement_);
-        
-        if (status.isRow()) {
-            return true;
-        } else if (status.isDone()) {
-            hasNext_ = false;
-        } else if (status.isBusy() || status.isLocked()) {
-            hasNext_ = false;
-        } else {
-            hasNext_ = false;
-        }
-    }
-    
-    return false;
-}
-
-Status Statement::clearAndReset() {
-    Status status = clearBindings();
-    
-    if (status.isOK()) {
-        status = reset();
-    }
-    
-    return status;
-}
-
-Status Statement::clearBindings() {
-    Status status = sqlite3_clear_bindings(statement_);
-    
-    return status;
-}
-
-Status Statement::reset() {
-    Status status = sqlite3_reset(statement_);
-    
-    if (status.isOK()) {
-        hasNext_ = true;
     }
     
     return status;
@@ -111,8 +60,4 @@ std::string Statement::expandedQuery() {
     } else {
         return nullptr;
     }
-}
-
-std::string Statement::sql() {
-    return sqlite3_sql(statement_);
 }

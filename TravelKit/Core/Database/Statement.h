@@ -100,14 +100,19 @@ public:
     int64_t size() const {
         return sqlite3_data_count(statement_);
     }
-
+    
     Status prepare();
-    Status execute();
+    
+    Status execute() {
+        Status status = sqlite3_step(statement_);
+        
+        return status;
+    }
 
-    bool next();
-
-    bool hasNext() const {
-        return hasNext_;
+    Status next() {
+        Status status = sqlite3_step(statement_);
+        
+        return status;
     }
     
     bool isBusy() const {
@@ -127,15 +132,36 @@ public:
     }
     
     std::string expandedQuery();
-    std::string sql();
+    
+    std::string sql() {
+        return sqlite3_sql(statement_);
+    }
 
-    Status clearAndReset();
-    Status clearBindings();
-    Status reset();
+    Status clearAndReset() {
+        Status status = clearBindings();
+        
+        if (status.isOK()) {
+            status = reset();
+        }
+        
+        return status;
+    }
+    
+    Status clearBindings() {
+        Status status = sqlite3_clear_bindings(statement_);
+        
+        return status;
+    }
+    
+    Status reset() {
+        Status status = sqlite3_reset(statement_);
+        
+        return status;
+    }
+    
     Status close();
 
 private:
-    bool hasNext_ = false;
     bool closed_ = false;
     Ref<Database> db_ = nullptr;
     std::string query_;
