@@ -7,6 +7,9 @@
 
 #import "TKItem.h"
 #import "TKItem_Private.h"
+#import "TKItem_Core.h"
+
+using namespace tk;
 
 @implementation TKItem
 @synthesize valid = _valid;
@@ -14,6 +17,14 @@
 - (instancetype)initWithRow:(id <DBKRow>)row manager:(id <TKItemManager>)manager {
     if (self = [super init]) {
         _identifier = (TKItemID)[row int64ForColumn:kTKColumnID];
+        _valid = true;
+    }
+    return self;
+}
+
+-(instancetype)initWithStatement:(Ref<Statement>)statement {
+    if (self = [super init]) {
+        _identifier = (*statement)["id"].int64Value();
         _valid = true;
     }
     return self;

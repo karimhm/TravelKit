@@ -16,4 +16,12 @@
     return [NSError errorWithDomain:TKErrorDomain code:TKErrorBadDatabase userInfo:nil];
 }
 
++ (instancetype)tk_internalDatabaseError {
+    return [NSError errorWithDomain:TKErrorDomain code:TKErrorInternalDatabaseError userInfo:nil];
+}
+
++ (instancetype)tk_sqliteErrorWithDB:(sqlite3*)db {
+    return [NSError errorWithDomain:TKSQLiteErrorDomain code:sqlite3_errcode(db) userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithUTF8String:sqlite3_errmsg(db)]}];
+}
+
 @end

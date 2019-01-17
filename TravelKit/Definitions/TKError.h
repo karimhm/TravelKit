@@ -18,6 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
 TK_EXTERN NSString *const TKErrorDomain;
 
 /*
+ *  TKSQLiteErrorDomain
+ *
+ *  Discussion:
+ *    The domain of SQLite errors.
+ */
+TK_EXTERN NSString *const TKSQLiteErrorDomain;
+
+/*
  *  TKError
  *
  *  Discussion:
@@ -25,7 +33,8 @@ TK_EXTERN NSString *const TKErrorDomain;
  */
 typedef NS_ENUM(NSInteger, TKError) {
     TKErrorUnknown = 0,
-    TKErrorBadDatabase = 1
+    TKErrorBadDatabase = 1,
+    TKErrorInternalDatabaseError = 2
 };
 
 NS_ASSUME_NONNULL_END

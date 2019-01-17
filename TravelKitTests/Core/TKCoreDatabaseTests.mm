@@ -1,5 +1,5 @@
 /*
- *  TKDatabaseTests.mm
+ *  TKCoreDatabaseTests.mm
  *  Created on 15/Jan/19.
  *
  *  Copyright (C) 2018 Karim. All rights reserved.
@@ -12,7 +12,7 @@
 
 using namespace tk;
 
-@interface TKDatabaseTests : TKDBTestCase
+@interface TKCoreDatabaseTests : TKDBTestCase
 
 @end
 
@@ -20,7 +20,7 @@ void TKDatabaseTestCustomFunction(ContextRef context, int valuesCount, ValueRef 
     ContextResultInt64(context, 1);
 }
 
-@implementation TKDatabaseTests : TKDBTestCase
+@implementation TKCoreDatabaseTests : TKDBTestCase
 
 - (void)testOpenDatabase {
     Ref<Database> db = makeRef<Database>(self.dbPath.UTF8String);

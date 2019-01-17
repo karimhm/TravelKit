@@ -11,5 +11,8 @@
 @interface NSError (TravelKit)
 
 + (instancetype)tk_badDatabaseError;
++ (instancetype)tk_internalDatabaseError;
+
++ (instancetype)tk_sqliteErrorWithDB:(sqlite3*)db;
 
 @end
