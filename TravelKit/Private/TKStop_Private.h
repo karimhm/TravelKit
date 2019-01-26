@@ -9,6 +9,6 @@
 
 @interface TKStop ()
 
-+ (instancetype)stopWithStation:(TKStation *)station time:(int32_t)time;
+- (instancetype)initWithStopPlace:(TKStopPlace *)stopPlace date:(NSDate *)date;
 
 @end

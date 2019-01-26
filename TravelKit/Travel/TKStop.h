@@ -5,12 +5,12 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#import <TravelKit/TKStation.h>
+#import <TravelKit/TKStopPlace.h>
 #import <Foundation/Foundation.h>
 
 @interface TKStop : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
-@property (nonatomic, readonly) TKStation *station;
-@property (nonatomic, readonly) NSDateComponents *dateComponents;
+@property (strong, nonatomic, readonly) TKStopPlace *stopPlace;
+@property (strong, nonatomic, readonly) NSDate *date;
 
 @end

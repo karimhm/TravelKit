@@ -6,19 +6,23 @@
  */
 
 #import "TKStop.h"
-#import "NSDateComponents+TravelKit.h"
 
-@implementation TKStop {
-    int32_t _time;
+@implementation TKStop
+
+- (instancetype)initWithStopPlace:(TKStopPlace *)stopPlace date:(NSDate *)date {
+    if (self = [super init]) {
+        _stopPlace = stopPlace;
+        _date = date;
+    }
+    return self;
 }
 
 #pragma mark - NSCopying
 
 - (instancetype)copyWithZone:(NSZone *)zone {
     TKStop *stop = [[[self class] allocWithZone:zone] init];
-    stop->_time = self->_time;
-    stop->_station = self.station;
-    stop->_dateComponents = self.dateComponents;
+    stop->_stopPlace = self.stopPlace;
+    stop->_date = self.date;
     
     return stop;
 }
@@ -26,16 +30,14 @@
 #pragma mark - NSCoding
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-    TK_ENCODE_INT32(aCoder, time);
-    TK_ENCODE_OBJ(aCoder, station);
-    TK_ENCODE_OBJ(aCoder, dateComponents);
+    TK_ENCODE_OBJ(aCoder, stopPlace);
+    TK_ENCODE_OBJ(aCoder, date);
 }
 
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super init]) {
-        TK_DECODE_INT32(aDecoder, time);
-        TK_DECODE_OBJ_CLASS(aDecoder, station, TKStation);
-        TK_DECODE_OBJ_CLASS(aDecoder, dateComponents, NSDateComponents);
+        TK_DECODE_OBJ_CLASS(aDecoder, stopPlace, TKStopPlace);
+        TK_DECODE_OBJ_CLASS(aDecoder, date, NSDate);
     }
     return self;
 }
@@ -46,17 +48,9 @@
     return true;
 }
 
-+ (instancetype)stopWithStation:(TKStation *)station time:(int32_t)time {
-    TKStop *stop = [TKStop new];
-    stop->_station = station;
-    stop->_time = time;
-    stop->_dateComponents = [NSDateComponents tk_dateComponentsWithTime:time];
-    
-    return stop;
-}
-
 - (void)dealloc {
-    _station = nil;
+    _stopPlace = nil;
+    _date = nil;
 }
 
 @end
