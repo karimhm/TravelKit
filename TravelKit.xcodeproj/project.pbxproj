@@ -356,14 +356,14 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
-		8A2252C1203F2154003C1D97 /* TravelKitTests */ = {
+		8A2252C1203F2154003C1D97 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				8A2B23EC21F0744000C3333B /* Core */,
 				8A2B23ED21F0745300C3333B /* Travel */,
 				8A2252C4203F2154003C1D97 /* Info.plist */,
 			);
-			path = TravelKitTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		8A2B23C221EFDD9700C3333B /* Travel */ = {
@@ -451,7 +451,7 @@
 			isa = PBXGroup;
 			children = (
 				8A5A88602033325300998074 /* TravelKit */,
-				8A2252C1203F2154003C1D97 /* TravelKitTests */,
+				8A2252C1203F2154003C1D97 /* Tests */,
 				8AA0141A207B001E0066AC23 /* TravelKitModule */,
 				8A02C2E821AAF33C008675E3 /* DBKit */,
 				8A5A885F2033325300998074 /* Products */,
