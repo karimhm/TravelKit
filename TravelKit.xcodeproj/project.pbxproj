@@ -71,25 +71,15 @@
 		8A66F36721EE42F0005325FD /* TKCoreDatabaseTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8A66F36621EE42F0005325FD /* TKCoreDatabaseTests.mm */; };
 		8A6E2C7A2039316A006A240F /* TKUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6E2C782039316A006A240F /* TKUtilities.h */; };
 		8A6E2C7B2039316A006A240F /* TKUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A6E2C792039316A006A240F /* TKUtilities.m */; };
-		8A7A4B482080133400EF562D /* TravelKitModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B472080133400EF562D /* TravelKitModule.m */; };
 		8A7A4B4E2080192200EF562D /* TKLineContainsFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B4C2080192200EF562D /* TKLineContainsFunction.h */; };
-		8A7A4B4F2080192200EF562D /* TKLineContainsFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B4C2080192200EF562D /* TKLineContainsFunction.h */; };
 		8A7A4B502080192200EF562D /* TKLineContainsFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B4D2080192200EF562D /* TKLineContainsFunction.m */; };
-		8A7A4B512080192200EF562D /* TKLineContainsFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B4D2080192200EF562D /* TKLineContainsFunction.m */; };
 		8A7A4B67208026B100EF562D /* TKStationIndexFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B65208026B100EF562D /* TKStationIndexFunction.h */; };
-		8A7A4B68208026B100EF562D /* TKStationIndexFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B65208026B100EF562D /* TKStationIndexFunction.h */; };
 		8A7A4B69208026B100EF562D /* TKStationIndexFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B66208026B100EF562D /* TKStationIndexFunction.m */; };
-		8A7A4B6A208026B100EF562D /* TKStationIndexFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B66208026B100EF562D /* TKStationIndexFunction.m */; };
 		8A7A4B6C208027B900EF562D /* TKStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B6B208027B900EF562D /* TKStructs.h */; };
-		8A7A4B6D208027B900EF562D /* TKStructs.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B6B208027B900EF562D /* TKStructs.h */; };
 		8A7A4B702080291A00EF562D /* TKDepartureWayFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B6E2080291A00EF562D /* TKDepartureWayFunction.h */; };
-		8A7A4B712080291A00EF562D /* TKDepartureWayFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B6E2080291A00EF562D /* TKDepartureWayFunction.h */; };
 		8A7A4B722080291A00EF562D /* TKDepartureWayFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B6F2080291A00EF562D /* TKDepartureWayFunction.m */; };
-		8A7A4B732080291A00EF562D /* TKDepartureWayFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B6F2080291A00EF562D /* TKDepartureWayFunction.m */; };
 		8A7A4B7620802A3900EF562D /* TKDepartureAvailableFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B7420802A3900EF562D /* TKDepartureAvailableFunction.h */; };
-		8A7A4B7720802A3900EF562D /* TKDepartureAvailableFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B7420802A3900EF562D /* TKDepartureAvailableFunction.h */; };
 		8A7A4B7820802A3900EF562D /* TKDepartureAvailableFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B7520802A3900EF562D /* TKDepartureAvailableFunction.m */; };
-		8A7A4B7920802A3900EF562D /* TKDepartureAvailableFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B7520802A3900EF562D /* TKDepartureAvailableFunction.m */; };
 		8A7A4B8620806F6900EF562D /* TKStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A4B8220806F6800EF562D /* TKStop.m */; };
 		8A7A4B8920806F6900EF562D /* TKStop.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7A4B8520806F6900EF562D /* TKStop.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A9646042038746A00A39571 /* TKConstants_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9645FA20372B1D00A39571 /* TKConstants_Private.h */; };
@@ -97,9 +87,6 @@
 		8A9D161D21F9BC7E004922E7 /* Error.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9D161B21F9BC7E004922E7 /* Error.h */; };
 		8A9D161E21F9BC7E004922E7 /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D161C21F9BC7E004922E7 /* Error.cpp */; };
 		8A9D162121F9BD8E004922E7 /* ErrorOr.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A9D162021F9BD8E004922E7 /* ErrorOr.h */; };
-		8AA0141C207B001E0066AC23 /* TravelKitModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA0141B207B001E0066AC23 /* TravelKitModule.h */; };
-		8AA01423207B00990066AC23 /* TravelKitModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA0141B207B001E0066AC23 /* TravelKitModule.h */; };
-		8AA0142B207B02900066AC23 /* TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5A88612033325300998074 /* TravelKit.h */; };
 		8AA28C0021FCBA2300FED656 /* TKRide.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA28BFE21FCBA2300FED656 /* TKRide.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AA28C0121FCBA2300FED656 /* TKRide.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA28BFF21FCBA2300FED656 /* TKRide.m */; };
 		8AA28C0321FCBB1000FED656 /* TKRide_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA28C0221FCBB1000FED656 /* TKRide_Private.h */; };
@@ -109,14 +96,9 @@
 		8AA28C0C21FD13B000FED656 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8AA28C0B21FD13B000FED656 /* README.md */; };
 		8AB584E621B041F100D2EC36 /* DBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A02C2E721AAF33C008675E3 /* DBKit.framework */; };
 		8AC89FE320AD0BC60022147E /* TKMatchFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC89FE120AD0BC60022147E /* TKMatchFunction.h */; };
-		8AC89FE420AD0BC60022147E /* TKMatchFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC89FE120AD0BC60022147E /* TKMatchFunction.h */; };
 		8AC89FE520AD0BC60022147E /* TKMatchFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC89FE220AD0BC60022147E /* TKMatchFunction.m */; };
-		8AC89FE620AD0BC60022147E /* TKMatchFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC89FE220AD0BC60022147E /* TKMatchFunction.m */; };
-		8ADADC6F207C36AA0012CBB1 /* TKDistanceFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADADC6D207C36AA0012CBB1 /* TKDistanceFunction.h */; };
-		8ADADC70207C36AA0012CBB1 /* TKDistanceFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* TKDistanceFunction.m */; };
 		8ADADC90207CD21E0012CBB1 /* TKDistanceFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADADC6D207C36AA0012CBB1 /* TKDistanceFunction.h */; };
 		8ADADC91207CD2210012CBB1 /* TKDistanceFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* TKDistanceFunction.m */; };
-		8ADADC93207CD27A0012CBB1 /* TKDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA5C0D82035BB09001821DA /* TKDefines.h */; };
 		8AF505272036B26800E95ED0 /* TKDBVerify.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF5C8502035F7E200715995 /* TKDBVerify.h */; };
 		8AF5C8492035D6DE00715995 /* TKConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF5C8472035D6DE00715995 /* TKConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AF5C84A2035D6DE00715995 /* TKConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF5C8482035D6DE00715995 /* TKConstants.m */; };
@@ -212,7 +194,6 @@
 		8A66F36621EE42F0005325FD /* TKCoreDatabaseTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TKCoreDatabaseTests.mm; sourceTree = "<group>"; };
 		8A6E2C782039316A006A240F /* TKUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKUtilities.h; sourceTree = "<group>"; };
 		8A6E2C792039316A006A240F /* TKUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKUtilities.m; sourceTree = "<group>"; };
-		8A7A4B472080133400EF562D /* TravelKitModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TravelKitModule.m; sourceTree = "<group>"; };
 		8A7A4B4C2080192200EF562D /* TKLineContainsFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKLineContainsFunction.h; sourceTree = "<group>"; };
 		8A7A4B4D2080192200EF562D /* TKLineContainsFunction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKLineContainsFunction.m; sourceTree = "<group>"; };
 		8A7A4B65208026B100EF562D /* TKStationIndexFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKStationIndexFunction.h; sourceTree = "<group>"; };
@@ -230,8 +211,6 @@
 		8A9D161B21F9BC7E004922E7 /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
 		8A9D161C21F9BC7E004922E7 /* Error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Error.cpp; sourceTree = "<group>"; };
 		8A9D162021F9BD8E004922E7 /* ErrorOr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ErrorOr.h; sourceTree = "<group>"; };
-		8AA01419207B001E0066AC23 /* tkm.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = tkm.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		8AA0141B207B001E0066AC23 /* TravelKitModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TravelKitModule.h; sourceTree = "<group>"; };
 		8AA28BFE21FCBA2300FED656 /* TKRide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKRide.h; sourceTree = "<group>"; };
 		8AA28BFF21FCBA2300FED656 /* TKRide.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKRide.m; sourceTree = "<group>"; };
 		8AA28C0221FCBB1000FED656 /* TKRide_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKRide_Private.h; sourceTree = "<group>"; };
@@ -278,13 +257,6 @@
 				8A2B23F721F0ECDA00C3333B /* CoreLocation.framework in Frameworks */,
 				8A30122821EE71FC00D0C4D0 /* libsqlite3.tbd in Frameworks */,
 				8AB584E621B041F100D2EC36 /* DBKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8AA01416207B001E0066AC23 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,7 +424,6 @@
 			children = (
 				8A5A88602033325300998074 /* TravelKit */,
 				8A2252C1203F2154003C1D97 /* Tests */,
-				8AA0141A207B001E0066AC23 /* TravelKitModule */,
 				8A02C2E821AAF33C008675E3 /* DBKit */,
 				8A5A885F2033325300998074 /* Products */,
 				8A63F4B82033913E00742FE5 /* Frameworks */,
@@ -464,7 +435,6 @@
 			children = (
 				8A5A885E2033325300998074 /* TravelKit.framework */,
 				8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */,
-				8AA01419207B001E0066AC23 /* tkm.dylib */,
 				8A02C2E721AAF33C008675E3 /* DBKit.framework */,
 			);
 			name = Products;
@@ -544,15 +514,6 @@
 				8A5A88622033325300998074 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		8AA0141A207B001E0066AC23 /* TravelKitModule */ = {
-			isa = PBXGroup;
-			children = (
-				8AA0141B207B001E0066AC23 /* TravelKitModule.h */,
-				8A7A4B472080133400EF562D /* TravelKitModule.m */,
-			);
-			path = TravelKitModule;
 			sourceTree = "<group>";
 		};
 		8AA5C0D52035B75E001821DA /* Private */ = {
@@ -655,7 +616,6 @@
 				8AF5C84D2035D79100715995 /* TKError.h in Headers */,
 				8A66F31821ED64CB005325FD /* RefCounted.h in Headers */,
 				8A4BEB6621F3AD630082AD13 /* Connection.h in Headers */,
-				8AA01423207B00990066AC23 /* TravelKitModule.h in Headers */,
 				8A66F31521ED64CB005325FD /* Ref.h in Headers */,
 				8A2B241621F1D25300C3333B /* TKItinerary.h in Headers */,
 				8A7A4B702080291A00EF562D /* TKDepartureWayFunction.h in Headers */,
@@ -685,23 +645,6 @@
 				8AA28C0A21FD09D300FED656 /* TKTripPlan_Private.h in Headers */,
 				8A66F30821ED647E005325FD /* Statement.h in Headers */,
 				8A63F51020349D6D00742FE5 /* TKItem.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8AA01417207B001E0066AC23 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8A7A4B7720802A3900EF562D /* TKDepartureAvailableFunction.h in Headers */,
-				8A7A4B6D208027B900EF562D /* TKStructs.h in Headers */,
-				8AA0142B207B02900066AC23 /* TravelKit.h in Headers */,
-				8ADADC6F207C36AA0012CBB1 /* TKDistanceFunction.h in Headers */,
-				8A7A4B4F2080192200EF562D /* TKLineContainsFunction.h in Headers */,
-				8AC89FE420AD0BC60022147E /* TKMatchFunction.h in Headers */,
-				8A7A4B712080291A00EF562D /* TKDepartureWayFunction.h in Headers */,
-				8AA0141C207B001E0066AC23 /* TravelKitModule.h in Headers */,
-				8A7A4B68208026B100EF562D /* TKStationIndexFunction.h in Headers */,
-				8ADADC93207CD27A0012CBB1 /* TKDefines.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -762,23 +705,6 @@
 			productReference = 8A5A885E2033325300998074 /* TravelKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		8AA01418207B001E0066AC23 /* TravelKitModule */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8AA01421207B001E0066AC23 /* Build configuration list for PBXNativeTarget "TravelKitModule" */;
-			buildPhases = (
-				8AA01415207B001E0066AC23 /* Sources */,
-				8AA01416207B001E0066AC23 /* Frameworks */,
-				8AA01417207B001E0066AC23 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = TravelKitModule;
-			productName = TravelKitModule;
-			productReference = 8AA01419207B001E0066AC23 /* tkm.dylib */;
-			productType = "com.apple.product-type.library.dynamic";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -801,10 +727,6 @@
 						LastSwiftMigration = 1010;
 						ProvisioningStyle = Manual;
 					};
-					8AA01418207B001E0066AC23 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 8A5A88582033325300998074 /* Build configuration list for PBXProject "TravelKit" */;
@@ -821,7 +743,6 @@
 			targets = (
 				8A5A885D2033325300998074 /* TravelKit */,
 				8A2252BF203F2154003C1D97 /* TravelKitTests */,
-				8AA01418207B001E0066AC23 /* TravelKitModule */,
 				8A02C2E621AAF33C008675E3 /* DBKit */,
 			);
 		};
@@ -904,20 +825,6 @@
 				8A7A4B722080291A00EF562D /* TKDepartureWayFunction.m in Sources */,
 				8AA28C0821FD04DD00FED656 /* TKTripPlan.m in Sources */,
 				8AF5C84A2035D6DE00715995 /* TKConstants.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8AA01415207B001E0066AC23 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8A7A4B512080192200EF562D /* TKLineContainsFunction.m in Sources */,
-				8A7A4B7920802A3900EF562D /* TKDepartureAvailableFunction.m in Sources */,
-				8A7A4B482080133400EF562D /* TravelKitModule.m in Sources */,
-				8A7A4B6A208026B100EF562D /* TKStationIndexFunction.m in Sources */,
-				8A7A4B732080291A00EF562D /* TKDepartureWayFunction.m in Sources */,
-				8ADADC70207C36AA0012CBB1 /* TKDistanceFunction.m in Sources */,
-				8AC89FE620AD0BC60022147E /* TKMatchFunction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1179,36 +1086,6 @@
 			};
 			name = Release;
 		};
-		8AA0141F207B001E0066AC23 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				EXECUTABLE_PREFIX = "";
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_NAME = tkm;
-				SDKROOT = macosx;
-			};
-			name = Debug;
-		};
-		8AA01420207B001E0066AC23 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				EXECUTABLE_PREFIX = "";
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_NAME = tkm;
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1244,15 +1121,6 @@
 			buildConfigurations = (
 				8A5A88672033325300998074 /* Debug */,
 				8A5A88682033325300998074 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8AA01421207B001E0066AC23 /* Build configuration list for PBXNativeTarget "TravelKitModule" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8AA0141F207B001E0066AC23 /* Debug */,
-				8AA01420207B001E0066AC23 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
