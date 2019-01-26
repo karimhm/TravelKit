@@ -15,6 +15,9 @@ namespace tk {
     
 class Status {
 public:
+    Status() : statusCode_(SQLITE_OK) {
+    }
+    
     Status(int statusCode) : statusCode_(statusCode) {
     }
     
