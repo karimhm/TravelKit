@@ -341,6 +341,36 @@
 		8A2B23EC21F0744000C3333B /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				8A2B23EC21F0744000C3333B /* Core */,
+				8A2B23ED21F0745300C3333B /* Travel */,
+				8A2252C4203F2154003C1D97 /* Info.plist */,
+			);
+			path = TravelKitTests;
+			sourceTree = "<group>";
+		};
+		8A2B23C221EFDD9700C3333B /* Travel */ = {
+			isa = PBXGroup;
+			children = (
+				8A2B23C721EFDDCC00C3333B /* ItemID.h */,
+				8A2B23F221F0DA0500C3333B /* ItemID.cpp */,
+				8A00762F21F5D643002A5FB9 /* Calendar.h */,
+				8A2B241321F1CF3A00C3333B /* Time.h */,
+				8A00763121F5E237002A5FB9 /* Date.h */,
+				8A4BEB6821F3E17C0082AD13 /* StopPlace.h */,
+				8A2B241E21F1F49400C3333B /* StopTime.h */,
+				8A2B241C21F1EFEC00C3333B /* Trip.h */,
+				8A2B240D21F1C87900C3333B /* Itinerary.h */,
+				8A577E3021FC7553008126F8 /* Ride.h */,
+				8A00762E21F5D097002A5FB9 /* Stop.h */,
+				8A00763C21F85824002A5FB9 /* TripPlan.h */,
+				8A577E2D21FB52D0008126F8 /* Mapping.h */,
+			);
+			path = Travel;
+			sourceTree = "<group>";
+		};
+		8A2B23EC21F0744000C3333B /* Core */ = {
+			isa = PBXGroup;
+			children = (
 				8A2B23AB21EEABE200C3333B /* TKDBTestCase.h */,
 				8A2B23A921EEAB0500C3333B /* TKDBTestCase.mm */,
 				8A66F36621EE42F0005325FD /* TKCoreDatabaseTests.mm */,
