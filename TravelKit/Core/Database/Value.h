@@ -10,6 +10,7 @@
 #include "Defines.h"
 #include <sqlite3.h>
 #include <unistd.h>
+#include <iostream>
 
 namespace tk {
 
@@ -124,7 +125,30 @@ public:
 private:
     sqlite3_value* value_;
 };
+
+TK_INLINE std::ostream& operator<< (std::ostream& os, const Value& value) {
+    switch (value.type()) {
+        case ValueType::Null: os << "null"; break;
+        case ValueType::Unknown: os << "unknown"; break;
+            
+        default: os << value.stringValue(); break;
+    }
+    return os;
+}
     
+TK_INLINE std::ostream& operator<< (std::ostream& os, const ValueType& valueType) {
+    switch (valueType) {
+        case ValueType::Null: os << "Null"; break;
+        case ValueType::Integer: os << "Integer"; break;
+        case ValueType::Float: os << "Float"; break;
+        case ValueType::Text: os << "Text"; break;
+        case ValueType::Blob: os << "Blob"; break;
+            
+        default: os << "Unknown"; break;
+    }
+    return os;
+}
+
 }
 
 #endif /* TK_VALUE_H */
