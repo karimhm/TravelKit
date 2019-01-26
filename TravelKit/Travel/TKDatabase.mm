@@ -12,6 +12,7 @@
 #import "TKStop_Private.h"
 #import "TKItinerary_Private.h"
 #import "TKRide_Private.h"
+#import "TKTripPlan_Private.h"
 #import "TKError.h"
 #import "Database.h"
 #import "Statement.h"
@@ -346,11 +347,11 @@ cleanup:
     }
 }
 
-- (void)fetchItineraryWithRequest:(TKItineraryRequest *)request completion:(TKItineraryFetchHandler)completion {
-    [self fetchItineraryWithRequest:request completion:completion limit:-1];
+- (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {
+    [self fetchTripPlanWithRequest:request completion:completion limit:-1];
 }
 
-- (void)fetchItineraryWithRequest:(TKItineraryRequest *)request completion:(TKItineraryFetchHandler)completion limit:(TKInt)limit {
+- (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion limit:(TKInt)limit {
     ItemID from = request.source.identifier;
     ItemID to = request.destination.identifier;
     uint64_t departure = request.date.timeIntervalSince1970;
@@ -380,7 +381,8 @@ cleanup:
             [itineraries addObject:[[TKItinerary alloc] initWithRides:rides]];
             
             if (completion) {
-                completion(itineraries, nil);
+                TKTripPlan *tripPlan = [[TKTripPlan alloc] initWithSource:request.source destination:request.destination date:request.date itineraries:itineraries];
+                completion(tripPlan, nil);
             }
         }
     } else {
