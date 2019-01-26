@@ -14,5 +14,6 @@
 + (instancetype)tk_internalDatabaseError;
 
 + (instancetype)tk_sqliteErrorWithDB:(sqlite3*)db;
++ (instancetype)tk_sqliteErrorWithCode:(int)code message:(NSString *)message;
 
 @end

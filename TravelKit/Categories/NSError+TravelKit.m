@@ -24,4 +24,8 @@
     return [NSError errorWithDomain:TKSQLiteErrorDomain code:sqlite3_errcode(db) userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithUTF8String:sqlite3_errmsg(db)]}];
 }
 
++ (instancetype)tk_sqliteErrorWithCode:(int)code message:(NSString *)message {
+    return [NSError errorWithDomain:TKSQLiteErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey:message}];
+}
+    
 @end
