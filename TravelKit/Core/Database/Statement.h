@@ -24,9 +24,7 @@ public:
     }
     
     ~Statement() {
-        if (statement_) {
-            sqlite3_finalize(statement_);
-        }
+        close();
     }
 
     Status bind(double value, std::string name) {
@@ -97,10 +95,6 @@ public:
         }
     }
     
-    int64_t size() const {
-        return sqlite3_data_count(statement_);
-    }
-    
     Status prepare();
     
     Status execute() {
@@ -124,7 +118,7 @@ public:
     }
     
     bool isClosed() const {
-        return closed_;
+        return statement_ == nullptr;
     }
 
     ColumnMap columnMap() const {
@@ -159,10 +153,17 @@ public:
         return status;
     }
     
-    Status close();
+    Status close() {
+        Status status = sqlite3_finalize(statement_);
+        
+        if (status.isOK()) {
+            statement_ = nullptr;
+        }
+        
+        return status;
+    }
 
 private:
-    bool closed_ = false;
     Ref<Database> db_ = nullptr;
     std::string query_;
     sqlite3_stmt* statement_ = nullptr;

@@ -39,21 +39,6 @@ Status Statement::prepare() {
     return status;
 }
 
-Status Statement::close() {
-    if (closed_ && !statement_) {
-        return true;
-    }
-    
-    Status status = sqlite3_finalize(statement_);
-    
-    if (status.isOK()) {
-        closed_ = true;
-        statement_ = nullptr;
-    }
-    
-    return status;
-}
-
 std::string Statement::expandedQuery() {
     if (__builtin_available(iOS 10.0, *)) {
         return sqlite3_expanded_sql(statement_);
