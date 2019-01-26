@@ -106,6 +106,7 @@
 		8AA28C0721FD04DD00FED656 /* TKTripPlan.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA28C0521FD04DD00FED656 /* TKTripPlan.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AA28C0821FD04DD00FED656 /* TKTripPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA28C0621FD04DD00FED656 /* TKTripPlan.m */; };
 		8AA28C0A21FD09D300FED656 /* TKTripPlan_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA28C0921FD09D300FED656 /* TKTripPlan_Private.h */; };
+		8AA28C0C21FD13B000FED656 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8AA28C0B21FD13B000FED656 /* README.md */; };
 		8AB584E621B041F100D2EC36 /* DBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A02C2E721AAF33C008675E3 /* DBKit.framework */; };
 		8AC89FE320AD0BC60022147E /* TKMatchFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC89FE120AD0BC60022147E /* TKMatchFunction.h */; };
 		8AC89FE420AD0BC60022147E /* TKMatchFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC89FE120AD0BC60022147E /* TKMatchFunction.h */; };
@@ -237,6 +238,7 @@
 		8AA28C0521FD04DD00FED656 /* TKTripPlan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKTripPlan.h; sourceTree = "<group>"; };
 		8AA28C0621FD04DD00FED656 /* TKTripPlan.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKTripPlan.m; sourceTree = "<group>"; };
 		8AA28C0921FD09D300FED656 /* TKTripPlan_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKTripPlan_Private.h; sourceTree = "<group>"; };
+		8AA28C0B21FD13B000FED656 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		8AA5C0D82035BB09001821DA /* TKDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDefines.h; sourceTree = "<group>"; };
 		8AA5C0DA2035BBEE001821DA /* TKError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKError.h; sourceTree = "<group>"; };
 		8AB3D98D20B34730005B0192 /* TKStop_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKStop_Private.h; sourceTree = "<group>"; };
@@ -537,6 +539,7 @@
 		8A8400462033347600B48AB3 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8AA28C0B21FD13B000FED656 /* README.md */,
 				8A84004B2033359900B48AB3 /* TravelKit.modulemap */,
 				8A5A88622033325300998074 /* Info.plist */,
 			);
@@ -843,6 +846,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AA28C0C21FD13B000FED656 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
