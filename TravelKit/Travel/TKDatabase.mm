@@ -2,21 +2,27 @@
  *  TKDatabase.mm
  *  Created on 16/Jan/19.
  *
- *  Copyright (C) 2018 Karim. All rights reserved.
+ *  Copyright (C) 2019 Karim. All rights reserved.
  */
 
 #import "TKDatabase.h"
 #import "NSError+TravelKit.h"
 #import "TKDistanceFunction.h"
 #import "TKItem_Core.h"
+#import "TKStop_Private.h"
+#import "TKItinerary_Private.h"
+#import "TKRide_Private.h"
+#import "TKError.h"
 #import "Database.h"
 #import "Statement.h"
-#import "TKError.h"
+#import "CSARouter.h"
+#import "Itinerary.h"
 
 using namespace tk;
 
 @implementation TKDatabase {
     Ref<Database> _db;
+    Ref<CSARouter> _router;
     Ref<Statement> _fetchProperties;
     Ref<Statement> _fetchStopPlaceById;
     Ref<Statement> _fetchStopPlacesByName;
@@ -35,8 +41,8 @@ using namespace tk;
     } else if (self = [super init]) {
         _url = url;
         _properties = [[NSMutableDictionary alloc] init];
-        
         _db = makeRef<Database>([url fileSystemRepresentation]);
+        _router = makeRef<CSARouter>(_db);
     }
     return self;
 }
@@ -58,7 +64,11 @@ using namespace tk;
         if (![self loadProperties:error]) {
             return false;
         }
-    } else {
+        
+        if (![self load:error]) {
+            return false;
+        }
+    } else if (error) {
         *error = [NSError tk_badDatabaseError];
     }
     
@@ -75,25 +85,33 @@ using namespace tk;
     _fetchStopPlacesByLocation = makeRef<Statement>(_db, "SELECT * FROM StopPlace GROUP BY tkDistance(:latitude, :longitude, latitude, longitude) LIMIT :limit");
     
     if (!_fetchStopPlaceById->prepare().isOK()) {
-        *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
         status = false;
         goto cleanup;
     }
     
     if (!_fetchStopPlacesByName->prepare().isOK()) {
-        *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
         status = false;
         goto cleanup;
     }
     
     if (!_fetchStopPlacesByLocation->prepare().isOK()) {
-        *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
         status = false;
         goto cleanup;
     }
     
     if (!_fetchProperties->prepare().isOK()) {
-        *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
         status = false;
         goto cleanup;
     }
@@ -132,7 +150,9 @@ cleanup:
     if (status.isDone()) {
         return true;
     } else {
-        *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
         return false;
     }
 }
@@ -143,14 +163,31 @@ cleanup:
     _fetchStopPlacesByName->close();
     _fetchStopPlacesByLocation->close();
     
+    _router->unload();
+    
     Status status = _db->close();
     
     if (status.isOK()) {
         _valid = false;
         return true;
     } else {
-        *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
         return false;
+    }
+}
+
+- (BOOL)load:(NSError **)error {
+    auto status = _router->load();
+    
+    if (status.hasError()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithCode:status.error().code() message:[NSString stringWithUTF8String:status.error().message().c_str()]];
+        }
+        return false;
+    } else {
+        return true;
     }
 }
 
@@ -172,23 +209,45 @@ cleanup:
 
 #pragma mark - Fetching
 
-- (void)fetchStopPlaceWithID:(TKItemID)itemID completion:(TKStopPlaceFetchHandler)completion {
+- (TKStopPlace *)_fetchStopPlaceWithID:(TKItemID)itemID error:(NSError **)error {
     if (!_fetchStopPlaceById->clearAndReset().isOK()) {
-        return completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
     }
     
     if (!_fetchStopPlaceById->bind(TKUToS64(itemID), ":id").isOK()) {
-        return completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
     }
     
     Status status = SQLITE_OK;
     if ((status = _fetchStopPlaceById->next()).isRow()) {
         TKStopPlace *stopPlace = [[TKStopPlace alloc] initWithStatement:_fetchStopPlaceById];
-        completion(@[stopPlace], nil);
+        return stopPlace;
     } else if (status.isDone()) {
-        completion(@[], nil);
+        return nil;
     } else {
-        completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+}
+
+- (void)fetchStopPlaceWithID:(TKItemID)itemID completion:(TKStopPlaceFetchHandler)completion {
+    NSError *error = nil;
+    TKStopPlace *stopPlace = [self _fetchStopPlaceWithID:itemID error:&error];
+    
+    if (completion) {
+        if (stopPlace) {
+            completion(@[stopPlace], error);
+        } else {
+            completion(@[], error);
+        }
     }
 }
 
@@ -202,15 +261,24 @@ cleanup:
 
 - (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit {
     if (!_fetchStopPlacesByName->clearAndReset().isOK()) {
-        return completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
     }
     
     if (!_fetchStopPlacesByName->bind(std::string(name.UTF8String).append("%"), ":name").isOK()) {
-        return completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
     }
     
     if (!_fetchStopPlacesByName->bind(limit, ":limit").isOK()) {
-        return completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
     }
     
     Status status = SQLITE_OK;
@@ -222,30 +290,46 @@ cleanup:
     }
     
     if (status.isDone()) {
-        completion(stopPlaces, nil);
+        if (completion) {
+            completion(stopPlaces, nil);
+        }
     } else {
-        completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
     }
 }
 
 - (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit {
     if (!_fetchStopPlacesByLocation->clearAndReset().isOK()) {
-        return completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
     }
     
     if (!_fetchStopPlacesByLocation->bind(location.coordinate.latitude, ":latitude").isOK()) {
-        return completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
     }
     
     if (!_fetchStopPlacesByLocation->bind(location.coordinate.longitude, ":longitude").isOK()) {
-        return completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
     }
     
     if (!_fetchStopPlacesByLocation->bind(limit, ":limit").isOK()) {
-        return completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
     }
     
-    Status status = SQLITE_OK;
+    Status status = Status();
     NSMutableArray *stopPlaces = [[NSMutableArray alloc] init];
     
     while ((status = _fetchStopPlacesByLocation->next()).isRow()) {
@@ -254,16 +338,60 @@ cleanup:
     }
     
     if (status.isDone()) {
-        completion(stopPlaces, nil);
-    } else {
+        if (completion) {
+            completion(stopPlaces, nil);
+        }
+    } else if (completion) {
         completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
     }
 }
 
-- (void)dealloc {
-    [self closeDatabase:nil];
-    _db->close();
+- (void)fetchItineraryWithRequest:(TKItineraryRequest *)request completion:(TKItineraryFetchHandler)completion {
+    [self fetchItineraryWithRequest:request completion:completion limit:-1];
+}
+
+- (void)fetchItineraryWithRequest:(TKItineraryRequest *)request completion:(TKItineraryFetchHandler)completion limit:(TKInt)limit {
+    ItemID from = request.source.identifier;
+    ItemID to = request.destination.identifier;
+    uint64_t departure = request.date.timeIntervalSince1970;
+    uint64_t dayBegin = departure - (departure % 86400);
     
+    auto tripPlan = _router->query(from, to, departure);
+    
+    if (tripPlan.hasValue()) {
+        NSMutableArray *itineraries = [[NSMutableArray alloc] init];
+        
+        for (auto const &itinerary: tripPlan.value().itineraries()) {
+            NSMutableArray<TKRide *> *rides = [[NSMutableArray alloc] init];
+            
+            /* Add rides */
+            for (auto const &ride: itinerary->rides()) {
+                NSMutableArray<TKStop *> *stops = [[NSMutableArray alloc] init];
+                
+                /* Add stops */
+                for (auto const &stop: ride.stops()) {
+                    [stops addObject:[[TKStop alloc] initWithStopPlace:[self _fetchStopPlaceWithID:stop.stopPlaceID() error:nil]
+                                                                  date:[NSDate dateWithTimeIntervalSince1970:dayBegin + stop.time()]]];
+                }
+                
+                [rides addObject:[[TKRide alloc] initWithStops:stops]];
+            }
+            
+            [itineraries addObject:[[TKItinerary alloc] initWithRides:rides]];
+            
+            if (completion) {
+                completion(itineraries, nil);
+            }
+        }
+    } else {
+        if (completion) {
+            Error error = tripPlan.error();
+            completion(nil, [NSError tk_sqliteErrorWithCode:error.code() message:[NSString stringWithUTF8String:error.message().c_str()]]);
+        }
+    }
+}
+
+- (void)dealloc {
     _url = nil;
     _properties = nil;
 }

@@ -1,10 +1,8 @@
-//
-//  ItemID.cpp
-//  TravelKit
-//
-//  Created by Karim on 1/17/19.
-//  Copyright © 2019 Karim. All rights reserved.
-//
+/*
+ *  ItemID.cpp
+ *
+ *  Copyright (C) 2018 Karim. All rights reserved.
+ */
 
 #include "ItemID.h"
 

@@ -2,19 +2,20 @@
  *  TKDatabase.h
  *  Created on 16/Jan/19.
  *
- *  Copyright (C) 2018 Karim. All rights reserved.
+ *  Copyright (C) 2019 Karim. All rights reserved.
  */
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CLLocation.h>
+#import <TravelKit/TKItineraryRequest.h>
 #import <TravelKit/TKItem.h>
 #import <TravelKit/TKStopPlace.h>
+#import <TravelKit/TKItinerary.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class TKStopPlace;
-
 typedef void (^TKStopPlaceFetchHandler)(NSArray<TKStopPlace *> * __nullable result, NSError * __nullable error);
+typedef void (^TKItineraryFetchHandler)(NSArray<TKItinerary *> * __nullable result, NSError * __nullable error);
 
 @interface TKDatabase : NSObject
 
@@ -32,9 +33,11 @@ typedef void (^TKStopPlaceFetchHandler)(NSArray<TKStopPlace *> * __nullable resu
 - (void)fetchStopPlaceWithID:(TKItemID)itemID completion:(TKStopPlaceFetchHandler)completion;
 - (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion;
 - (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion;
-
 - (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit;
 - (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit;
+
+- (void)fetchItineraryWithRequest:(TKItineraryRequest *)request completion:(TKItineraryFetchHandler)completion;
+- (void)fetchItineraryWithRequest:(TKItineraryRequest *)request completion:(TKItineraryFetchHandler)completion limit:(TKInt)limit;
 
 @end
 

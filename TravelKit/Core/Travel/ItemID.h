@@ -1,10 +1,8 @@
-//
-//  ItemID.hpp
-//  gtfs-reader
-//
-//  Created by Karim on 12/18/18.
-//  Copyright © 2018 Karim. All rights reserved.
-//
+/*
+ *  ItemID.h
+ *
+ *  Copyright (C) 2018 Karim. All rights reserved.
+ */
 
 #ifndef TK_ITEM_ID_H
 #define TK_ITEM_ID_H
