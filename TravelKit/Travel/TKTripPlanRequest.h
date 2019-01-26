@@ -1,5 +1,5 @@
 /*
- *  TKItineraryRequest.h
+ *  TKTripPlanRequest.h
  *  Created on 18/Jan/19.
  *
  *  Copyright (C) 2019 Karim. All rights reserved.
@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <TravelKit/TKStopPlace.h>
 
-@interface TKItineraryRequest : NSObject
+@interface TKTripPlanRequest : NSObject
 
 - (instancetype)initWithSource:(TKStopPlace *)source destination:(TKStopPlace *)destination;
 

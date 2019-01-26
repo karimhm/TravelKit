@@ -1,13 +1,13 @@
 /*
- *  TKItineraryRequest.m
+ *  TKTripPlanRequest.m
  *  Created on 18/Jan/19.
  *
  *  Copyright (C) 2019 Karim. All rights reserved.
  */
 
-#import "TKItineraryRequest.h"
+#import "TKTripPlanRequest.h"
 
-@implementation TKItineraryRequest
+@implementation TKTripPlanRequest
 
 - (instancetype)initWithSource:(TKStopPlace *)source destination:(TKStopPlace *)destination {
     if (self = [super init]) {
