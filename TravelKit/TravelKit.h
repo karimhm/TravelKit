@@ -16,4 +16,3 @@
 #import <TravelKit/TKStop.h>
 #import <TravelKit/TKRide.h>
 #import <TravelKit/TKItinerary.h>
-#import <TravelKit/TKAvailability.h>
