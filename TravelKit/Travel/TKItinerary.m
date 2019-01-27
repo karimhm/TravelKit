@@ -35,6 +35,8 @@
     itinerary->_rides = self.rides;
     itinerary->_departureDate = self.departureDate;
     itinerary->_arrivalDate = self.arrivalDate;
+    itinerary->_source = self.source;
+    itinerary->_destination = self.destination;
     
     return itinerary;
 }
@@ -45,6 +47,8 @@
     TK_ENCODE_OBJ(aCoder, rides);
     TK_ENCODE_OBJ(aCoder, departureDate);
     TK_ENCODE_OBJ(aCoder, arrivalDate);
+    TK_ENCODE_OBJ(aCoder, source);
+    TK_ENCODE_OBJ(aCoder, destination);
 }
 
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
@@ -52,6 +56,8 @@
         TK_DECODE_OBJ_ARRAY(aDecoder, rides, NSArray<TKRide *>);
         TK_DECODE_OBJ_CLASS(aDecoder, departureDate, NSDate);
         TK_DECODE_OBJ_CLASS(aDecoder, arrivalDate, NSDate);
+        TK_DECODE_OBJ_CLASS(aDecoder, source, TKStopPlace);
+        TK_DECODE_OBJ_CLASS(aDecoder, destination, TKStopPlace);
     }
     return self;
 }
@@ -66,6 +72,8 @@
     _rides = nil;
     _departureDate = nil;
     _arrivalDate = nil;
+    _source = nil;
+    _destination = nil;
 }
 
 @end
