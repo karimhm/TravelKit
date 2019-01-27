@@ -11,4 +11,7 @@
 
 @property (readonly, nonatomic) NSArray<TKRide *> *rides;
 
+@property (readonly, nonatomic) NSDate *departureDate;
+@property (readonly, nonatomic) NSDate *arrivalDate;
+
 @end
