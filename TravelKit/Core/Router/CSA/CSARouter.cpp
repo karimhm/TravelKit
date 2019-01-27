@@ -27,6 +27,7 @@ ErrorOr<void> CSARouter::load() {
     
     Status status = Status();
     StopTimeVector stopTimes;
+    ConnectionVector connections;
     std::map<ItemID, Trip> tripsByID;
     
     Ref<Statement> fetchStmt;
@@ -82,11 +83,11 @@ ErrorOr<void> CSARouter::load() {
                                                tripID,
                                                tripsByID[tripID].calendarID());
             
-            connections_.push_back(connection);
+            connections.push_back(connection);
         }
     }
     
-    std::sort(connections_.begin(), connections_.end(), ConnectionVectorCompare());
+    std::sort(connections.begin(), connections.end(), ConnectionVectorCompare());
     
     fetchStmt = makeRef<Statement>(db_, "SELECT id, days FROM Calendar");
     if (fetchStmt->prepare().isOK()) {
@@ -100,12 +101,13 @@ ErrorOr<void> CSARouter::load() {
         }
         
         if (!status.isDone()) {
-            connections_.clear();
             return Error(db_->handle());
         }
     }
     
     fetchStmt->close();
+    
+    connections_ = std::move(connections);
     loaded_ = true;
     return {};
 }
