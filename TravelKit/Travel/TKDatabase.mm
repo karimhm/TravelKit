@@ -364,6 +364,10 @@ cleanup:
         
         for (auto const &itinerary: tripPlan.value().itineraries()) {
             NSMutableArray<TKRide *> *rides = [[NSMutableArray alloc] init];
+            TKStopPlace *source = nil;
+            TKStopPlace *destination = nil;
+            NSDate *departureDate = nil;
+            NSDate *arrivalDate = nil;
             
             /* Add rides */
             for (auto const &ride: itinerary->rides()) {
@@ -371,19 +375,29 @@ cleanup:
                 
                 /* Add stops */
                 for (auto const &stop: ride.stops()) {
-                    [stops addObject:[[TKStop alloc] initWithStopPlace:[self _fetchStopPlaceWithID:stop.stopPlaceID() error:nil]
+                    TKStopPlace *stopPlace = [self _fetchStopPlaceWithID:stop.stopPlaceID() error:nil];
+                    [stops addObject:[[TKStop alloc] initWithStopPlace:stopPlace
                                                                   date:[NSDate dateWithTimeIntervalSince1970:dayBegin + stop.time()]]];
                 }
                 
                 [rides addObject:[[TKRide alloc] initWithStops:stops]];
             }
             
-            [itineraries addObject:[[TKItinerary alloc] initWithRides:rides]];
+            departureDate = rides.firstObject.stops.firstObject.date;
+            arrivalDate = rides.lastObject.stops.lastObject.date;
+            source = rides.firstObject.stops.firstObject.stopPlace;
+            destination = rides.lastObject.stops.lastObject.stopPlace;
             
-            if (completion) {
-                TKTripPlan *tripPlan = [[TKTripPlan alloc] initWithSource:request.source destination:request.destination date:request.date itineraries:itineraries];
-                completion(tripPlan, nil);
-            }
+            [itineraries addObject:[[TKItinerary alloc] initWithRides:rides
+                                                        departureDate:departureDate
+                                                          arrivalDate:arrivalDate
+                                                               source:source
+                                                          destination:destination]];
+        }
+        
+        if (completion) {
+            TKTripPlan *tripPlan = [[TKTripPlan alloc] initWithSource:request.source destination:request.destination date:request.date itineraries:itineraries];
+            completion(tripPlan, nil);
         }
     } else {
         if (completion) {

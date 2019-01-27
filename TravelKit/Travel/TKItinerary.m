@@ -12,14 +12,18 @@
 - (instancetype)initWithRides:(NSArray<TKRide *> *)rides {
     return [self initWithRides:rides
                  departureDate:rides.firstObject.stops.firstObject.date
-                   arrivalDate:rides.lastObject.stops.lastObject.date];
+                   arrivalDate:rides.lastObject.stops.lastObject.date
+                        source:rides.firstObject.stops.firstObject.stopPlace
+                   destination:rides.lastObject.stops.lastObject.stopPlace];
 }
 
-- (instancetype)initWithRides:(NSArray<TKRide *> *)rides departureDate:(NSDate *)departureDate arrivalDate:(NSDate *)arrivalDate {
+- (instancetype)initWithRides:(NSArray<TKRide *> *)rides departureDate:(NSDate *)departureDate arrivalDate:(NSDate *)arrivalDate source:(TKStopPlace *)source destination:(TKStopPlace *)destination {
     if (self = [super init]) {
         _rides = rides;
         _departureDate = departureDate;
         _arrivalDate = arrivalDate;
+        _source = source;
+        _destination = destination;
     }
     return self;
 }
