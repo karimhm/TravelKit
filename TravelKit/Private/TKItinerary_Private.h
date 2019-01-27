@@ -10,6 +10,6 @@
 @interface TKItinerary ()
 
 - (instancetype)initWithRides:(NSArray<TKRide *> *)rides;
-- (instancetype)initWithRides:(NSArray<TKRide *> *)rides departureDate:(NSDate *)departureDate arrivalDate:(NSDate *)arrivalDate;
+- (instancetype)initWithRides:(NSArray<TKRide *> *)rides departureDate:(NSDate *)departureDate arrivalDate:(NSDate *)arrivalDate source:(TKStopPlace *)source destination:(TKStopPlace *)destination;
 
 @end

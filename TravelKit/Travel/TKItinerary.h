@@ -6,10 +6,14 @@
  */
 
 #import <TravelKit/TKRide.h>
+#import <TravelKit/TKStopPlace.h>
 
 @interface TKItinerary : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
 @property (readonly, nonatomic) NSArray<TKRide *> *rides;
+
+@property (readonly, nonatomic) TKStopPlace *source;
+@property (readonly, nonatomic) TKStopPlace *destination;
 
 @property (readonly, nonatomic) NSDate *departureDate;
 @property (readonly, nonatomic) NSDate *arrivalDate;
