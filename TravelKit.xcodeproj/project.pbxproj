@@ -8,22 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8A00762821F5C105002A5FB9 /* TKItinerary_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A00762621F5C105002A5FB9 /* TKItinerary_Private.h */; };
-		8A02C2EB21AAF33C008675E3 /* DBKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C2E921AAF33C008675E3 /* DBKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A02C2F521AAF407008675E3 /* DBKDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C2F421AAF407008675E3 /* DBKDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A02C2F721AAF4F8008675E3 /* DBKError.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C2F621AAF4F8008675E3 /* DBKError.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A02C2F921AAF550008675E3 /* DBKError.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C2F821AAF550008675E3 /* DBKError.m */; };
-		8A02C31421AAF63E008675E3 /* DBKColumnsSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C30C21AAF63D008675E3 /* DBKColumnsSet.h */; };
-		8A02C31521AAF63E008675E3 /* DBKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C30D21AAF63D008675E3 /* DBKDatabase.m */; };
-		8A02C31621AAF63E008675E3 /* DBKDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C30E21AAF63D008675E3 /* DBKDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A02C31721AAF63E008675E3 /* DBKRow.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C30F21AAF63D008675E3 /* DBKRow.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A02C31821AAF63E008675E3 /* DBKFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C31021AAF63D008675E3 /* DBKFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A02C31921AAF63E008675E3 /* DBKStatement.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C31121AAF63D008675E3 /* DBKStatement.m */; };
-		8A02C31A21AAF63E008675E3 /* DBKColumnsSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C31221AAF63D008675E3 /* DBKColumnsSet.m */; };
-		8A02C31B21AAF63E008675E3 /* DBKStatement.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C31321AAF63E008675E3 /* DBKStatement.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A02C32021AAF83B008675E3 /* DBKDatabase_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C31D21AAF83B008675E3 /* DBKDatabase_Private.h */; };
-		8A02C32121AAF83B008675E3 /* DBKErrorReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C31E21AAF83B008675E3 /* DBKErrorReporter.h */; };
-		8A02C32521AAFA5D008675E3 /* NSError+DBKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A02C32321AAFA5D008675E3 /* NSError+DBKit.h */; };
-		8A02C32621AAFA5D008675E3 /* NSError+DBKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A02C32421AAFA5D008675E3 /* NSError+DBKit.m */; };
 		8A2252C5203F2154003C1D97 /* TravelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5A885E2033325300998074 /* TravelKit.framework */; };
 		8A2B23A821EEAA9200C3333B /* TKStatementTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8A2B23A721EEAA9200C3333B /* TKStatementTests.mm */; };
 		8A2B23AA21EEAB0500C3333B /* TKDBTestCase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8A2B23A921EEAB0500C3333B /* TKDBTestCase.mm */; };
@@ -52,7 +36,6 @@
 		8A577E2E21FB52D0008126F8 /* Mapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A577E2D21FB52D0008126F8 /* Mapping.h */; };
 		8A577E3121FC7554008126F8 /* Ride.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A577E3021FC7553008126F8 /* Ride.h */; };
 		8A5A88632033325300998074 /* TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5A88612033325300998074 /* TravelKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A63F50D20349D4A00742FE5 /* TKItem_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A63F50C20349D4A00742FE5 /* TKItem_Private.h */; };
 		8A63F51020349D6D00742FE5 /* TKItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A63F50E20349D6D00742FE5 /* TKItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A63F51120349D6D00742FE5 /* TKItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8A63F50F20349D6D00742FE5 /* TKItem.mm */; };
 		8A66F30421ED647E005325FD /* Status.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A66F2FD21ED647A005325FD /* Status.h */; };
@@ -86,10 +69,8 @@
 		8AA28C0821FD04DD00FED656 /* TKTripPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA28C0621FD04DD00FED656 /* TKTripPlan.m */; };
 		8AA28C0A21FD09D300FED656 /* TKTripPlan_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA28C0921FD09D300FED656 /* TKTripPlan_Private.h */; };
 		8AA28C0C21FD13B000FED656 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8AA28C0B21FD13B000FED656 /* README.md */; };
-		8AB584E621B041F100D2EC36 /* DBKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A02C2E721AAF33C008675E3 /* DBKit.framework */; };
-		8ADADC90207CD21E0012CBB1 /* TKDistanceFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADADC6D207C36AA0012CBB1 /* TKDistanceFunction.h */; };
-		8ADADC91207CD2210012CBB1 /* TKDistanceFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* TKDistanceFunction.m */; };
-		8AF505272036B26800E95ED0 /* TKDBVerify.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF5C8502035F7E200715995 /* TKDBVerify.h */; };
+		8ADADC90207CD21E0012CBB1 /* DistanceFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADADC6D207C36AA0012CBB1 /* DistanceFunction.h */; };
+		8ADADC91207CD2210012CBB1 /* DistanceFunction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* DistanceFunction.cpp */; };
 		8AF5C8492035D6DE00715995 /* TKConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF5C8472035D6DE00715995 /* TKConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AF5C84A2035D6DE00715995 /* TKConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF5C8482035D6DE00715995 /* TKConstants.m */; };
 		8AF5C84C2035D78C00715995 /* TKDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA5C0D82035BB09001821DA /* TKDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -115,25 +96,6 @@
 		8A00763121F5E237002A5FB9 /* Date.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Date.h; sourceTree = "<group>"; };
 		8A00763821F647E7002A5FB9 /* TKTrip_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKTrip_Private.h; sourceTree = "<group>"; };
 		8A00763C21F85824002A5FB9 /* TripPlan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TripPlan.h; sourceTree = "<group>"; };
-		8A02C2E721AAF33C008675E3 /* DBKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DBKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A02C2E921AAF33C008675E3 /* DBKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBKit.h; sourceTree = "<group>"; };
-		8A02C2EA21AAF33C008675E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8A02C2F321AAF3AB008675E3 /* DBKit.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = DBKit.modulemap; sourceTree = "<group>"; };
-		8A02C2F421AAF407008675E3 /* DBKDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBKDefines.h; sourceTree = "<group>"; };
-		8A02C2F621AAF4F8008675E3 /* DBKError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBKError.h; sourceTree = "<group>"; };
-		8A02C2F821AAF550008675E3 /* DBKError.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBKError.m; sourceTree = "<group>"; };
-		8A02C30C21AAF63D008675E3 /* DBKColumnsSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKColumnsSet.h; sourceTree = "<group>"; };
-		8A02C30D21AAF63D008675E3 /* DBKDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBKDatabase.m; sourceTree = "<group>"; };
-		8A02C30E21AAF63D008675E3 /* DBKDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKDatabase.h; sourceTree = "<group>"; };
-		8A02C30F21AAF63D008675E3 /* DBKRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKRow.h; sourceTree = "<group>"; };
-		8A02C31021AAF63D008675E3 /* DBKFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKFunction.h; sourceTree = "<group>"; };
-		8A02C31121AAF63D008675E3 /* DBKStatement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBKStatement.m; sourceTree = "<group>"; };
-		8A02C31221AAF63D008675E3 /* DBKColumnsSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBKColumnsSet.m; sourceTree = "<group>"; };
-		8A02C31321AAF63E008675E3 /* DBKStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKStatement.h; sourceTree = "<group>"; };
-		8A02C31D21AAF83B008675E3 /* DBKDatabase_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKDatabase_Private.h; sourceTree = "<group>"; };
-		8A02C31E21AAF83B008675E3 /* DBKErrorReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKErrorReporter.h; sourceTree = "<group>"; };
-		8A02C32321AAFA5D008675E3 /* NSError+DBKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+DBKit.h"; sourceTree = "<group>"; };
-		8A02C32421AAFA5D008675E3 /* NSError+DBKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+DBKit.m"; sourceTree = "<group>"; };
 		8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A2252C4203F2154003C1D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A2B23A721EEAA9200C3333B /* TKStatementTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TKStatementTests.mm; sourceTree = "<group>"; };
@@ -167,7 +129,6 @@
 		8A5A885E2033325300998074 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A5A88612033325300998074 /* TravelKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TravelKit.h; sourceTree = "<group>"; };
 		8A5A88622033325300998074 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8A63F50C20349D4A00742FE5 /* TKItem_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKItem_Private.h; sourceTree = "<group>"; };
 		8A63F50E20349D6D00742FE5 /* TKItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKItem.h; sourceTree = "<group>"; };
 		8A63F50F20349D6D00742FE5 /* TKItem.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TKItem.mm; sourceTree = "<group>"; };
 		8A66F2FD21ED647A005325FD /* Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Status.h; sourceTree = "<group>"; };
@@ -203,23 +164,15 @@
 		8AA5C0D82035BB09001821DA /* TKDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDefines.h; sourceTree = "<group>"; };
 		8AA5C0DA2035BBEE001821DA /* TKError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKError.h; sourceTree = "<group>"; };
 		8AB3D98D20B34730005B0192 /* TKStop_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKStop_Private.h; sourceTree = "<group>"; };
-		8ADADC6D207C36AA0012CBB1 /* TKDistanceFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDistanceFunction.h; sourceTree = "<group>"; };
-		8ADADC6E207C36AA0012CBB1 /* TKDistanceFunction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKDistanceFunction.m; sourceTree = "<group>"; };
+		8ADADC6D207C36AA0012CBB1 /* DistanceFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DistanceFunction.h; sourceTree = "<group>"; };
+		8ADADC6E207C36AA0012CBB1 /* DistanceFunction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceFunction.cpp; sourceTree = "<group>"; };
 		8AF5C8472035D6DE00715995 /* TKConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKConstants.h; sourceTree = "<group>"; };
 		8AF5C8482035D6DE00715995 /* TKConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKConstants.m; sourceTree = "<group>"; };
-		8AF5C8502035F7E200715995 /* TKDBVerify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDBVerify.h; sourceTree = "<group>"; };
 		8AF5C859203618B500715995 /* NSError+TravelKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+TravelKit.h"; sourceTree = "<group>"; };
 		8AF5C85A203618B500715995 /* NSError+TravelKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSError+TravelKit.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8A02C2E321AAF33C008675E3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8A2252BD203F2154003C1D97 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -236,78 +189,12 @@
 			files = (
 				8A2B23F721F0ECDA00C3333B /* CoreLocation.framework in Frameworks */,
 				8A30122821EE71FC00D0C4D0 /* libsqlite3.tbd in Frameworks */,
-				8AB584E621B041F100D2EC36 /* DBKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8A02C2E821AAF33C008675E3 /* DBKit */ = {
-			isa = PBXGroup;
-			children = (
-				8A02C2E921AAF33C008675E3 /* DBKit.h */,
-				8A02C32221AAF8FC008675E3 /* Categories */,
-				8A02C2F221AAF366008675E3 /* Private */,
-				8A02C2FB21AAF5EC008675E3 /* Database */,
-				8A02C2F121AAF359008675E3 /* Definitions */,
-				8A02C2EF21AAF346008675E3 /* Supporting Files */,
-			);
-			path = DBKit;
-			sourceTree = "<group>";
-		};
-		8A02C2EF21AAF346008675E3 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				8A02C2F321AAF3AB008675E3 /* DBKit.modulemap */,
-				8A02C2EA21AAF33C008675E3 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		8A02C2F121AAF359008675E3 /* Definitions */ = {
-			isa = PBXGroup;
-			children = (
-				8A02C2F421AAF407008675E3 /* DBKDefines.h */,
-				8A02C2F621AAF4F8008675E3 /* DBKError.h */,
-				8A02C2F821AAF550008675E3 /* DBKError.m */,
-			);
-			path = Definitions;
-			sourceTree = "<group>";
-		};
-		8A02C2F221AAF366008675E3 /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				8A02C31D21AAF83B008675E3 /* DBKDatabase_Private.h */,
-				8A02C31E21AAF83B008675E3 /* DBKErrorReporter.h */,
-				8A02C30C21AAF63D008675E3 /* DBKColumnsSet.h */,
-				8A02C31221AAF63D008675E3 /* DBKColumnsSet.m */,
-			);
-			path = Private;
-			sourceTree = "<group>";
-		};
-		8A02C2FB21AAF5EC008675E3 /* Database */ = {
-			isa = PBXGroup;
-			children = (
-				8A02C31021AAF63D008675E3 /* DBKFunction.h */,
-				8A02C30E21AAF63D008675E3 /* DBKDatabase.h */,
-				8A02C30D21AAF63D008675E3 /* DBKDatabase.m */,
-				8A02C30F21AAF63D008675E3 /* DBKRow.h */,
-				8A02C31321AAF63E008675E3 /* DBKStatement.h */,
-				8A02C31121AAF63D008675E3 /* DBKStatement.m */,
-			);
-			path = Database;
-			sourceTree = "<group>";
-		};
-		8A02C32221AAF8FC008675E3 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				8A02C32321AAFA5D008675E3 /* NSError+DBKit.h */,
-				8A02C32421AAFA5D008675E3 /* NSError+DBKit.m */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
 		8A2252C1203F2154003C1D97 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,36 +203,6 @@
 				8A2252C4203F2154003C1D97 /* Info.plist */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		8A2B23C221EFDD9700C3333B /* Travel */ = {
-			isa = PBXGroup;
-			children = (
-				8A2B23C721EFDDCC00C3333B /* ItemID.h */,
-				8A2B23F221F0DA0500C3333B /* ItemID.cpp */,
-				8A00762F21F5D643002A5FB9 /* Calendar.h */,
-				8A2B241321F1CF3A00C3333B /* Time.h */,
-				8A00763121F5E237002A5FB9 /* Date.h */,
-				8A4BEB6821F3E17C0082AD13 /* StopPlace.h */,
-				8A2B241E21F1F49400C3333B /* StopTime.h */,
-				8A2B241C21F1EFEC00C3333B /* Trip.h */,
-				8A2B240D21F1C87900C3333B /* Itinerary.h */,
-				8A577E3021FC7553008126F8 /* Ride.h */,
-				8A00762E21F5D097002A5FB9 /* Stop.h */,
-				8A00763C21F85824002A5FB9 /* TripPlan.h */,
-				8A577E2D21FB52D0008126F8 /* Mapping.h */,
-			);
-			path = Travel;
-			sourceTree = "<group>";
-		};
-		8A2B23EC21F0744000C3333B /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				8A2B23EC21F0744000C3333B /* Core */,
-				8A2B23ED21F0745300C3333B /* Travel */,
-				8A2252C4203F2154003C1D97 /* Info.plist */,
-			);
-			path = TravelKitTests;
 			sourceTree = "<group>";
 		};
 		8A2B23C221EFDD9700C3333B /* Travel */ = {
@@ -434,7 +291,6 @@
 			children = (
 				8A5A88602033325300998074 /* TravelKit */,
 				8A2252C1203F2154003C1D97 /* Tests */,
-				8A02C2E821AAF33C008675E3 /* DBKit */,
 				8A5A885F2033325300998074 /* Products */,
 				8A63F4B82033913E00742FE5 /* Frameworks */,
 			);
@@ -445,7 +301,6 @@
 			children = (
 				8A5A885E2033325300998074 /* TravelKit.framework */,
 				8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */,
-				8A02C2E721AAF33C008675E3 /* DBKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -458,7 +313,7 @@
 				8A66F2FB21ED6437005325FD /* Core */,
 				8AF5C85D20361A7500715995 /* Categories */,
 				8A40FDE02033898A00FB9C2F /* Travel */,
-				8ADADC94207CDA930012CBB1 /* Functions */,
+				8ADADC94207CDA930012CBB1 /* SQL Functions */,
 				8A6E2C7720393157006A240F /* General */,
 				8AA5C0D72035BAED001821DA /* Definitions */,
 				8A8400462033347600B48AB3 /* Supporting Files */,
@@ -531,10 +386,8 @@
 			children = (
 				8A7A4B6B208027B900EF562D /* TKStructs.h */,
 				8A9645FA20372B1D00A39571 /* TKConstants_Private.h */,
-				8A63F50C20349D4A00742FE5 /* TKItem_Private.h */,
 				8A2B23EB21F06B2E00C3333B /* TKItem_Core.h */,
 				8AB3D98D20B34730005B0192 /* TKStop_Private.h */,
-				8AF5C8502035F7E200715995 /* TKDBVerify.h */,
 				8A00762621F5C105002A5FB9 /* TKItinerary_Private.h */,
 				8A00763821F647E7002A5FB9 /* TKTrip_Private.h */,
 				8AA28C0221FCBB1000FED656 /* TKRide_Private.h */,
@@ -554,13 +407,13 @@
 			path = Definitions;
 			sourceTree = "<group>";
 		};
-		8ADADC94207CDA930012CBB1 /* Functions */ = {
+		8ADADC94207CDA930012CBB1 /* SQL Functions */ = {
 			isa = PBXGroup;
 			children = (
-				8ADADC6D207C36AA0012CBB1 /* TKDistanceFunction.h */,
-				8ADADC6E207C36AA0012CBB1 /* TKDistanceFunction.m */,
+				8ADADC6D207C36AA0012CBB1 /* DistanceFunction.h */,
+				8ADADC6E207C36AA0012CBB1 /* DistanceFunction.cpp */,
 			);
-			path = Functions;
+			path = "SQL Functions";
 			sourceTree = "<group>";
 		};
 		8AF5C85D20361A7500715995 /* Categories */ = {
@@ -575,24 +428,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		8A02C2E421AAF33C008675E3 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8A02C31821AAF63E008675E3 /* DBKFunction.h in Headers */,
-				8A02C31421AAF63E008675E3 /* DBKColumnsSet.h in Headers */,
-				8A02C32121AAF83B008675E3 /* DBKErrorReporter.h in Headers */,
-				8A02C31621AAF63E008675E3 /* DBKDatabase.h in Headers */,
-				8A02C2EB21AAF33C008675E3 /* DBKit.h in Headers */,
-				8A02C2F521AAF407008675E3 /* DBKDefines.h in Headers */,
-				8A02C31721AAF63E008675E3 /* DBKRow.h in Headers */,
-				8A02C2F721AAF4F8008675E3 /* DBKError.h in Headers */,
-				8A02C32521AAFA5D008675E3 /* NSError+DBKit.h in Headers */,
-				8A02C32021AAF83B008675E3 /* DBKDatabase_Private.h in Headers */,
-				8A02C31B21AAF63E008675E3 /* DBKStatement.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8A5A885B2033325300998074 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -604,7 +439,6 @@
 				8AF5C85B203618B500715995 /* NSError+TravelKit.h in Headers */,
 				8A66F30421ED647E005325FD /* Status.h in Headers */,
 				8A9D162121F9BD8E004922E7 /* ErrorOr.h in Headers */,
-				8AF505272036B26800E95ED0 /* TKDBVerify.h in Headers */,
 				8AA28C0721FD04DD00FED656 /* TKTripPlan.h in Headers */,
 				8A00762821F5C105002A5FB9 /* TKItinerary_Private.h in Headers */,
 				8A66F30C21ED647E005325FD /* Value.h in Headers */,
@@ -622,7 +456,7 @@
 				8A66F30921ED647E005325FD /* FunctionContext.h in Headers */,
 				8A2B240A21F1459A00C3333B /* BaseRouter.h in Headers */,
 				8A5A88632033325300998074 /* TravelKit.h in Headers */,
-				8ADADC90207CD21E0012CBB1 /* TKDistanceFunction.h in Headers */,
+				8ADADC90207CD21E0012CBB1 /* DistanceFunction.h in Headers */,
 				8A4BEB6921F3E17C0082AD13 /* StopPlace.h in Headers */,
 				8A66F31621ED64CB005325FD /* Defines.h in Headers */,
 				8AA28C0021FCBA2300FED656 /* TKRide.h in Headers */,
@@ -633,7 +467,6 @@
 				8A577E2E21FB52D0008126F8 /* Mapping.h in Headers */,
 				8AF5C8492035D6DE00715995 /* TKConstants.h in Headers */,
 				8A9D161D21F9BC7E004922E7 /* Error.h in Headers */,
-				8A63F50D20349D4A00742FE5 /* TKItem_Private.h in Headers */,
 				8A6E2C7A2039316A006A240F /* TKUtilities.h in Headers */,
 				8A7A4B6C208027B900EF562D /* TKStructs.h in Headers */,
 				8A2B23E721EFE7AF00C3333B /* TKStopPlace.h in Headers */,
@@ -646,24 +479,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8A02C2E621AAF33C008675E3 /* DBKit */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8A02C2EE21AAF33C008675E3 /* Build configuration list for PBXNativeTarget "DBKit" */;
-			buildPhases = (
-				8A02C2E221AAF33C008675E3 /* Sources */,
-				8A02C2E321AAF33C008675E3 /* Frameworks */,
-				8A02C2E421AAF33C008675E3 /* Headers */,
-				8A02C2E521AAF33C008675E3 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = DBKit;
-			productName = DBKit;
-			productReference = 8A02C2E721AAF33C008675E3 /* DBKit.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		8A2252BF203F2154003C1D97 /* TravelKitTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A2252CA203F2154003C1D97 /* Build configuration list for PBXNativeTarget "TravelKitTests" */;
@@ -709,10 +524,6 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Karim;
 				TargetAttributes = {
-					8A02C2E621AAF33C008675E3 = {
-						CreatedOnToolsVersion = 9.4.1;
-						ProvisioningStyle = Manual;
-					};
 					8A2252BF203F2154003C1D97 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Manual;
@@ -738,19 +549,11 @@
 			targets = (
 				8A5A885D2033325300998074 /* TravelKit */,
 				8A2252BF203F2154003C1D97 /* TravelKitTests */,
-				8A02C2E621AAF33C008675E3 /* DBKit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8A02C2E521AAF33C008675E3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8A2252BE203F2154003C1D97 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -769,18 +572,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		8A02C2E221AAF33C008675E3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8A02C2F921AAF550008675E3 /* DBKError.m in Sources */,
-				8A02C31A21AAF63E008675E3 /* DBKColumnsSet.m in Sources */,
-				8A02C32621AAFA5D008675E3 /* NSError+DBKit.m in Sources */,
-				8A02C31521AAF63E008675E3 /* DBKDatabase.m in Sources */,
-				8A02C31921AAF63E008675E3 /* DBKStatement.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8A2252BC203F2154003C1D97 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -799,7 +590,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AF5C85C203618B500715995 /* NSError+TravelKit.m in Sources */,
-				8ADADC91207CD2210012CBB1 /* TKDistanceFunction.m in Sources */,
+				8ADADC91207CD2210012CBB1 /* DistanceFunction.cpp in Sources */,
 				8A2B23F421F0DA0500C3333B /* ItemID.cpp in Sources */,
 				8A2B241221F1CD1900C3333B /* CSARouter.cpp in Sources */,
 				8A9D161E21F9BC7E004922E7 /* Error.cpp in Sources */,
@@ -829,62 +620,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		8A02C2EC21AAF33C008675E3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				INFOPLIST_FILE = DBKit/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = DBKit/DBKit.modulemap;
-				PRODUCT_BUNDLE_IDENTIFIER = com.karhm.DBKit;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				STRIP_STYLE = all;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		8A02C2ED21AAF33C008675E3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				INFOPLIST_FILE = DBKit/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = DBKit/DBKit.modulemap;
-				PRODUCT_BUNDLE_IDENTIFIER = com.karhm.DBKit;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				STRIP_STYLE = all;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		8A2252C8203F2154003C1D97 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1079,15 +814,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8A02C2EE21AAF33C008675E3 /* Build configuration list for PBXNativeTarget "DBKit" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8A02C2EC21AAF33C008675E3 /* Debug */,
-				8A02C2ED21AAF33C008675E3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		8A2252CA203F2154003C1D97 /* Build configuration list for PBXNativeTarget "TravelKitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

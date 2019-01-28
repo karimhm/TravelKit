@@ -6,7 +6,6 @@
  */
 
 #import "TKItem.h"
-#import "TKItem_Private.h"
 #import "TKItem_Core.h"
 
 using namespace tk;
@@ -28,41 +27,6 @@ using namespace tk;
     } else {
         return false;
     }
-}
-
-#pragma mark - TKDBVerify
-
-+ (BOOL)isDatabaseValid:(DBKDatabase *)database {
-    TKDBVerifySet *set = [self requiredTablesAndColumns];
-    BOOL valid = true;
-    
-    if (set) {
-        for (id tableName in set.keyEnumerator) {
-            if ([database tableExists:tableName]) {
-                for (id column in [set valueForKey:tableName]) {
-                    if (![database columnExists:column inTableWithName:tableName]) {
-                        valid = false;
-                        break;
-                    }
-                }
-            } else {
-                valid = false;
-                break;
-            }
-        }
-    } else {
-        valid = false;
-    }
-    
-    return valid;
-}
-
-- (NSString *)tableName {
-    return nil;
-}
-
-+ (TKDBVerifySet *)requiredTablesAndColumns {
-    return @{};
 }
 
 #pragma mark - NSCopying

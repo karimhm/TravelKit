@@ -7,7 +7,7 @@
 
 #import "TKDatabase.h"
 #import "NSError+TravelKit.h"
-#import "TKDistanceFunction.h"
+#import "DistanceFunction.h"
 #import "TKItem_Core.h"
 #import "TKStop_Private.h"
 #import "TKItinerary_Private.h"
@@ -122,7 +122,7 @@ cleanup:
 }
 
 - (BOOL)addFunctions:(NSError **)error {
-    return _db->addFunction([self dbkContextTK:TKGetDistanceFunction()]).isOK();
+    return _db->addFunction(GetDistanceFunction()).isOK();
 }
 
 - (BOOL)loadProperties:(NSError **)error {
@@ -190,22 +190,6 @@ cleanup:
     } else {
         return true;
     }
-}
-
-- (FunctionContext)dbkContextTK:(DBKFunctionContext)functionContext {
-    FunctionContext context = FunctionContextEmpty;
-    
-    context.name = functionContext.name;
-    context.valuesCount = functionContext.valuesCount;
-    context.info = functionContext.info;
-    context.deterministic = functionContext.deterministic;
-    
-    context.execute = functionContext.execute;
-    context.step = functionContext.step;
-    context.finalize = functionContext.finalize;
-    context.destroy = functionContext.destroy;
-    
-    return context;
 }
 
 #pragma mark - Fetching

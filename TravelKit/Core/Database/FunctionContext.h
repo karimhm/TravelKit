@@ -4,8 +4,8 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#ifndef TK_FUNCTION_CONTEXT_H
-#define TK_FUNCTION_CONTEXT_H
+#ifndef FUNCTION_CONTEXT_H
+#define FUNCTION_CONTEXT_H
 
 #include "Defines.h"
 #include "Value.h"
@@ -18,7 +18,7 @@ namespace tk {
 
 typedef struct sqlite3_context* ContextRef;
 typedef struct sqlite3_value* ValueRef;
-
+    
 TK_ALWAYS_INLINE ValueType ValueGetType(ValueRef value) {
     return static_cast<ValueType>(sqlite3_value_type(value));
 }
@@ -43,30 +43,10 @@ TK_ALWAYS_INLINE const char* ValueGetText(ValueRef value) {
     return (const char*)sqlite3_value_text(value);
 }
 
-/*!
- @function  TKDBContextGetInfo
- 
- @param     context
- The ContextRef context
- 
- @result    The info pinter contained in TKDBFunctionContext.
- */
 TK_ALWAYS_INLINE void* ContextGetInfo(ContextRef context) {
     return sqlite3_user_data(context);
 }
 
-/*!
- @function  TKDBContextResultError
- 
- @param     context
- The ContextRef context
- 
- @param     name
- The name of the error. The text is expected to be encoded as UTF-8.
- 
- @param     code
- An int representing the code of the error.
- */
 TK_ALWAYS_INLINE void ContextResultError(ContextRef context, const char *name, int code) {
     sqlite3_result_error(context, name, code);
 }
@@ -108,12 +88,21 @@ typedef void (*FunctionStep)(ContextRef context, int valuesCount, ValueRef _Nonn
 typedef void (*FunctionFinalize)(ContextRef context);
 typedef void (*FunctionDestroy)(void *info);
 
-/*!
- @struct TKDBFunctionContext
- 
- @abstract This structure contains properties and callbacks that define an SQL function that will be added to the database.
- */
-typedef struct {
+class FunctionContext {
+public:
+    static FunctionContext Empty() {
+        return {
+            .name = nullptr,
+            .valuesCount = 0,
+            .deterministic = false,
+            .execute = nullptr,
+            .step = nullptr,
+            .finalize = nullptr,
+            .destroy = nullptr,
+        };
+    }
+    
+public:
     const char *name;
     int valuesCount;
     void *info;
@@ -122,12 +111,10 @@ typedef struct {
     FunctionStep        step;
     FunctionFinalize    finalize;
     FunctionDestroy     destroy;
-} FunctionContext;
-
-TK_EXTERN const FunctionContext FunctionContextEmpty;
+};
 
 }
 
 TK_ASSUME_NONNULL_END
 
-#endif /* TK_FUNCTION_CONTEXT_H */
+#endif /* FUNCTION_CONTEXT_H */

@@ -5,7 +5,10 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
-#import "TKDistanceFunction.h"
+#include "DistanceFunction.h"
+#include <cmath>
+
+using namespace tk;
 
 static double TKDistance(double lat1, double lon1, double lat2, double lon2) {
     // Based on http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf
@@ -92,25 +95,25 @@ static double TKDistance(double lat1, double lon1, double lat2, double lon2) {
     return (b * A * (sigma - deltaSigma));
 }
 
-static DBKFunctionContext _distanceFunction = {NULL, 0, NULL, false, NULL, NULL, NULL, NULL};
-static BOOL _didInit = false;
+static FunctionContext _distanceFunction = FunctionContext::Empty();
+static bool _didInit = false;
 
-static void TKDistanceFunctionExecute(DBKContextRef context, int valuesCount, DBKValueRef _Nonnull * _Nonnull values) {
-    if (DBKValueGetType(values[0]) == DBKValueTypeFloat
-        && DBKValueGetType(values[1]) == DBKValueTypeFloat
-        && DBKValueGetType(values[2]) == DBKValueTypeFloat
-        && DBKValueGetType(values[3]) == DBKValueTypeFloat)
+static void TKDistanceFunctionExecute(ContextRef context, int valuesCount, ValueRef _Nonnull * _Nonnull values) {
+    if (ValueGetType(values[0]) == ValueType::Float
+        && ValueGetType(values[1]) == ValueType::Float
+        && ValueGetType(values[2]) == ValueType::Float
+        && ValueGetType(values[3]) == ValueType::Float)
     {
-        DBKContextResultDouble(context, TKDistance(DBKValueGetDouble(values[0]),
-                                                    DBKValueGetDouble(values[1]),
-                                                    DBKValueGetDouble(values[2]),
-                                                    DBKValueGetDouble(values[3])));
+        ContextResultDouble(context, TKDistance(ValueGetDouble(values[0]),
+                                                    ValueGetDouble(values[1]),
+                                                    ValueGetDouble(values[2]),
+                                                    ValueGetDouble(values[3])));
     } else {
-        DBKContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
+        ContextResultError(context, "Bad parameters", SQLITE_MISMATCH);
     }
 }
 
-DBKFunctionContext TKGetDistanceFunction(void) {
+FunctionContext tk::GetDistanceFunction(void) {
     if (!_didInit) {
         _distanceFunction.name = "tkDistance";
         _distanceFunction.valuesCount = 4;

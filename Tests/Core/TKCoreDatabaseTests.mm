@@ -62,7 +62,7 @@ void TKDatabaseTestCustomFunction(ContextRef context, int valuesCount, ValueRef 
     Ref<Database> db = makeRef<Database>(self.dbPath.UTF8String);
     db->open(Options::OpenReadOnly);
     
-    FunctionContext function = FunctionContextEmpty;
+    FunctionContext function = FunctionContext::Empty();
     function.name = "customFunction";
     function.execute = TKDatabaseTestCustomFunction;
     
