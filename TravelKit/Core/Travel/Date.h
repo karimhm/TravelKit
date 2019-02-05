@@ -27,7 +27,7 @@ public:
         day_ = ti->tm_wday;
     }
     
-    Date(uint16_t year, uint8_t month, uint8_t day, uint32_t seconds)
+    Date(uint16_t year, uint8_t month, uint8_t day)
          : year_(year)
          , month_(month)
          , day_(day)
