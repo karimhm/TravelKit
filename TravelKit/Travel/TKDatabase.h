@@ -30,6 +30,9 @@ typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError *
 @property (nonatomic, readonly, getter=isValid) BOOL valid;
 @property (nonatomic, readonly) NSDictionary <NSString *, id> *properties;
 
+@property (nonatomic, readonly) NSArray <NSString *> *languages;
+@property (nonatomic, nullable) NSString *selectedLanguage;
+
 - (void)fetchStopPlaceWithID:(TKItemID)itemID completion:(TKStopPlaceFetchHandler)completion;
 - (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion;
 - (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion;

@@ -25,6 +25,7 @@ using namespace tk;
     Ref<Database> _db;
     Ref<CSARouter> _router;
     Ref<Statement> _fetchProperties;
+    Ref<Statement> _fetchLanguages;
     Ref<Statement> _fetchStopPlaceById;
     Ref<Statement> _fetchStopPlacesByName;
     Ref<Statement> _fetchStopPlacesByLocation;
@@ -42,6 +43,7 @@ using namespace tk;
     } else if (self = [super init]) {
         _url = url;
         _properties = [[NSMutableDictionary alloc] init];
+        _languages = [[NSMutableArray alloc] init];
         _db = makeRef<Database>([url fileSystemRepresentation]);
         _router = makeRef<CSARouter>(_db);
     }
@@ -66,6 +68,10 @@ using namespace tk;
             return false;
         }
         
+        if (![self loadLanguages:error]) {
+            return false;
+        }
+        
         if (![self load:error]) {
             return false;
         }
@@ -81,9 +87,57 @@ using namespace tk;
     BOOL status = true;
     
     _fetchProperties = makeRef<Statement>(_db, "SELECT * FROM Properties");
-    _fetchStopPlaceById = makeRef<Statement>(_db, "SELECT * FROM StopPlace WHERE id = :id");
-    _fetchStopPlacesByName = makeRef<Statement>(_db, "SELECT * FROM StopPlace WHERE name LIKE :name LIMIT :limit");
-    _fetchStopPlacesByLocation = makeRef<Statement>(_db, "SELECT * FROM StopPlace GROUP BY tkDistance(:latitude, :longitude, latitude, longitude) LIMIT :limit");
+    _fetchLanguages = makeRef<Statement>(_db, "SELECT DISTINCT language from Localization");
+    _fetchStopPlaceById = makeRef<Statement>(_db, ""
+    "SELECT "
+        "StopPlace.*, "
+        "Localization.text AS name "
+    "FROM StopPlace "
+    "JOIN "
+        "Localization ON Localization.id = StopPlace.nameId "
+    "WHERE StopPlace.id = :id "
+    "AND Localization.language = :language");
+    
+    _fetchStopPlacesByName = makeRef<Statement>(_db, ""
+    "SELECT "
+        "StopPlace.*, "
+        "Localization.text AS name "
+    "FROM StopPlace "
+    "JOIN "
+        "Localization ON Localization.id = StopPlace.nameId "
+    "WHERE StopPlace.nameId IN ("
+        "SELECT id FROM Localization WHERE text LIKE :name"
+    ") "
+    "AND Localization.language = :language "
+    "LIMIT :limit");
+    
+    _fetchStopPlacesByLocation = makeRef<Statement>(_db, ""
+    "SELECT "
+        "StopPlace.*, "
+        "Localization.text AS name "
+    "FROM StopPlace "
+    "JOIN "
+        "Localization ON Localization.id = StopPlace.nameId "
+    "WHERE Localization.language = :language "
+    "GROUP BY "
+        "tkDistance(:latitude, :longitude, latitude, longitude) "
+    "LIMIT :limit");
+    
+    if (!_fetchProperties->prepare().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        status = false;
+        goto cleanup;
+    }
+    
+    if (!_fetchLanguages->prepare().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        status = false;
+        goto cleanup;
+    }
     
     if (!_fetchStopPlaceById->prepare().isOK()) {
         if (error) {
@@ -109,14 +163,6 @@ using namespace tk;
         goto cleanup;
     }
     
-    if (!_fetchProperties->prepare().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        status = false;
-        goto cleanup;
-    }
-    
 cleanup:
     return status;
 }
@@ -129,8 +175,8 @@ cleanup:
     Status status = SQLITE_OK;
     
     while ((status = _fetchProperties->next()).isRow()) {
-        Value propertyValue = (*_fetchProperties)["value"];
         Value propertyID = (*_fetchProperties)["id"];
+        Value propertyValue = (*_fetchProperties)["value"];
         id value = nil;
         
         if (propertyValue.type() == ValueType::Text) {
@@ -157,9 +203,42 @@ cleanup:
         return false;
     }
 }
+    
+- (BOOL)loadLanguages:(NSError **)error {
+    Status status = Status();
+    
+    while ((status = _fetchLanguages->next()).isRow()) {
+        Value languageValue = (*_fetchLanguages)["language"];
+        NSString *language = [NSString stringWithUTF8String:languageValue.stringValue().c_str()];
+        
+        [(NSMutableArray *)_languages addObject:language];
+    }
+    
+    if (status.isDone()) {
+        NSArray<NSString *> *preferred = [NSBundle preferredLocalizationsFromArray:_languages];
+        if (preferred.count > 0) {
+            _selectedLanguage = preferred.firstObject;
+        } else if (_languages.count > 0 && [_properties[@"main_language"] isKindOfClass:[NSString class]]) {
+            _selectedLanguage = _properties[@"main_language"];
+        } else {
+            if (error) {
+                *error = [NSError tk_badDatabaseError];
+            }
+            return false;
+        }
+        
+        return true;
+    } else {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return false;
+    }
+}
 
 - (BOOL)closeDatabase:(NSError **)error {
     _fetchProperties->close();
+    _fetchLanguages->close();
     _fetchStopPlaceById->close();
     _fetchStopPlacesByName->close();
     _fetchStopPlacesByLocation->close();
@@ -203,6 +282,14 @@ cleanup:
     }
     
     if (!_fetchStopPlaceById->bind(TKUToS64(itemID), ":id").isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+    
+    
+    if (!_fetchStopPlaceById->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
         if (error) {
             *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
         }
@@ -259,6 +346,13 @@ cleanup:
         return;
     }
     
+    if (!_fetchStopPlacesByName->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
     if (!_fetchStopPlacesByName->bind(limit, ":limit").isOK()) {
         if (completion) {
             completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
@@ -301,6 +395,13 @@ cleanup:
     }
     
     if (!_fetchStopPlacesByLocation->bind(location.coordinate.longitude, ":longitude").isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
+    if (!_fetchStopPlacesByLocation->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
         if (completion) {
             completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
         }
@@ -394,6 +495,7 @@ cleanup:
 - (void)dealloc {
     _url = nil;
     _properties = nil;
+    _languages = nil;
 }
 
 @end
