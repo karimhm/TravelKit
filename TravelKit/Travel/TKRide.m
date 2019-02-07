@@ -10,15 +10,17 @@
 
 @implementation TKRide
 
-- (instancetype)initWithStops:(NSArray<TKStop *> *)stops {
+- (instancetype)initWithStops:(NSArray<TKStop *> *)stops route:(TKRoute *)route {
     if (self = [super init]) {
         _stops = stops;
+        _route = route;
     }
     return self;
 }
 
 - (void)dealloc {
     _stops = nil;
+    _route = nil;
 }
 
 @end

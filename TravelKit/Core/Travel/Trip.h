@@ -31,12 +31,12 @@ public:
         return id_;
     }
     
-    const ItemID routeID() const {
-        return routeID_;
-    }
-    
     const ItemID calendarID() const {
         return calendarID_;
+    }
+    
+    const ItemID routeID() const {
+        return routeID_;
     }
     
 private:

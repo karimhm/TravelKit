@@ -26,8 +26,9 @@ ErrorOr<void> CSARouter::load() {
     }
     
     Status status = Status();
-    StopTimeVector stopTimes;
-    ConnectionVector connections;
+    StopTimeVector stopTimes(0);
+    ConnectionVector connections(0);
+    std::map<ItemID, Calendar> calendarByID;
     std::map<ItemID, Trip> tripsByID;
     
     Ref<Statement> fetchStmt;
@@ -72,6 +73,24 @@ ErrorOr<void> CSARouter::load() {
     
     fetchStmt->close();
     
+    fetchStmt = makeRef<Statement>(db_, "SELECT id, days FROM Calendar");
+    if (fetchStmt->prepare().isOK()) {
+        CalendarMapping mapping = CalendarMapping(fetchStmt);
+        
+        while (fetchStmt->next().isRow()) {
+            ItemID id = (*fetchStmt)[mapping.idIndex()].int64Value();
+            uint8_t days = (*fetchStmt)[mapping.daysIndex()].int64Value();
+            
+            calendarByID[id] = Calendar(id, days);
+        }
+        
+        if (!status.isDone()) {
+            return Error(db_->handle());
+        }
+    }
+    
+    fetchStmt->close();
+    
     for (size_t i = 0; i < stopTimes.size(); i++) {
         ItemID tripID = stopTimes[i].tripID();
         
@@ -89,25 +108,10 @@ ErrorOr<void> CSARouter::load() {
     
     std::sort(connections.begin(), connections.end(), ConnectionVectorCompare());
     
-    fetchStmt = makeRef<Statement>(db_, "SELECT id, days FROM Calendar");
-    if (fetchStmt->prepare().isOK()) {
-        CalendarMapping mapping = CalendarMapping(fetchStmt);
-        
-        while (fetchStmt->next().isRow()) {
-            ItemID id = (*fetchStmt)[mapping.idIndex()].int64Value();
-            uint8_t days = (*fetchStmt)[mapping.daysIndex()].int64Value();
-            
-            calendarByID_[id] = Calendar(id, days);
-        }
-        
-        if (!status.isDone()) {
-            return Error(db_->handle());
-        }
-    }
-    
-    fetchStmt->close();
-    
     connections_ = std::move(connections);
+    calendarByID_ = std::move(calendarByID);
+    tripsByID_ = std::move(tripsByID);
+    
     loaded_ = true;
     return {};
 }
@@ -227,8 +231,9 @@ ErrorOr<TripPlan> CSARouter::query(ItemID source, ItemID destination, Date date)
                 previousTripID = connection.tripID();
                 
                 /* Create a Ride to hold the previous trip stops */
-                Ride ride = Ride(stops);
-                rides.push_back(ride);
+                ItemID routeID = tripsByID_[stops.front().tripID()].routeID();
+                Ride ride = Ride(std::move(stops), routeID);
+                rides.push_back(std::move(ride));
                 
                 /* Create a new StopVector to hold the next trip stops */
                 stops = StopVector();
@@ -249,8 +254,9 @@ ErrorOr<TripPlan> CSARouter::query(ItemID source, ItemID destination, Date date)
                 stops.push_back(stop);
                 
                 /* Create a Ride to hold the last trip stops */
-                Ride ride = Ride(std::move(stops));
-                rides.push_back(ride);
+                ItemID routeID = tripsByID_[stops.front().tripID()].routeID();
+                Ride ride = Ride(std::move(stops), routeID);
+                rides.push_back(std::move(ride));
             }
         }
         

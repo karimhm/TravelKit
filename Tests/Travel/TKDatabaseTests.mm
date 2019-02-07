@@ -40,6 +40,11 @@
                               language TEXT NOT NULL,\
                               text TEXT NOT NULL\
                           );\
+                          CREATE TABLE IF NOT EXISTS Route (\
+                              id INTEGER PRIMARY KEY NOT NULL,\
+                              nameId INTEGER REFERENCES Localization(id),\
+                              color INT\
+                          );\
                           ", nullptr, nullptr, nullptr);
     
     XCTAssertTrue(status == SQLITE_OK, "Unable to create stop places table");
@@ -50,8 +55,11 @@
                           INSERT INTO Localization(id, language, text) VALUES(3, 'en', 'testPlaceA1');\
                           INSERT INTO Localization(id, language, text) VALUES(4, 'en', 'testPlaceA2');\
                           INSERT INTO Localization(id, language, text) VALUES(5, 'en', 'testPlaceA3');\
+                          INSERT INTO Localization(id, language, text) VALUES(6, 'en', 'testRoute1');\
                           \
                           INSERT INTO Localization(id, language, text) VALUES(1, 'ar', 'testPlace1-ar');\
+                          \
+                          INSERT INTO Route(id, nameId, color) VALUES(1, 6, 16777215);\
                           \
                           INSERT INTO StopPlace(id, nameId, latitude, longitude) VALUES(1, 1 , 0, 0);\
                           INSERT INTO StopPlace(id, nameId, latitude, longitude) VALUES(2, 2 , 1, 0);\

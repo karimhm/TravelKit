@@ -9,6 +9,6 @@
 
 @interface TKRide ()
 
-- (instancetype)initWithStops:(NSArray<TKStop *> *)stops;
+- (instancetype)initWithStops:(NSArray<TKStop *> *)stops route:(TKRoute *)route;
 
 @end

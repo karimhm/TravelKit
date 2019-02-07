@@ -31,6 +31,9 @@
 		8A2B241D21F1EFEC00C3333B /* Trip.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A2B241C21F1EFEC00C3333B /* Trip.h */; };
 		8A30122821EE71FC00D0C4D0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A30122721EE71FB00D0C4D0 /* libsqlite3.tbd */; };
 		8A30122921EE721600D0C4D0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A30122721EE71FB00D0C4D0 /* libsqlite3.tbd */; };
+		8A497A0A220A2BF1007DA4BD /* Route.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A497A09220A2BF1007DA4BD /* Route.h */; };
+		8A497A0E220A3810007DA4BD /* TKRoute.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A497A0C220A3810007DA4BD /* TKRoute.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A497A0F220A3810007DA4BD /* TKRoute.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8A497A0D220A3810007DA4BD /* TKRoute.mm */; };
 		8A4BEB6621F3AD630082AD13 /* Connection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A4BEB6421F3AD630082AD13 /* Connection.h */; };
 		8A4BEB6921F3E17C0082AD13 /* StopPlace.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A4BEB6821F3E17C0082AD13 /* StopPlace.h */; };
 		8A577E2E21FB52D0008126F8 /* Mapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A577E2D21FB52D0008126F8 /* Mapping.h */; };
@@ -94,7 +97,6 @@
 		8A00762E21F5D097002A5FB9 /* Stop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stop.h; sourceTree = "<group>"; };
 		8A00762F21F5D643002A5FB9 /* Calendar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Calendar.h; sourceTree = "<group>"; };
 		8A00763121F5E237002A5FB9 /* Date.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Date.h; sourceTree = "<group>"; };
-		8A00763821F647E7002A5FB9 /* TKTrip_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKTrip_Private.h; sourceTree = "<group>"; };
 		8A00763C21F85824002A5FB9 /* TripPlan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TripPlan.h; sourceTree = "<group>"; };
 		8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A2252C4203F2154003C1D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -122,6 +124,9 @@
 		8A2B241C21F1EFEC00C3333B /* Trip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trip.h; sourceTree = "<group>"; };
 		8A2B241E21F1F49400C3333B /* StopTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StopTime.h; sourceTree = "<group>"; };
 		8A30122721EE71FB00D0C4D0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		8A497A09220A2BF1007DA4BD /* Route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Route.h; sourceTree = "<group>"; };
+		8A497A0C220A3810007DA4BD /* TKRoute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKRoute.h; sourceTree = "<group>"; };
+		8A497A0D220A3810007DA4BD /* TKRoute.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TKRoute.mm; sourceTree = "<group>"; };
 		8A4BEB6421F3AD630082AD13 /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
 		8A4BEB6821F3E17C0082AD13 /* StopPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StopPlace.h; sourceTree = "<group>"; };
 		8A577E2D21FB52D0008126F8 /* Mapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mapping.h; sourceTree = "<group>"; };
@@ -216,6 +221,7 @@
 				8A4BEB6821F3E17C0082AD13 /* StopPlace.h */,
 				8A2B241E21F1F49400C3333B /* StopTime.h */,
 				8A2B241C21F1EFEC00C3333B /* Trip.h */,
+				8A497A09220A2BF1007DA4BD /* Route.h */,
 				8A2B240D21F1C87900C3333B /* Itinerary.h */,
 				8A577E3021FC7553008126F8 /* Ride.h */,
 				8A00762E21F5D097002A5FB9 /* Stop.h */,
@@ -274,6 +280,8 @@
 				8A2B23E621EFE7AF00C3333B /* TKStopPlace.mm */,
 				8AA28BFE21FCBA2300FED656 /* TKRide.h */,
 				8AA28BFF21FCBA2300FED656 /* TKRide.m */,
+				8A497A0C220A3810007DA4BD /* TKRoute.h */,
+				8A497A0D220A3810007DA4BD /* TKRoute.mm */,
 				8A2B241421F1D25300C3333B /* TKItinerary.h */,
 				8A2B241521F1D25300C3333B /* TKItinerary.m */,
 				8A2B241821F1D32800C3333B /* TKTripPlanRequest.h */,
@@ -389,7 +397,6 @@
 				8A2B23EB21F06B2E00C3333B /* TKItem_Core.h */,
 				8AB3D98D20B34730005B0192 /* TKStop_Private.h */,
 				8A00762621F5C105002A5FB9 /* TKItinerary_Private.h */,
-				8A00763821F647E7002A5FB9 /* TKTrip_Private.h */,
 				8AA28C0221FCBB1000FED656 /* TKRide_Private.h */,
 				8AA28C0921FD09D300FED656 /* TKTripPlan_Private.h */,
 			);
@@ -444,6 +451,7 @@
 				8A66F30C21ED647E005325FD /* Value.h in Headers */,
 				8A9D161A21F8D140004922E7 /* expected.h in Headers */,
 				8AF5C84C2035D78C00715995 /* TKDefines.h in Headers */,
+				8A497A0A220A2BF1007DA4BD /* Route.h in Headers */,
 				8AF5C84D2035D79100715995 /* TKError.h in Headers */,
 				8A66F31821ED64CB005325FD /* RefCounted.h in Headers */,
 				8A4BEB6621F3AD630082AD13 /* Connection.h in Headers */,
@@ -470,6 +478,7 @@
 				8A6E2C7A2039316A006A240F /* TKUtilities.h in Headers */,
 				8A7A4B6C208027B900EF562D /* TKStructs.h in Headers */,
 				8A2B23E721EFE7AF00C3333B /* TKStopPlace.h in Headers */,
+				8A497A0E220A3810007DA4BD /* TKRoute.h in Headers */,
 				8AA28C0A21FD09D300FED656 /* TKTripPlan_Private.h in Headers */,
 				8A66F30821ED647E005325FD /* Statement.h in Headers */,
 				8A63F51020349D6D00742FE5 /* TKItem.h in Headers */,
@@ -593,6 +602,7 @@
 				8ADADC91207CD2210012CBB1 /* DistanceFunction.cpp in Sources */,
 				8A2B23F421F0DA0500C3333B /* ItemID.cpp in Sources */,
 				8A2B241221F1CD1900C3333B /* CSARouter.cpp in Sources */,
+				8A497A0F220A3810007DA4BD /* TKRoute.mm in Sources */,
 				8A9D161E21F9BC7E004922E7 /* Error.cpp in Sources */,
 				8A2B23E421EFE70600C3333B /* TKDatabase.mm in Sources */,
 				8A66F30A21ED647E005325FD /* Statement.cpp in Sources */,

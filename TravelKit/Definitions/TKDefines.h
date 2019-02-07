@@ -34,6 +34,8 @@
 
 #define TK_INLINE static inline
 
+#define TK_INLINE_FUNCTION static inline
+
 #define TK_ASSUME_NONNULL_BEGIN _Pragma("clang assume_nonnull begin")
 #define TK_ASSUME_NONNULL_END   _Pragma("clang assume_nonnull end")
 
@@ -80,6 +82,7 @@ typedef int64_t TKInt;
 
 #ifdef __OBJC__
 #import <Foundation/Foundation.h>
+#import <UIKit/UIColor.h>
 
 #define TK_ENCODE_OBJ(c,x)  [c encodeObject:_ ## x forKey:@TK_STRINGIFY(x)]
 #define TK_DECODE_OBJ_CLASS(d,x,cl)  _ ## x = (cl *)[d decodeObjectOfClass:[cl class] forKey:@TK_STRINGIFY(x)]
@@ -99,5 +102,12 @@ typedef int64_t TKInt;
 
 #define TK_ENCODE_INT64(c,x)  [c encodeInt64:_ ## x forKey:@TK_STRINGIFY(x)]
 #define TK_DECODE_INT64(d,x) _ ## x = [d decodeInt64ForKey:@TK_STRINGIFY(x)]
+
+TK_INLINE_FUNCTION UIColor* TKColorFromHexRGB(UInt32 hex) {
+    return [UIColor colorWithRed:((CGFloat)((hex & 0xff0000) >> 16)) / 255
+                           green:((CGFloat)((hex & 0x00ff00) >>  8)) / 255
+                            blue:((CGFloat)((hex & 0x0000ff) >>  0)) / 255
+                           alpha:1];
+}
 
 #endif

@@ -10,6 +10,7 @@
 #include "BaseRouter.h"
 #include "Connection.h"
 #include "Calendar.h"
+#include "Trip.h"
 
 namespace tk {
 
@@ -34,6 +35,7 @@ private:
     bool loaded_;
     ConnectionVector connections_;
     std::map<ItemID, Calendar> calendarByID_;
+    std::map<ItemID, Trip> tripsByID_;
 };
 
 }

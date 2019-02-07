@@ -29,6 +29,8 @@ using namespace tk;
     Ref<Statement> _fetchStopPlaceById;
     Ref<Statement> _fetchStopPlacesByName;
     Ref<Statement> _fetchStopPlacesByLocation;
+    Ref<Statement> _fetchRouteColorById;
+    Ref<Statement> _fetchRouteById;
 }
 
 #pragma mark - Initialization
@@ -123,6 +125,18 @@ using namespace tk;
         "tkDistance(:latitude, :longitude, latitude, longitude) "
     "LIMIT :limit");
     
+    _fetchRouteColorById = makeRef<Statement>(_db, "SELECT color FROM Route WHERE id = :id");
+    
+    _fetchRouteById = makeRef<Statement>(_db, ""
+    "SELECT "
+        "Route.*, "
+        "Localization.text AS name "
+    "FROM Route "
+    "JOIN "
+    "Localization ON Localization.id = Route.nameId "
+        "WHERE Route.id = :id "
+    "AND Localization.language = :language");
+    
     if (!_fetchProperties->prepare().isOK()) {
         if (error) {
             *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
@@ -156,6 +170,22 @@ using namespace tk;
     }
     
     if (!_fetchStopPlacesByLocation->prepare().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        status = false;
+        goto cleanup;
+    }
+    
+    if (!_fetchRouteColorById->prepare().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        status = false;
+        goto cleanup;
+    }
+    
+    if (!_fetchRouteById->prepare().isOK()) {
         if (error) {
             *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
         }
@@ -242,6 +272,8 @@ cleanup:
     _fetchStopPlaceById->close();
     _fetchStopPlacesByName->close();
     _fetchStopPlacesByLocation->close();
+    _fetchRouteColorById->close();
+    _fetchRouteById->close();
     
     _router->unload();
     
@@ -300,6 +332,75 @@ cleanup:
     if ((status = _fetchStopPlaceById->next()).isRow()) {
         TKStopPlace *stopPlace = [[TKStopPlace alloc] initWithStatement:_fetchStopPlaceById];
         return stopPlace;
+    } else if (status.isDone()) {
+        return nil;
+    } else {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+}
+
+- (UIColor *)_fetchRouteColorWithID:(TKItemID)itemID error:(NSError **)error {
+    if (!_fetchRouteColorById->clearAndReset().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+    
+    if (!_fetchRouteColorById->bind(TKUToS64(itemID), ":id").isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+    
+    Status status = Status();
+    if ((status = _fetchRouteColorById->next()).isRow()) {
+        Value color = (*_fetchRouteColorById)["color"];
+        if (color.isInteger()) {
+            return TKColorFromHexRGB(color.intValue());
+        } else {
+            return nil;
+        }
+    } else if (status.isDone()) {
+        return nil;
+    } else {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+}
+
+- (TKRoute *)_fetchRouteWithID:(TKItemID)itemID error:(NSError **)error {
+    if (!_fetchRouteById->clearAndReset().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+    
+    if (!_fetchRouteById->bind(TKUToS64(itemID), ":id").isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+    
+    if (!_fetchRouteById->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+    
+    Status status = Status();
+    if ((status = _fetchRouteById->next()).isRow()) {
+        TKRoute *route = [[TKRoute alloc] initWithStatement:_fetchRouteById];
+        return route;
     } else if (status.isDone()) {
         return nil;
     } else {
@@ -465,7 +566,8 @@ cleanup:
                                                                   date:[NSDate dateWithTimeIntervalSince1970:dayBegin + stop.time()]]];
                 }
                 
-                [rides addObject:[[TKRide alloc] initWithStops:stops]];
+                TKRoute *route = [self _fetchRouteWithID:ride.routeID() error:nil];
+                [rides addObject:[[TKRide alloc] initWithStops:stops route:route]];
             }
             
             departureDate = rides.firstObject.stops.firstObject.date;
