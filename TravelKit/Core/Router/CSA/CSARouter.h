@@ -13,13 +13,14 @@
 #include "Trip.h"
 
 namespace tk {
-
+namespace Router {
+    
 /*
  * Implements the Connection Scan Algorithm algorithm
  */
-class CSARouter final : public RefCounted<CSARouter>, public BaseRouter {
+class CSA final : public RefCounted<CSA>, public Base {
 public:
-    CSARouter(Ref<Database> db) : BaseRouter(db) {
+    CSA(Ref<Database> db) : Base(db) {
     }
     
     ErrorOr<void> load();
@@ -38,6 +39,7 @@ private:
     std::map<ItemID, Trip> tripsByID_;
 };
 
+}
 }
 
 #endif /* TK_CSA_ROUTER_H */

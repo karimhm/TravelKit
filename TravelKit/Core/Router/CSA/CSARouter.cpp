@@ -10,6 +10,7 @@
 #include "Error.h"
 
 using namespace tk;
+using namespace tk::Router;
 
 class ConnectionVectorCompare {
 public:
@@ -20,7 +21,7 @@ public:
 
 size_t IndexInfinity = std::numeric_limits<size_t>::max();
 
-ErrorOr<void> CSARouter::load() {
+ErrorOr<void> CSA::load() {
     if (loaded_) {
         return {};
     }
@@ -116,7 +117,7 @@ ErrorOr<void> CSARouter::load() {
     return {};
 }
 
-ErrorOr<void> CSARouter::unload() {
+ErrorOr<void> CSA::unload() {
     connections_.clear();
     calendarByID_.clear();
     db_ = nullptr;
@@ -125,7 +126,7 @@ ErrorOr<void> CSARouter::unload() {
     return {};
 }
 
-ErrorOr<TripPlan> CSARouter::query(ItemID source, ItemID destination, Date date) {
+ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date) {
     ItineraryVector itineraries = ItineraryVector();
     Time departureTime = date.seconds();
     std::map<ItemID, Calendar> calendars;

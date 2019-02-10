@@ -23,7 +23,7 @@ using namespace tk;
 
 @implementation TKDatabase {
     Ref<Database> _db;
-    Ref<CSARouter> _router;
+    Ref<Router::CSA> _router;
     Ref<Statement> _fetchProperties;
     Ref<Statement> _fetchLanguages;
     Ref<Statement> _fetchStopPlaceById;
@@ -47,7 +47,7 @@ using namespace tk;
         _properties = [[NSMutableDictionary alloc] init];
         _languages = [[NSMutableArray alloc] init];
         _db = makeRef<Database>([url fileSystemRepresentation]);
-        _router = makeRef<CSARouter>(_db);
+        _router = makeRef<Router::CSA>(_db);
     }
     return self;
 }

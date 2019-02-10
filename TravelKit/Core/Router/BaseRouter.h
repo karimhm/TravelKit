@@ -14,10 +14,11 @@
 #include "ErrorOr.h"
 
 namespace tk {
-    
-class BaseRouter  {
+namespace Router {
+
+class Base  {
 public:
-    BaseRouter(Ref<Database> db) : db_(db) {
+    Base(Ref<Database> db) : db_(db) {
     }
     
     virtual ErrorOr<TripPlan> query(ItemID source, ItemID destination, Date date) = 0;
@@ -26,6 +27,7 @@ protected:
     Ref<Database> db_;
 };
 
+}
 }
     
 #endif /* TK_ROUTER_H */

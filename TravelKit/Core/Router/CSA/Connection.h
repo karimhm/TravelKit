@@ -12,6 +12,7 @@
 #include "ItemID.h"
 
 namespace tk {
+namespace Router {
 
 class Connection {
 public:
@@ -63,6 +64,7 @@ private:
 
 using ConnectionVector = std::vector<Connection>;
 
+}
 }
 
 #endif /* TK_CONNECTION_H */
