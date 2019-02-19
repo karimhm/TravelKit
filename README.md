@@ -1,4 +1,4 @@
-# TravelKit
+# <img src="Documentation/images/TravelKit256x256.png" width="80" height="80"> TravelKit
 
 [![Build Status](https://travis-ci.com/karimhm/TravelKit.svg?token=Eo1DcU7271eYfUkoq6gT&branch=master)](https://travis-ci.com/karimhm/TravelKit)
 
