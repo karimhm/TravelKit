@@ -8,46 +8,11 @@
 #define TK_STOP_PLACE_H
 
 #include "ItemID.h"
+#include "Coordinate2D.h"
 #include <string>
 #include <cmath>
 
 namespace tk {
-
-class Coordinate2D {
-    using LocationDegrees = double;
-    using LocationDistance = double;
-    
-public:
-    explicit Coordinate2D() : latitude_(NAN), longitude_(NAN) {
-        valid_ = false;
-    }
-    
-    Coordinate2D(LocationDegrees latitude, LocationDegrees longitude)
-                 : latitude_(latitude)
-                 , longitude_(longitude)
-    {
-        valid_ = true;
-    }
-    
-    const LocationDegrees latitude() const {
-        return latitude_;
-    }
-    
-    const LocationDegrees longitude() const {
-        return longitude_;
-    }
-    
-    const LocationDistance distance(Coordinate2D& other);
-    
-    bool isValid() const {
-        return valid_;
-    }
-    
-private:
-    LocationDegrees latitude_;
-    LocationDegrees longitude_;
-    bool valid_;
-};
     
 class StopPlace {
 public:

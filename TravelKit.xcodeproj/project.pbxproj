@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8A00762821F5C105002A5FB9 /* TKItinerary_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A00762621F5C105002A5FB9 /* TKItinerary_Private.h */; };
+		8A2224F22231BDEB00025A9F /* Coordinate2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2224F12231BDEB00025A9F /* Coordinate2D.cpp */; };
 		8A2252C5203F2154003C1D97 /* TravelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5A885E2033325300998074 /* TravelKit.framework */; };
 		8A2B23A821EEAA9200C3333B /* TKStatementTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8A2B23A721EEAA9200C3333B /* TKStatementTests.mm */; };
 		8A2B23AA21EEAB0500C3333B /* TKDBTestCase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8A2B23A921EEAB0500C3333B /* TKDBTestCase.mm */; };
@@ -74,6 +75,7 @@
 		8AA28C0C21FD13B000FED656 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8AA28C0B21FD13B000FED656 /* README.md */; };
 		8ADADC90207CD21E0012CBB1 /* DistanceFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADADC6D207C36AA0012CBB1 /* DistanceFunction.h */; };
 		8ADADC91207CD2210012CBB1 /* DistanceFunction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* DistanceFunction.cpp */; };
+		8AF162B6222F213B004AA11E /* DistanceFunction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* DistanceFunction.cpp */; };
 		8AF5C8492035D6DE00715995 /* TKConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF5C8472035D6DE00715995 /* TKConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AF5C84A2035D6DE00715995 /* TKConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AF5C8482035D6DE00715995 /* TKConstants.m */; };
 		8AF5C84C2035D78C00715995 /* TKDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA5C0D82035BB09001821DA /* TKDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -98,6 +100,8 @@
 		8A00762F21F5D643002A5FB9 /* Calendar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Calendar.h; sourceTree = "<group>"; };
 		8A00763121F5E237002A5FB9 /* Date.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Date.h; sourceTree = "<group>"; };
 		8A00763C21F85824002A5FB9 /* TripPlan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TripPlan.h; sourceTree = "<group>"; };
+		8A1BBDF2221CAD0F00A0EAAD /* Coordinate2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Coordinate2D.h; sourceTree = "<group>"; };
+		8A2224F12231BDEB00025A9F /* Coordinate2D.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Coordinate2D.cpp; sourceTree = "<group>"; };
 		8A2252C0203F2154003C1D97 /* TravelKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A2252C4203F2154003C1D97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A2B23A721EEAA9200C3333B /* TKStatementTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TKStatementTests.mm; sourceTree = "<group>"; };
@@ -218,6 +222,8 @@
 				8A00762F21F5D643002A5FB9 /* Calendar.h */,
 				8A2B241321F1CF3A00C3333B /* Time.h */,
 				8A00763121F5E237002A5FB9 /* Date.h */,
+				8A1BBDF2221CAD0F00A0EAAD /* Coordinate2D.h */,
+				8A2224F12231BDEB00025A9F /* Coordinate2D.cpp */,
 				8A4BEB6821F3E17C0082AD13 /* StopPlace.h */,
 				8A2B241E21F1F49400C3333B /* StopTime.h */,
 				8A2B241C21F1EFEC00C3333B /* Trip.h */,
@@ -585,6 +591,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AF162B6222F213B004AA11E /* DistanceFunction.cpp in Sources */,
 				8A2B23A821EEAA9200C3333B /* TKStatementTests.mm in Sources */,
 				8A2B23AA21EEAB0500C3333B /* TKDBTestCase.mm in Sources */,
 				8A66F30B21ED647E005325FD /* Statement.cpp in Sources */,
@@ -611,6 +618,7 @@
 				8A2B241B21F1D32800C3333B /* TKTripPlanRequest.m in Sources */,
 				8A63F51120349D6D00742FE5 /* TKItem.mm in Sources */,
 				8A2B23E821EFE7AF00C3333B /* TKStopPlace.mm in Sources */,
+				8A2224F22231BDEB00025A9F /* Coordinate2D.cpp in Sources */,
 				8A2B241721F1D25300C3333B /* TKItinerary.m in Sources */,
 				8A66F30521ED647E005325FD /* Database.cpp in Sources */,
 				8AA28C0121FCBA2300FED656 /* TKRide.m in Sources */,
@@ -780,7 +788,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "Libraries/**";
 				INFOPLIST_FILE = TravelKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -807,7 +815,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "Libraries/**";
 				INFOPLIST_FILE = TravelKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
