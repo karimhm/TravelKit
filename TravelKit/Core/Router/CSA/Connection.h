@@ -16,6 +16,18 @@ namespace Router {
 
 class Connection {
 public:
+    class Compare {
+    public:
+        bool operator()(Connection& lhs, Connection& rhs) const {
+            return lhs.startTime() < rhs.startTime();
+        }
+        
+        bool operator()(const Connection& lhs, const Connection& rhs) const {
+            return lhs.startTime() < rhs.startTime();
+        }
+    };
+    
+public:
     Connection() {
     }
     
