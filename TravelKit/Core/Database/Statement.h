@@ -19,7 +19,7 @@ using ColumnMap = std::map<std::string, int32_t>;
     
 class Statement : public RefCounted<Statement> {
 public:
-    Statement(Ref<Database> db, const char* format, ...) ;
+    Statement(Ref<Database> db, const char* format, ...);
     Statement(Ref<Database> db, std::string query) : db_(db), query_(query) {
     }
     

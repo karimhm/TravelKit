@@ -8,16 +8,11 @@
 #include "Trip.h"
 #include "Mapping.h"
 #include "Error.h"
+#include "QueryRoute.h"
+#include "OmitSameTripArrival.h"
 
 using namespace tk;
 using namespace tk::Router;
-
-class ConnectionVectorCompare {
-public:
-    bool operator()(Connection& connection1, Connection& connection2) const {
-        return connection1.startTime() < connection2.startTime();
-    }
-};
 
 size_t IndexInfinity = std::numeric_limits<size_t>::max();
 
@@ -60,11 +55,11 @@ ErrorOr<void> CSA::load() {
         Status status = Status();
         
         while ((status = fetchStmt->next()).isRow()) {
-            StopTime stopTime = StopTime((*fetchStmt)[mapping.stopPlaceIDIndex()].int64Value(),
-                                         (*fetchStmt)[mapping.tripIDIndex()].int64Value(),
-                                         (*fetchStmt)[mapping.arrivalTimeIndex()].intValue());
-            
-            stopTimes.push_back(stopTime);
+            stopTimes.push_back({
+                static_cast<ItemID>((*fetchStmt)[mapping.stopPlaceIDIndex()].int64Value()),
+                static_cast<ItemID>((*fetchStmt)[mapping.tripIDIndex()].int64Value()),
+                (*fetchStmt)[mapping.arrivalTimeIndex()].intValue()
+            });
         }
         
         if (!status.isDone()) {
@@ -96,18 +91,16 @@ ErrorOr<void> CSA::load() {
         ItemID tripID = stopTimes[i].tripID();
         
         if (stopTimes[i].tripID() == stopTimes[i + 1].tripID()) {
-            Connection connection = Connection(stopTimes[i].stopPlaceID(),
-                                               stopTimes[i + 1].stopPlaceID(),
-                                               stopTimes[i].time(),
-                                               stopTimes[i + 1].time(),
-                                               tripID,
-                                               tripsByID[tripID].calendarID());
-            
-            connections.push_back(connection);
+            connections.push_back({stopTimes[i].stopPlaceID(),
+                stopTimes[i + 1].stopPlaceID(),
+                stopTimes[i].time(),
+                stopTimes[i + 1].time(),
+                tripID,
+                tripsByID[tripID].calendarID()});
         }
     }
     
-    std::sort(connections.begin(), connections.end(), ConnectionVectorCompare());
+    std::sort(connections.begin(), connections.end(), Connection::Compare());
     
     connections_ = std::move(connections);
     calendarByID_ = std::move(calendarByID);
@@ -120,18 +113,18 @@ ErrorOr<void> CSA::load() {
 ErrorOr<void> CSA::unload() {
     connections_.clear();
     calendarByID_.clear();
-    db_ = nullptr;
+    tripsByID_.clear();
     loaded_ = false;
     
     return {};
 }
 
-ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date) {
-    ItineraryVector itineraries = ItineraryVector();
+ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, QueryOptions options) {
+    std::vector<QueryRoute> routes = std::vector<QueryRoute>();
     Time departureTime = date.seconds();
     std::map<ItemID, Calendar> calendars;
     
-    /* Fetch all the available Calendars at the specified date */
+    // Fetch all the available Calendars for the given date
     for (auto &calendar: calendarByID_) {
         if (calendar.second.isAvailable(date)) {
             calendars[calendar.second.id()] = calendar.second;
@@ -146,6 +139,7 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date) {
      */
     size_t previousIndex = 0;
     
+    // Query loop
     for (size_t i = 0; i < connections_.size(); i++) {
         std::map<ItemID, Time> earliestArrival;
         std::map<ItemID, size_t> connectionIndex;
@@ -153,9 +147,9 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date) {
         earliestArrival[source] = previousDeparture;
         Time earliest = Time::Infinity();
         
-        /* Look for the earliest departure */
+        // Look for the earliest departure */
         for (size_t i = previousIndex; i < connections_.size(); i++) {
-            Connection connection = connections_[i];
+            const Connection& connection = connections_[i];
             if (connection.startTime() >= previousDeparture) {
                 previousIndex = i;
                 break;
@@ -163,7 +157,7 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date) {
         }
         
         for (size_t i = previousIndex; i < connections_.size(); i++) {
-            Connection connection = connections_[i];
+            const Connection& connection = connections_[i];
             Time startEarliest = Time::Infinity();
             Time endEarliest = Time::Infinity();
             
@@ -182,7 +176,7 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date) {
                 if (connection.endStopPlaceID() == destination && connection.endTime() < earliest) {
                     earliest = connection.endTime();
                 } else if (earliest <= connection.startTime()) {
-                    /* There is no better StopTime, so we break */
+                    // There is no better StopTime, so we break
                     break;
                 }
                 
@@ -195,75 +189,90 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date) {
         if (connectionIndex.count(destination)) {
             previousConnectionIndex = connectionIndex[destination];
         } else {
-            /* No departure were found for the destination StopPlace, so we break. */
+            // No departure were found for the destination StopPlace, so we break
             break;
         }
         
         ConnectionVector route = ConnectionVector();
+        size_t transfers = 0;
+        ItemID previousTrip = connections_[previousConnectionIndex].tripID();
         
         for (size_t i = 0; i < connectionIndex.size(); i++) {
-            Connection connection = connections_[previousConnectionIndex];
+            const Connection& connection = connections_[previousConnectionIndex];
             route.insert(route.begin(), connection);
+            
+            if (connection.tripID() != previousTrip) {
+                transfers++;
+                previousTrip = connection.tripID();
+            }
             
             if (connectionIndex.count(connection.startStopPlaceID())) {
                 previousConnectionIndex = connectionIndex[connection.startStopPlaceID()];
             } else {
-                previousConnectionIndex = IndexInfinity;
                 previousDeparture = Time(route.front().startTime().seconds() + 1);
                 break;
             }
         }
         
+        ItemID id = IID(static_cast<uint16_t>(routes.size())).rawID();
+        routes.push_back({id, std::move(route), transfers});
+    } // Query loop
+    
+    // Filters
+    if (options.omitSameTripArrival()) {
+        Filter::OmitSameTripArrival::apply(routes);
+    }
+    
+    // Construct itineraries
+    ItineraryVector itineraries = ItineraryVector();
+    
+    for (const auto& route: routes) {
         StopVector stops;
         RideVector rides;
-        ItemID previousTripID = route.front().tripID();
-        size_t routeSize = route.size();
+        const ConnectionVector& connections = route.connections();
+        
+        ItemID previousTripID = connections.front().tripID();
+        const size_t routeSize = connections.size();
         
         for (size_t i = 0; i < routeSize; i++) {
-            Connection connection = route[i];
+            const Connection& connection = connections[i];
             
-            /* The last StopTime in a trip */
+            // The last StopTime in a trip
             if (connection.tripID() != previousTripID) {
-                Stop stop = Stop(route[i - 1].endStopPlaceID(),
-                                 route[i - 1].tripID(),
-                                 route[i - 1].endTime());
+                stops.push_back({connections[i - 1].endStopPlaceID(),
+                                 connections[i - 1].tripID(),
+                                 connections[i - 1].endTime()});
                 
-                stops.push_back(stop);
                 previousTripID = connection.tripID();
                 
-                /* Create a Ride to hold the previous trip stops */
-                ItemID routeID = tripsByID_[stops.front().tripID()].routeID();
-                Ride ride = Ride(std::move(stops), routeID);
-                rides.push_back(std::move(ride));
+                // Create a Ride to hold the previous trip stops
+                const ItemID routeID = tripsByID_[stops.front().tripID()].routeID();
+                const ItemID tripID = stops.front().tripID();
+                rides.push_back({std::move(stops), routeID, tripID});
                 
-                /* Create a new StopVector to hold the next trip stops */
+                // Create a new StopVector to hold the next trip stops
                 stops = StopVector();
             }
             
-            Stop stop = Stop(connection.startStopPlaceID(),
+            stops.push_back({connection.startStopPlaceID(),
                              connection.tripID(),
-                             connection.startTime());
+                             connection.startTime()});
             
-            stops.push_back(stop);
-            
-            /* The last StopTime */
+            // The last StopTime
             if (i == routeSize - 1) {
-                Stop stop = Stop(connection.endStopPlaceID(),
+                stops.push_back({connection.endStopPlaceID(),
                                  connection.tripID(),
-                                 connection.endTime());
+                                 connection.endTime()});
                 
-                stops.push_back(stop);
-                
-                /* Create a Ride to hold the last trip stops */
+                // Create a Ride to hold the last trip stops
                 ItemID routeID = tripsByID_[stops.front().tripID()].routeID();
-                Ride ride = Ride(std::move(stops), routeID);
-                rides.push_back(std::move(ride));
+                ItemID tripID = stops.front().tripID();
+                rides.push_back({std::move(stops), routeID, tripID});
             }
         }
         
-        Ref<Itinerary> itinerary = makeRef<Itinerary>(rides);
-        itineraries.push_back(itinerary);
+        itineraries.push_back({std::move(rides)});
     }
     
-    return TripPlan(source, destination, date, itineraries);
+    return TripPlan(source, destination, date, std::move(itineraries));
 }

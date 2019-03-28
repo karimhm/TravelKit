@@ -19,7 +19,7 @@ public:
     Ride() {
     }
     
-    Ride(StopVector stops, ItemID routeID) : stops_(stops), routeID_(routeID) {
+    Ride(StopVector stops, ItemID routeID, ItemID tripID) : stops_(stops), routeID_(routeID), tripID_(tripID) {
     }
     
     const StopVector stops() const {
@@ -28,6 +28,10 @@ public:
     
     const ItemID routeID() const {
         return routeID_;
+    }
+    
+    const ItemID tripID() const {
+        return tripID_;
     }
     
     const Time duration() const {
@@ -45,6 +49,7 @@ public:
 private:
     StopVector stops_;
     ItemID routeID_;
+    ItemID tripID_;
 };
 
 using RideVector = std::vector<Ride>;

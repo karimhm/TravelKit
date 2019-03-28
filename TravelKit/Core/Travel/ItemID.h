@@ -17,10 +17,11 @@ using ItemID = uint64_t;
 
 class IID {
 public:
-    IID() : rawID_(0) {}
-    IID(ItemID rawID) : rawID_(rawID) {}
+    IID(ItemID rawID) : rawID_(rawID) {
+    }
     
-    IID(uint32_t time = uint32_t(std::time(0)),uint16_t counter = 0) {
+    IID(uint16_t counter) {
+        uint32_t time = uint32_t(std::time(0));
         uint16_t random;
         if (SecRandomCopyBytes(kSecRandomDefault, 2, &random) == 0) {
             rawID_ = uint64_t(time) | uint64_t(random) << 32 | uint64_t(counter) << 48;

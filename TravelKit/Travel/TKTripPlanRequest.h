@@ -8,6 +8,11 @@
 #import <Foundation/Foundation.h>
 #import <TravelKit/TKStopPlace.h>
 
+typedef NS_ENUM(NSInteger, TKTripPlanOptions) {
+    TKTripPlanOptionsNone                   = 0,
+    TKTripPlanOptionsOmitSameTripArrival    = 1 << 0
+};
+
 @interface TKTripPlanRequest : NSObject
 
 - (instancetype)initWithSource:(TKStopPlace *)source destination:(TKStopPlace *)destination;
@@ -16,5 +21,7 @@
 @property (strong, nonatomic) TKStopPlace *destination;
 
 @property (strong, nonatomic) NSDate *date;
+
+@property (nonatomic) TKTripPlanOptions options;
 
 @end

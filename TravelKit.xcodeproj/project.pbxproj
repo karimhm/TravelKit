@@ -172,6 +172,7 @@
 		8AA28C0B21FD13B000FED656 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		8AA5C0D82035BB09001821DA /* TKDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDefines.h; sourceTree = "<group>"; };
 		8AA5C0DA2035BBEE001821DA /* TKError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKError.h; sourceTree = "<group>"; };
+		8AAE965F2246214500D306E3 /* QueryRoute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QueryRoute.h; sourceTree = "<group>"; };
 		8AB3D98D20B34730005B0192 /* TKStop_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKStop_Private.h; sourceTree = "<group>"; };
 		8ADADC6D207C36AA0012CBB1 /* DistanceFunction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DistanceFunction.h; sourceTree = "<group>"; };
 		8ADADC6E207C36AA0012CBB1 /* DistanceFunction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DistanceFunction.cpp; sourceTree = "<group>"; };
@@ -179,6 +180,7 @@
 		8AF5C8482035D6DE00715995 /* TKConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKConstants.m; sourceTree = "<group>"; };
 		8AF5C859203618B500715995 /* NSError+TravelKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+TravelKit.h"; sourceTree = "<group>"; };
 		8AF5C85A203618B500715995 /* NSError+TravelKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSError+TravelKit.m"; sourceTree = "<group>"; };
+		8AFA68EC224589BB00E8FEED /* OmitSameTripArrival.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OmitSameTripArrival.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,7 +270,9 @@
 		8A2B23FA21F13FD300C3333B /* CSA */ = {
 			isa = PBXGroup;
 			children = (
+				8AFA68EB224589A100E8FEED /* Filters */,
 				8A4BEB6421F3AD630082AD13 /* Connection.h */,
+				8AAE965F2246214500D306E3 /* QueryRoute.h */,
 				8A2B240F21F1C94400C3333B /* CSARouter.h */,
 				8A2B241121F1CD1800C3333B /* CSARouter.cpp */,
 			);
@@ -436,6 +440,14 @@
 				8AF5C85A203618B500715995 /* NSError+TravelKit.m */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		8AFA68EB224589A100E8FEED /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				8AFA68EC224589BB00E8FEED /* OmitSameTripArrival.h */,
+			);
+			path = Filters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -780,6 +792,7 @@
 		8A5A88672033325300998074 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
@@ -806,6 +819,7 @@
 		8A5A88682033325300998074 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;

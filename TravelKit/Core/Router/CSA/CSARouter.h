@@ -30,7 +30,7 @@ public:
         return loaded_;
     }
     
-    ErrorOr<TripPlan> query(ItemID source, ItemID destination, Date date);
+    ErrorOr<TripPlan> query(ItemID source, ItemID destination, Date date, QueryOptions options);
     
 private:
     bool loaded_;

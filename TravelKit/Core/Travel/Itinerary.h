@@ -8,14 +8,13 @@
 #define TK_ITINERARY_H
 
 #include "Defines.h"
-#include "Ref.h"
 #include "StopPlace.h"
 #include "Ride.h"
 #include <vector>
 
 namespace tk {
 
-class Itinerary : public RefCounted<Itinerary> {
+class Itinerary {
 public:
     Itinerary(RideVector rides) : rides_(rides) {
     }
@@ -28,11 +27,19 @@ public:
         return rides_.back().arrivalTime() - rides_.front().departureTime();
     }
     
+    const Time departureTime() const {
+        return rides_.front().departureTime();
+    }
+    
+    const Time arrivalTime() const {
+        return rides_.back().arrivalTime();
+    }
+    
 private:
     RideVector rides_;
 };
 
-using ItineraryVector = std::vector<Ref<Itinerary>>;
+using ItineraryVector = std::vector<Itinerary>;
 
 }
 

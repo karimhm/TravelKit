@@ -543,7 +543,10 @@ cleanup:
     uint64_t departure = request.date.timeIntervalSince1970;
     uint64_t dayBegin = departure - (departure % 86400);
     
-    auto tripPlan = _router->query(from, to, departure);
+    auto options = tk::Router::QueryOptions();
+    options.omitSameTripArrival(request.options & TKTripPlanOptionsOmitSameTripArrival);
+    
+    const auto tripPlan = _router->query(from, to, departure, options);
     
     if (tripPlan.hasValue()) {
         NSMutableArray *itineraries = [[NSMutableArray alloc] init];
@@ -556,7 +559,7 @@ cleanup:
             NSDate *arrivalDate = nil;
             
             /* Add rides */
-            for (auto const &ride: itinerary->rides()) {
+            for (auto const &ride: itinerary.rides()) {
                 NSMutableArray<TKStop *> *stops = [[NSMutableArray alloc] init];
                 
                 /* Add stops */

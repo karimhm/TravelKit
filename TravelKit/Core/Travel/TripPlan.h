@@ -36,7 +36,7 @@ public:
         return date_;
     }
     
-    const ItineraryVector itineraries() {
+    const ItineraryVector itineraries() const {
         return itineraries_;
     }
     
