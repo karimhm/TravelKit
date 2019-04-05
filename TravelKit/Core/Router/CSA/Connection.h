@@ -16,6 +16,13 @@ namespace Router {
 
 class Connection {
 public:
+    enum class Type : uint16_t {
+        Unknown = 0,
+        Walk = 1,
+        Ride = 2,
+    };
+    
+public:
     class Compare {
     public:
         bool operator()(Connection& lhs, Connection& rhs) const {
@@ -31,13 +38,14 @@ public:
     Connection() {
     }
     
-    Connection(ItemID startStopPlaceID, ItemID endStopPlaceID , Time startTime, Time endTime , ItemID tripID, ItemID calendarID)
+    Connection(ItemID startStopPlaceID, ItemID endStopPlaceID , Time startTime, Time endTime , ItemID tripID, ItemID calendarID, Type type = Type::Ride)
                : startStopPlaceID_(startStopPlaceID)
                , endStopPlaceID_(endStopPlaceID)
                , startTime_(startTime)
                , endTime_(endTime)
                , tripID_(tripID)
                , calendarID_(calendarID)
+               , type_(type)
     {
     }
     
@@ -65,6 +73,10 @@ public:
         return calendarID_;
     }
     
+    Type type() const {
+        return type_;
+    }
+    
 private:
     ItemID startStopPlaceID_;
     ItemID endStopPlaceID_;
@@ -72,6 +84,7 @@ private:
     Time endTime_;
     ItemID tripID_;
     ItemID calendarID_;
+    Type type_;
 };
 
 using ConnectionVector = std::vector<Connection>;

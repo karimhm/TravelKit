@@ -14,15 +14,16 @@
 #include <vector>
 
 namespace tk {
-    
-constexpr uint32_t DaysMask = 0x1;
-
-enum Condition : uint16_t {
-    Add = 1,
-    Remove = 2,
-};
 
 class DateCondition {
+public:
+    static constexpr uint32_t DaysMask = 0x1;
+    
+    enum class Condition : uint16_t {
+        Add = 1,
+        Remove = 2,
+    };
+    
 public:
     DateCondition() {
     }
@@ -64,7 +65,7 @@ public:
     }
     
     const bool isAvailable(Date date) const {
-        if ((DaysMask << date.day()) & days_) {
+        if ((DateCondition::DaysMask << date.day()) & days_) {
             return true;
         } else {
             return false;

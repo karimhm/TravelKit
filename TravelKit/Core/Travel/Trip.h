@@ -13,9 +13,10 @@
 
 namespace tk {
 
-using Features = uint64_t;
-
 class Trip {
+public:
+    using Features = uint64_t;
+    
 public:
     Trip() {
     }

@@ -20,16 +20,16 @@ TK_EXTERN const FunctionContext FunctionContextEmpty = {
     .destroy = nullptr,
 };
 
-static int OptionsToSQLiteFlags(Options options) {
+static int OptionsToSQLiteFlags(Database::Options options) {
     int flags = 0;
 
-    if (options & Options::OpenReadWrite) {
+    if (options & Database::Options::OpenReadWrite) {
         flags |= SQLITE_OPEN_READWRITE;
-    } else if (options & Options::OpenReadOnly) {
+    } else if (options & Database::Options::OpenReadOnly) {
         flags |= SQLITE_OPEN_READONLY;
     }
     
-    if (options & Options::Create) {
+    if (options & Database::Options::Create) {
         flags |= SQLITE_OPEN_CREATE;
     }
 

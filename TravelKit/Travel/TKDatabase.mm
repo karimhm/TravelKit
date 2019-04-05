@@ -55,7 +55,7 @@ using namespace tk;
 #pragma mark - Loading
 
 - (BOOL)openDatabase:(NSError **)error {
-    BOOL status = _db->open(Options::OpenReadOnly).isOK();
+    BOOL status = _db->open(Database::Options::OpenReadOnly).isOK();
     
     if (status) {
         if (![self addFunctions:nil]) {

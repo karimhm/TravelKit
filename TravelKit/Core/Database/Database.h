@@ -15,15 +15,16 @@
 #include <unistd.h>
 
 namespace tk {
-    
-enum Options : int32_t {
-    None = 0,
-    OpenReadOnly = 1 << 0,
-    OpenReadWrite = 1 << 1,
-    Create = 1 << 2
-};
 
 class Database : public RefCounted<Database> {
+public:
+    enum Options : int32_t {
+        None = 0,
+        OpenReadOnly = 1 << 0,
+        OpenReadWrite = 1 << 1,
+        Create = 1 << 2
+    };
+    
 public:
     Database(std::string path) : path_(path), db_(nullptr) {
     }
