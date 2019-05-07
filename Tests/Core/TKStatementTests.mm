@@ -24,7 +24,7 @@ using namespace tk;
     [super setUp];
     
     self.db = makeRef<Database>(self.dbPath.UTF8String);
-    XCTAssertTrue(self.db->open(Options::OpenReadOnly).isOK(), "Unable to open the test database");
+    XCTAssertTrue(self.db->open(Database::Options::OpenReadOnly).isOK(), "Unable to open the test database");
 }
 
 - (void)tearDown {

@@ -26,11 +26,11 @@ void TKDatabaseTestCustomFunction(ContextRef context, int valuesCount, ValueRef 
     Ref<Database> db = makeRef<Database>(self.dbPath.UTF8String);
     
     // Check if the databse open successfully
-    XCTAssertTrue(db->open(Options::OpenReadOnly).isOK(), "The database was not opened successfully");
+    XCTAssertTrue(db->open(Database::Options::OpenReadOnly).isOK(), "The database was not opened successfully");
     
     // Check if the database handle read write flags correctly
     XCTAssertFalse(db->execute("INSERT INTO test(id , value) VALUES(2, 'text');").isOK(), "The Database is readonly. The statement should not execute successfully");
-    XCTAssertTrue(db->open(Options::OpenReadWrite).isOK(), "The database was not opened successfully");
+    XCTAssertTrue(db->open(Database::Options::OpenReadWrite).isOK(), "The database was not opened successfully");
     XCTAssertTrue(db->execute("INSERT INTO test(id , value) VALUES(2, 'text');").isOK(), "The Database is readonly. The statement should not execute successfully");
     
     // The database should be marked as open if its open
@@ -47,7 +47,7 @@ void TKDatabaseTestCustomFunction(ContextRef context, int valuesCount, ValueRef 
 
 - (void)testCheckTableAndColumnExist {
     Ref<Database> db = makeRef<Database>(self.dbPath.UTF8String);
-    db->open(Options::OpenReadOnly);
+    db->open(Database::Options::OpenReadOnly);
     
     // Check if the table exist
     XCTAssertTrue(db->tableExist("test"), "'test' table doesn't exist");
@@ -60,7 +60,7 @@ void TKDatabaseTestCustomFunction(ContextRef context, int valuesCount, ValueRef 
 
 - (void)testCustomFunction {
     Ref<Database> db = makeRef<Database>(self.dbPath.UTF8String);
-    db->open(Options::OpenReadOnly);
+    db->open(Database::Options::OpenReadOnly);
     
     FunctionContext function = FunctionContext::Empty();
     function.name = "customFunction";
