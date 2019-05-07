@@ -72,7 +72,6 @@
 		8AA28C0721FD04DD00FED656 /* TKTripPlan.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA28C0521FD04DD00FED656 /* TKTripPlan.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AA28C0821FD04DD00FED656 /* TKTripPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA28C0621FD04DD00FED656 /* TKTripPlan.m */; };
 		8AA28C0A21FD09D300FED656 /* TKTripPlan_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA28C0921FD09D300FED656 /* TKTripPlan_Private.h */; };
-		8AA28C0C21FD13B000FED656 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8AA28C0B21FD13B000FED656 /* README.md */; };
 		8ADADC90207CD21E0012CBB1 /* DistanceFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADADC6D207C36AA0012CBB1 /* DistanceFunction.h */; };
 		8ADADC91207CD2210012CBB1 /* DistanceFunction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* DistanceFunction.cpp */; };
 		8AF162B6222F213B004AA11E /* DistanceFunction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ADADC6E207C36AA0012CBB1 /* DistanceFunction.cpp */; };
@@ -592,7 +591,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AA28C0C21FD13B000FED656 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
