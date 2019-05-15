@@ -17,4 +17,5 @@
 #import <TravelKit/TKStop.h>
 #import <TravelKit/TKRoute.h>
 #import <TravelKit/TKRide.h>
+#import <TravelKit/TKCalendar.h>
 #import <TravelKit/TKItinerary.h>

@@ -60,12 +60,12 @@ TK_ALWAYS_INLINE uint64_t TKAligned64(uint64_t data) {
 }
 
 TK_ALWAYS_INLINE uint64_t TKSToU64(int64_t data) {
-    union utos {
+    union stou {
         uint64_t uValue;
         int64_t sValue;
-    } utos;
-    utos.sValue = data;
-    return utos.uValue;
+    } stou;
+    stou.sValue = data;
+    return stou.uValue;
 }
 
 TK_ALWAYS_INLINE int64_t TKUToS64(uint64_t data) {

@@ -26,12 +26,20 @@ using namespace tk;
     Ref<Router::CSA> _router;
     Ref<Statement> _fetchProperties;
     Ref<Statement> _fetchLanguages;
+    
+    // StopPlace
     Ref<Statement> _fetchStopPlaceById;
     Ref<Statement> _fetchStopPlacesByName;
     Ref<Statement> _fetchStopPlacesByLocation;
+    
+    // Route
     Ref<Statement> _fetchRouteColorById;
     Ref<Statement> _fetchRouteById;
     Ref<Statement> _fetchRouteByName;
+    
+    // Calendar
+    Ref<Statement> _fetchCalendarById;
+    Ref<Statement> _fetchCalendarByName;
 }
 
 #pragma mark - Initialization
@@ -159,6 +167,30 @@ using namespace tk;
     "AND Localization.language = :language "
     "LIMIT :limit");
     
+    /**/
+    _fetchCalendarById = makeRef<Statement>(_db, ""
+    "SELECT "
+        "Calendar.*, "
+        "Localization.text AS name "
+    "FROM Calendar "
+    "JOIN "
+        "Localization ON Localization.id = Calendar.nameId "
+    "WHERE Calendar.id = :id "
+    "AND Localization.language = :language");
+    
+    _fetchCalendarByName = makeRef<Statement>(_db, ""
+    "SELECT "
+        "Calendar.*, "
+        "Localization.text AS name "
+    "FROM Calendar "
+    "JOIN "
+        "Localization ON Localization.id = Calendar.nameId "
+    "WHERE Calendar.nameId IN ("
+        "SELECT id FROM Localization WHERE text LIKE :name"
+    ") "
+    "AND Localization.language = :language "
+    "LIMIT :limit");
+    
     if (!_fetchProperties->prepare().isOK()) {
         if (error) {
             *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
@@ -216,6 +248,22 @@ using namespace tk;
     }
     
     if (!_fetchRouteByName->prepare().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        status = false;
+        goto cleanup;
+    }
+    
+    if (!_fetchCalendarById->prepare().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        status = false;
+        goto cleanup;
+    }
+    
+    if (!_fetchCalendarByName->prepare().isOK()) {
         if (error) {
             *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
         }
@@ -305,6 +353,8 @@ cleanup:
     _fetchRouteColorById->close();
     _fetchRouteById->close();
     _fetchRouteByName->close();
+    _fetchCalendarById->close();
+    _fetchCalendarByName->close();
     
     _router->unload();
     
@@ -442,6 +492,42 @@ cleanup:
     }
 }
 
+- (TKCalendar *)_fetchCalendarWithID:(TKItemID)itemID error:(NSError **)error {
+    if (!_fetchCalendarById->clearAndReset().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+    
+    if (!_fetchCalendarById->bind(TKUToS64(itemID), ":id").isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+    
+    if (!_fetchCalendarById->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+    
+    Status status = Status();
+    if ((status = _fetchCalendarById->next()).isRow()) {
+        TKCalendar *calendar = [[TKCalendar alloc] initWithStatement:_fetchCalendarById];
+        return calendar;
+    } else if (status.isDone()) {
+        return nil;
+    } else {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        return nil;
+    }
+}
+
 - (void)fetchStopPlaceWithID:(TKItemID)itemID completion:(TKStopPlaceFetchHandler)completion {
     NSError *error = nil;
     TKStopPlace *stopPlace = [self _fetchStopPlaceWithID:itemID error:&error];
@@ -548,7 +634,7 @@ cleanup:
     }
     
     Status status = Status();
-    NSMutableArray *stopPlaces = [[NSMutableArray alloc] init];
+    NSMutableArray <TKStopPlace *> *stopPlaces = [[NSMutableArray alloc] init];
     
     while ((status = _fetchStopPlacesByLocation->next()).isRow()) {
         TKStopPlace *stopPlace = [[TKStopPlace alloc] initWithStatement:_fetchStopPlacesByLocation];
@@ -563,8 +649,6 @@ cleanup:
         completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
     }
 }
-
-/* Route */
 
 - (void)fetchRouteWithID:(TKItemID)itemID completion:(TKRouteFetchHandler)completion {
     NSError *error = nil;
@@ -613,7 +697,7 @@ cleanup:
     }
     
     Status status = SQLITE_OK;
-    NSMutableArray *routes = [[NSMutableArray alloc] init];
+    NSMutableArray <TKRoute *> *routes = [[NSMutableArray alloc] init];
     
     while ((status = _fetchRouteByName->next()).isRow()) {
         TKRoute *route = [[TKRoute alloc] initWithStatement:_fetchRouteByName];
@@ -631,7 +715,70 @@ cleanup:
     }
 }
 
-/* Route */
+- (void)fetchCalendarWithID:(TKItemID)itemID completion:(TKCalendarFetchHandler)completion {
+    NSError *error = nil;
+    TKCalendar *calendar = [self _fetchCalendarWithID:itemID error:&error];
+    
+    if (completion) {
+        if (calendar) {
+            completion(@[calendar], error);
+        } else {
+            completion(@[], error);
+        }
+    }
+}
+
+- (void)fetchCalendarsWithName:(NSString *)name completion:(TKCalendarFetchHandler)completion {
+    [self fetchCalendarsWithName:name completion:completion limit:-1];
+}
+
+- (void)fetchCalendarsWithName:(NSString *)name completion:(TKCalendarFetchHandler)completion limit:(TKInt)limit {
+    if (!_fetchCalendarByName->clearAndReset().isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
+    if (!_fetchCalendarByName->bind(std::string(name.UTF8String).append("%"), ":name").isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
+    if (!_fetchCalendarByName->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
+    if (!_fetchCalendarByName->bind(limit, ":limit").isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
+    Status status = SQLITE_OK;
+    NSMutableArray <TKCalendar *> *calendars = [[NSMutableArray alloc] init];
+    
+    while ((status = _fetchCalendarByName->next()).isRow()) {
+        TKCalendar *calendar = [[TKCalendar alloc] initWithStatement:_fetchCalendarByName];
+        [calendars addObject:calendar];
+    }
+    
+    if (status.isDone()) {
+        if (completion) {
+            completion(calendars, nil);
+        }
+    } else {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+    }
+}
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {
     [self fetchTripPlanWithRequest:request completion:completion limit:-1];
@@ -640,16 +787,16 @@ cleanup:
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion limit:(TKInt)limit {
     ItemID from = request.source.identifier;
     ItemID to = request.destination.identifier;
-    uint64_t departure = request.date.timeIntervalSince1970;
+    time_t departure = request.date.timeIntervalSince1970;
     uint64_t dayBegin = departure - (departure % 86400);
     
     auto options = tk::Router::QueryOptions();
     options.omitSameTripArrival(request.options & TKTripPlanOptionsOmitSameTripArrival);
     
-    const auto tripPlan = _router->query(from, to, departure, options);
+    const auto tripPlan = _router->query(from, to, Date(departure), options);
     
     if (tripPlan.hasValue()) {
-        NSMutableArray *itineraries = [[NSMutableArray alloc] init];
+        NSMutableArray <TKItinerary *> *itineraries = [[NSMutableArray alloc] init];
         
         for (auto const &itinerary: tripPlan.value().itineraries()) {
             NSMutableArray<TKRide *> *rides = [[NSMutableArray alloc] init];

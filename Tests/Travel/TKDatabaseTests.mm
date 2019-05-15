@@ -45,6 +45,16 @@
                               nameId INTEGER REFERENCES Localization(id),\
                               color INT\
                           );\
+                          CREATE TABLE IF NOT EXISTS Calendar (\
+                              id INTEGER PRIMARY KEY NOT NULL,\
+                              nameId INTEGER REFERENCES Localization(id),\
+                              days INT CHECK (days <= 127) NOT NULL\
+                          );\
+                          CREATE TABLE IF NOT EXISTS Trip (\
+                              id INTEGER PRIMARY KEY NOT NULL,\
+                              calendarId INTEGER REFERENCES Calendar(id) NOT NULL,\
+                              routeId INTEGER REFERENCES Route(id) NOT NULL\
+                          );\
                           ", nullptr, nullptr, nullptr);
     
     XCTAssertTrue(status == SQLITE_OK, "Unable to create stop places table");
@@ -56,6 +66,9 @@
                           INSERT INTO Localization(id, language, text) VALUES(4, 'en', 'testPlaceA2');\
                           INSERT INTO Localization(id, language, text) VALUES(5, 'en', 'testPlaceA3');\
                           INSERT INTO Localization(id, language, text) VALUES(6, 'en', 'testRoute1');\
+                          INSERT INTO Localization(id, language, text) VALUES(7, 'en', 'testCalendar1');\
+                          INSERT INTO Localization(id, language, text) VALUES(8, 'en', 'testCalendar2');\
+                          INSERT INTO Localization(id, language, text) VALUES(9, 'en', 'testCalendar3');\
                           \
                           INSERT INTO Localization(id, language, text) VALUES(1, 'ar', 'testPlace1-ar');\
                           \
@@ -71,9 +84,17 @@
                           INSERT INTO Properties(id, value) VALUES('testProperty2', 1);\
                           INSERT INTO Properties(id, value) VALUES('testProperty3', 1.2);\
                           INSERT INTO Properties(id, value) VALUES('testProperty4', NULL);\
+                          \
+                          INSERT INTO Calendar(id, nameId, days) VALUES(1, 7, 127);\
+                          INSERT INTO Calendar(id, nameId, days) VALUES(2, 8, 127);\
+                          INSERT INTO Calendar(id, nameId, days) VALUES(3, 9, 127);\
+                          \
+                          INSERT INTO Trip(id, calendarId, routeId) VALUES(1, 1, 1);\
                           ", nullptr, nullptr, nullptr);
     
-    XCTAssertTrue(status == SQLITE_OK, "Unable to insert a test columns");
+    XCTAssertTrue(status == SQLITE_OK, "Unable to insert test columns");
+    
+    // SELECT id, calendarId, routeId FROM Trip
     
     self.database = [[TKDatabase alloc] initWithPath:self.dbPath];
     NSError *error = nil;
@@ -207,6 +228,88 @@
     
     XCTAssertTrue(stopPlaces.count == 2, @"The number of stop places should be 2");
     NSLog(@"%@", stopPlaces);
+}
+
+- (void)testFetchCalendarByID {
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    
+    __block NSArray<TKCalendar *> *calendars = nil;
+    __block NSError *fetchError = nil;
+    
+    
+    [self.database fetchCalendarWithID:1 completion:^(NSArray<TKCalendar *> *result, NSError *error) {
+        calendars = result;
+        fetchError = error;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    XCTAssertTrue(calendars.count == 1, @"The number of calendars should be 1");
+    XCTAssertTrue(fetchError == nil, @"Fetching calendars did fail %@", fetchError);
+    
+    XCTAssertTrue(calendars.firstObject.identifier == 1, @"The calendar identifier is incorrect. It should be 1");
+    XCTAssertTrue([calendars.firstObject.name isEqualToString:@"testCalendar1"], @"The calendar name is incorrect. It should be 'testCalendar1'");
+    XCTAssertTrue(calendars.firstObject.days == 127, @"The calendar days is incorrect. It should be '127', current: %i", calendars.firstObject.days);
+    
+    semaphore = dispatch_semaphore_create(0);
+    
+    // Check fetching a non-existing calendar
+    [self.database fetchCalendarWithID:9999999 completion:^(NSArray<TKCalendar *> *result, NSError *error) {
+        calendars = result;
+        fetchError = error;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    XCTAssertTrue(calendars.count == 0, @"The number of calendars should be 0");
+    XCTAssertTrue(fetchError == nil, @"Fetching calendars did fail %@", fetchError);
+}
+
+- (void)testFetchCalendarsByName {
+    __block NSArray<TKCalendar *> *calendars = nil;
+    __block NSError *fetchError = nil;
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [self.database fetchCalendarsWithName:@"testCalendar2" completion:^(NSArray<TKCalendar *> *result, NSError *error) {
+        calendars = result;
+        fetchError = error;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    // Check the nulber of fetched stop places
+    XCTAssertTrue(calendars.count == 1, @"The number of calendars should be 1");
+    XCTAssertTrue(fetchError == nil, @"Fetching calendars did fail %@", fetchError);
+    
+    // Check the calendar properties
+    XCTAssertTrue(calendars.firstObject.identifier == 2, @"The calendar identifier is incorrect. It should be 2");
+    XCTAssertTrue([calendars.firstObject.name isEqualToString:@"testCalendar2"], @"The calendar name is incorrect. It should be 'testPlace1'");
+    XCTAssertTrue(calendars.firstObject.days == 127, @"The calendar days property is incorrect. It should be '127', current: %i", calendars.firstObject.days);
+    
+    semaphore = dispatch_semaphore_create(0);
+    [self.database fetchCalendarsWithName:@"testCalend" completion:^(NSArray<TKCalendar *> *result, NSError *error) {
+        calendars = result;
+        fetchError = error;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    XCTAssertTrue(calendars.count == 3, @"The number of calendars should be 3");
+    XCTAssertTrue(fetchError == nil, @"Fetching calendars did fail %@", fetchError);
+    
+    // Check fetching with a limit
+    semaphore = dispatch_semaphore_create(0);
+    [self.database fetchCalendarsWithName:@"testCalendar" completion:^(NSArray<TKCalendar *> *result, NSError *error) {
+        calendars = result;
+        fetchError = error;
+        dispatch_semaphore_signal(semaphore);
+    } limit:2];
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    XCTAssertTrue(calendars.count == 2, @"The number of calendars should be , current: %lu", (unsigned long)calendars.count);
+    XCTAssertTrue(fetchError == nil, @"Fetching calendars did fail %@", fetchError);
 }
 
 - (void)testProperties {
