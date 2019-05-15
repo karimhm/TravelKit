@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^TKStopPlaceFetchHandler)(NSArray<TKStopPlace *> * __nullable result, NSError * __nullable error);
 typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError * __nullable error);
+typedef void (^TKRouteFetchHandler)(NSArray<TKRoute *> * __nullable result, NSError * __nullable error);
 
 @interface TKDatabase : NSObject
 
@@ -38,6 +39,10 @@ typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError *
 - (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion;
 - (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit;
 - (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit;
+
+- (void)fetchRouteWithID:(TKItemID)itemID completion:(TKRouteFetchHandler)completion;
+- (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion;
+- (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion limit:(TKInt)limit;
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion;
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion limit:(TKInt)limit;

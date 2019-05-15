@@ -31,6 +31,7 @@ using namespace tk;
     Ref<Statement> _fetchStopPlacesByLocation;
     Ref<Statement> _fetchRouteColorById;
     Ref<Statement> _fetchRouteById;
+    Ref<Statement> _fetchRouteByName;
 }
 
 #pragma mark - Initialization
@@ -55,6 +56,14 @@ using namespace tk;
 #pragma mark - Loading
 
 - (BOOL)openDatabase:(NSError **)error {
+    if (_db->isOpen()) {
+        if (error) {
+            *error = nil;
+        }
+        
+        return true;
+    }
+    
     BOOL status = _db->open(Database::Options::OpenReadOnly).isOK();
     
     if (status) {
@@ -133,9 +142,22 @@ using namespace tk;
         "Localization.text AS name "
     "FROM Route "
     "JOIN "
-    "Localization ON Localization.id = Route.nameId "
-        "WHERE Route.id = :id "
+        "Localization ON Localization.id = Route.nameId "
+    "WHERE Route.id = :id "
     "AND Localization.language = :language");
+    
+    _fetchRouteByName = makeRef<Statement>(_db, ""
+    "SELECT "
+        "Route.*, "
+        "Localization.text AS name "
+    "FROM Route "
+    "JOIN "
+        "Localization ON Localization.id = Route.nameId "
+    "WHERE Route.nameId IN ("
+        "SELECT id FROM Localization WHERE text LIKE :name"
+    ") "
+    "AND Localization.language = :language "
+    "LIMIT :limit");
     
     if (!_fetchProperties->prepare().isOK()) {
         if (error) {
@@ -186,6 +208,14 @@ using namespace tk;
     }
     
     if (!_fetchRouteById->prepare().isOK()) {
+        if (error) {
+            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
+        }
+        status = false;
+        goto cleanup;
+    }
+    
+    if (!_fetchRouteByName->prepare().isOK()) {
         if (error) {
             *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
         }
@@ -274,6 +304,7 @@ cleanup:
     _fetchStopPlacesByLocation->close();
     _fetchRouteColorById->close();
     _fetchRouteById->close();
+    _fetchRouteByName->close();
     
     _router->unload();
     
@@ -532,6 +563,75 @@ cleanup:
         completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
     }
 }
+
+/* Route */
+
+- (void)fetchRouteWithID:(TKItemID)itemID completion:(TKRouteFetchHandler)completion {
+    NSError *error = nil;
+    TKRoute *route = [self _fetchRouteWithID:itemID error:&error];
+    
+    if (completion) {
+        if (route) {
+            completion(@[route], error);
+        } else {
+            completion(@[], error);
+        }
+    }
+}
+
+- (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion {
+    [self fetchRoutesWithName:name completion:completion limit:-1];
+}
+
+- (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion limit:(TKInt)limit {
+    if (!_fetchRouteByName->clearAndReset().isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
+    if (!_fetchRouteByName->bind(std::string(name.UTF8String).append("%"), ":name").isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
+    if (!_fetchRouteByName->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
+    if (!_fetchRouteByName->bind(limit, ":limit").isOK()) {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+        return;
+    }
+    
+    Status status = SQLITE_OK;
+    NSMutableArray *routes = [[NSMutableArray alloc] init];
+    
+    while ((status = _fetchRouteByName->next()).isRow()) {
+        TKRoute *route = [[TKRoute alloc] initWithStatement:_fetchRouteByName];
+        [routes addObject:route];
+    }
+    
+    if (status.isDone()) {
+        if (completion) {
+            completion(routes, nil);
+        }
+    } else {
+        if (completion) {
+            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        }
+    }
+}
+
+/* Route */
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {
     [self fetchTripPlanWithRequest:request completion:completion limit:-1];
