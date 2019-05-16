@@ -386,6 +386,10 @@ cleanup:
 
 #pragma mark - Fetching
 
+- (void)fetchStopPlacesWithCompletion:(TKStopPlaceFetchHandler)completion {
+    [self fetchStopPlacesWithName:[NSString string] limit:-1 completion:completion];
+}
+
 - (TKStopPlace *)_fetchStopPlaceWithID:(TKItemID)itemID error:(NSError **)error {
     if (!_fetchStopPlaceById->clearAndReset().isOK()) {
         if (error) {
@@ -542,14 +546,14 @@ cleanup:
 }
 
 - (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion {
-    [self fetchStopPlacesWithName:name completion:completion limit:-1];
+    [self fetchStopPlacesWithName:name limit:-1 completion:completion];
 }
 
 - (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion {
-    [self fetchStopPlacesWithLocation:location completion:completion limit:-1];
+    [self fetchStopPlacesWithLocation:location limit:-1 completion:completion];
 }
 
-- (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit {
+- (void)fetchStopPlacesWithName:(NSString *)name limit:(TKInt)limit completion:(TKStopPlaceFetchHandler)completion {
     if (!_fetchStopPlacesByName->clearAndReset().isOK()) {
         if (completion) {
             completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
@@ -597,7 +601,7 @@ cleanup:
     }
 }
 
-- (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit {
+- (void)fetchStopPlacesWithLocation:(CLLocation *)location limit:(TKInt)limit completion:(TKStopPlaceFetchHandler)completion {
     if (!_fetchStopPlacesByLocation->clearAndReset().isOK()) {
         if (completion) {
             completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
@@ -650,6 +654,10 @@ cleanup:
     }
 }
 
+- (void)fetchRoutesWithCompletion:(TKRouteFetchHandler)completion {
+    [self fetchRoutesWithName:[NSString string] limit:-1 completion:completion];
+}
+
 - (void)fetchRouteWithID:(TKItemID)itemID completion:(TKRouteFetchHandler)completion {
     NSError *error = nil;
     TKRoute *route = [self _fetchRouteWithID:itemID error:&error];
@@ -664,10 +672,10 @@ cleanup:
 }
 
 - (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion {
-    [self fetchRoutesWithName:name completion:completion limit:-1];
+    [self fetchRoutesWithName:name limit:-1 completion:completion];
 }
 
-- (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion limit:(TKInt)limit {
+- (void)fetchRoutesWithName:(NSString *)name limit:(TKInt)limit completion:(TKRouteFetchHandler)completion {
     if (!_fetchRouteByName->clearAndReset().isOK()) {
         if (completion) {
             completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
@@ -715,6 +723,10 @@ cleanup:
     }
 }
 
+- (void)fetchCalendarsWithCompletion:(TKCalendarFetchHandler)completion {
+    [self fetchCalendarsWithName:[NSString string] limit:-1 completion:completion];
+}
+
 - (void)fetchCalendarWithID:(TKItemID)itemID completion:(TKCalendarFetchHandler)completion {
     NSError *error = nil;
     TKCalendar *calendar = [self _fetchCalendarWithID:itemID error:&error];
@@ -729,10 +741,10 @@ cleanup:
 }
 
 - (void)fetchCalendarsWithName:(NSString *)name completion:(TKCalendarFetchHandler)completion {
-    [self fetchCalendarsWithName:name completion:completion limit:-1];
+    [self fetchCalendarsWithName:name limit:-1 completion:completion];
 }
 
-- (void)fetchCalendarsWithName:(NSString *)name completion:(TKCalendarFetchHandler)completion limit:(TKInt)limit {
+- (void)fetchCalendarsWithName:(NSString *)name limit:(TKInt)limit completion:(TKCalendarFetchHandler)completion {
     if (!_fetchCalendarByName->clearAndReset().isOK()) {
         if (completion) {
             completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
@@ -781,10 +793,10 @@ cleanup:
 }
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {
-    [self fetchTripPlanWithRequest:request completion:completion limit:-1];
+    [self fetchTripPlanWithRequest:request limit:-1 completion:completion];
 }
 
-- (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion limit:(TKInt)limit {
+- (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request limit:(TKInt)limit completion:(TKTripPlanFetchHandler)completion {
     ItemID from = request.source.identifier;
     ItemID to = request.destination.identifier;
     time_t departure = request.date.timeIntervalSince1970;

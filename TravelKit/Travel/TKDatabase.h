@@ -36,22 +36,25 @@ typedef void (^TKCalendarFetchHandler)(NSArray<TKCalendar *> * __nullable result
 @property (nonatomic, readonly) NSArray <NSString *> *languages;
 @property (nonatomic, nullable) NSString *selectedLanguage;
 
+- (void)fetchStopPlacesWithCompletion:(TKStopPlaceFetchHandler)completion;
 - (void)fetchStopPlaceWithID:(TKItemID)itemID completion:(TKStopPlaceFetchHandler)completion;
 - (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion;
 - (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion;
-- (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit;
-- (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion limit:(TKInt)limit;
+- (void)fetchStopPlacesWithName:(NSString *)name limit:(TKInt)limit completion:(TKStopPlaceFetchHandler)completion;
+- (void)fetchStopPlacesWithLocation:(CLLocation *)location limit:(TKInt)limit completion:(TKStopPlaceFetchHandler)completion;
 
+- (void)fetchRoutesWithCompletion:(TKRouteFetchHandler)completion;
 - (void)fetchRouteWithID:(TKItemID)itemID completion:(TKRouteFetchHandler)completion;
 - (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion;
-- (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion limit:(TKInt)limit;
+- (void)fetchRoutesWithName:(NSString *)name limit:(TKInt)limit completion:(TKRouteFetchHandler)completion;
 
+- (void)fetchCalendarsWithCompletion:(TKCalendarFetchHandler)completion;
 - (void)fetchCalendarWithID:(TKItemID)itemID completion:(TKCalendarFetchHandler)completion;
 - (void)fetchCalendarsWithName:(NSString *)name completion:(TKCalendarFetchHandler)completion;
-- (void)fetchCalendarsWithName:(NSString *)name completion:(TKCalendarFetchHandler)completion limit:(TKInt)limit;
+- (void)fetchCalendarsWithName:(NSString *)name limit:(TKInt)limit completion:(TKCalendarFetchHandler)completion;
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion;
-- (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion limit:(TKInt)limit;
+- (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request limit:(TKInt)limit completion:(TKTripPlanFetchHandler)completion;
 
 @end
 
