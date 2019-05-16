@@ -183,11 +183,11 @@
     
     // Check fetching with a limit
     semaphore = dispatch_semaphore_create(0);
-    [self.database fetchStopPlacesWithName:@"testPlace" completion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    [self.database fetchStopPlacesWithName:@"testPlace" limit:2 completion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
-    } limit:2];
+    }];
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
     XCTAssertTrue(stopPlaces.count == 2, @"The number of StopPlaces should be 2");
@@ -219,11 +219,11 @@
     
     // Check fetching with a limit
     semaphore = dispatch_semaphore_create(0);
-    [self.database fetchStopPlacesWithLocation:location completion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    [self.database fetchStopPlacesWithLocation:location limit:2 completion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
-    } limit:2];
+    }];
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
     XCTAssertTrue(stopPlaces.count == 2, @"The number of stop places should be 2");
@@ -301,11 +301,11 @@
     
     // Check fetching with a limit
     semaphore = dispatch_semaphore_create(0);
-    [self.database fetchCalendarsWithName:@"testCalendar" completion:^(NSArray<TKCalendar *> *result, NSError *error) {
+    [self.database fetchCalendarsWithName:@"testCalendar" limit:2 completion:^(NSArray<TKCalendar *> *result, NSError *error) {
         calendars = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
-    } limit:2];
+    }];
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
     XCTAssertTrue(calendars.count == 2, @"The number of calendars should be , current: %lu", (unsigned long)calendars.count);
@@ -376,11 +376,11 @@
     fetchError = nil;
     
     CLLocation *location = [[CLLocation alloc] initWithLatitude:0 longitude:0];
-    [self.database fetchStopPlacesWithLocation:location completion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    [self.database fetchStopPlacesWithLocation:location limit:1 completion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
-    } limit:1];
+    }];
     
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
