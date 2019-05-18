@@ -14,3 +14,6 @@
 @property (nonatomic, readonly, getter=isValid) BOOL valid;
 
 @end
+
+TK_EXTERN NSString *TKItemIdentifier(TKItem *item);
+TK_EXTERN TKItemID TKItemIDFromString(NSString *string);

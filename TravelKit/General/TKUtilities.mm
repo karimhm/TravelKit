@@ -6,6 +6,8 @@
  */
 
 #import "TKUtilities.h"
+#import "ItemID.h"
+#import "TKItem.h"
 
 TKTimeInfo TKTimeInfoCreate(NSTimeInterval time) {
     TKTimeInfo timeInfo;
@@ -24,4 +26,12 @@ TKTimeInfo TKTimeInfoCreate(NSTimeInterval time) {
 
 int64_t TKTimeInfoGetDaystamp(TKTimeInfo timeInfo) {
     return (timeInfo.minute * 60) + (timeInfo.hour * 3600);
+}
+
+NSString *TKItemIdentifier(TKItem *item) {
+    return [NSString stringWithUTF8String:tk::IID(item.identifier).stringID().c_str()];
+}
+
+TKItemID TKItemIDFromString(NSString *string) {
+    return tk::IID(string.UTF8String).rawID();
 }
