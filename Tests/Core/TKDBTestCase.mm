@@ -36,9 +36,6 @@
     
     int status = sqlite3_close(self.sqliteDB);
     XCTAssertTrue(status == SQLITE_OK, "Unable to close the test database");
-    
-    BOOL result = [[NSFileManager defaultManager] removeItemAtPath:self.dbPath error:nil];
-    XCTAssertTrue(result, "Unable to delete the test database");
 }
 
 @end

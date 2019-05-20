@@ -6,6 +6,7 @@
  */
 
 #import "TKStop.h"
+#import "TKDefines_Private.h"
 
 @implementation TKStop
 

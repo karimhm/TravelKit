@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CLLocation.h>
 #import <TravelKit/TKItem.h>
+#import <TravelKit/TKQuery.h>
+#import <TravelKit/TKCursor.h>
 #import <TravelKit/TKStopPlace.h>
 #import <TravelKit/TKCalendar.h>
 #import <TravelKit/TKTripPlanRequest.h>
@@ -15,10 +17,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^TKStopPlaceFetchHandler)(NSArray<TKStopPlace *> * __nullable result, NSError * __nullable error);
 typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError * __nullable error);
-typedef void (^TKRouteFetchHandler)(NSArray<TKRoute *> * __nullable result, NSError * __nullable error);
-typedef void (^TKCalendarFetchHandler)(NSArray<TKCalendar *> * __nullable result, NSError * __nullable error);
 
 @interface TKDatabase : NSObject
 
@@ -36,25 +35,15 @@ typedef void (^TKCalendarFetchHandler)(NSArray<TKCalendar *> * __nullable result
 @property (nonatomic, readonly) NSArray <NSString *> *languages;
 @property (nonatomic, nullable) NSString *selectedLanguage;
 
-- (void)fetchStopPlacesWithCompletion:(TKStopPlaceFetchHandler)completion;
-- (void)fetchStopPlaceWithID:(TKItemID)itemID completion:(TKStopPlaceFetchHandler)completion;
-- (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion;
-- (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion;
-- (void)fetchStopPlacesWithName:(NSString *)name limit:(TKInt)limit completion:(TKStopPlaceFetchHandler)completion;
-- (void)fetchStopPlacesWithLocation:(CLLocation *)location limit:(TKInt)limit completion:(TKStopPlaceFetchHandler)completion;
+- (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query;
+- (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query;
+- (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query;
 
-- (void)fetchRoutesWithCompletion:(TKRouteFetchHandler)completion;
-- (void)fetchRouteWithID:(TKItemID)itemID completion:(TKRouteFetchHandler)completion;
-- (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion;
-- (void)fetchRoutesWithName:(NSString *)name limit:(TKInt)limit completion:(TKRouteFetchHandler)completion;
-
-- (void)fetchCalendarsWithCompletion:(TKCalendarFetchHandler)completion;
-- (void)fetchCalendarWithID:(TKItemID)itemID completion:(TKCalendarFetchHandler)completion;
-- (void)fetchCalendarsWithName:(NSString *)name completion:(TKCalendarFetchHandler)completion;
-- (void)fetchCalendarsWithName:(NSString *)name limit:(TKInt)limit completion:(TKCalendarFetchHandler)completion;
+- (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error;
+- (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query error:(NSError **)error;
+- (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query error:(NSError **)error;
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion;
-- (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request limit:(TKInt)limit completion:(TKTripPlanFetchHandler)completion;
 
 @end
 

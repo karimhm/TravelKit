@@ -24,4 +24,6 @@ typedef NS_ENUM(NSInteger, TKTripPlanOptions) {
 
 @property (nonatomic) TKTripPlanOptions options;
 
+@property (nonatomic) TKInt limit;
+
 @end

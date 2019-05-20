@@ -5,4 +5,5 @@
  *  Copyright (C) 2018 Karim. All rights reserved.
  */
 
+#import <Foundation/Foundation.h>
 #import <TravelKit/TKDefines.h>

@@ -7,9 +7,10 @@
 
 #import "TKItem.h"
 #import "Statement.h"
+#import "TKDefines_Private.h"
 
 @interface TKItem ()
 
--(instancetype)initWithStatement:(tk::Ref<tk::Statement>)statement;
+- (instancetype)initWithStatement:(tk::Ref<tk::Statement>)statement;
 
 @end

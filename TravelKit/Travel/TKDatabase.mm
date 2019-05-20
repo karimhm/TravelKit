@@ -6,9 +6,11 @@
  */
 
 #import "TKDatabase.h"
+#import "TKDefines_Private.h"
 #import "NSError+TravelKit.h"
 #import "DistanceFunction.h"
 #import "TKItem_Core.h"
+#import "TKCursor_Private.h"
 #import "TKStop_Private.h"
 #import "TKItinerary_Private.h"
 #import "TKRide_Private.h"
@@ -26,20 +28,6 @@ using namespace tk;
     Ref<Router::CSA> _router;
     Ref<Statement> _fetchProperties;
     Ref<Statement> _fetchLanguages;
-    
-    // StopPlace
-    Ref<Statement> _fetchStopPlaceById;
-    Ref<Statement> _fetchStopPlacesByName;
-    Ref<Statement> _fetchStopPlacesByLocation;
-    
-    // Route
-    Ref<Statement> _fetchRouteColorById;
-    Ref<Statement> _fetchRouteById;
-    Ref<Statement> _fetchRouteByName;
-    
-    // Calendar
-    Ref<Statement> _fetchCalendarById;
-    Ref<Statement> _fetchCalendarByName;
 }
 
 #pragma mark - Initialization
@@ -107,89 +95,7 @@ using namespace tk;
     
     _fetchProperties = makeRef<Statement>(_db, "SELECT * FROM Properties");
     _fetchLanguages = makeRef<Statement>(_db, "SELECT DISTINCT language from Localization");
-    _fetchStopPlaceById = makeRef<Statement>(_db, ""
-    "SELECT "
-        "StopPlace.*, "
-        "Localization.text AS name "
-    "FROM StopPlace "
-    "JOIN "
-        "Localization ON Localization.id = StopPlace.nameId "
-    "WHERE StopPlace.id = :id "
-    "AND Localization.language = :language");
     
-    _fetchStopPlacesByName = makeRef<Statement>(_db, ""
-    "SELECT "
-        "StopPlace.*, "
-        "Localization.text AS name "
-    "FROM StopPlace "
-    "JOIN "
-        "Localization ON Localization.id = StopPlace.nameId "
-    "WHERE StopPlace.nameId IN ("
-        "SELECT id FROM Localization WHERE text LIKE :name"
-    ") "
-    "AND Localization.language = :language "
-    "LIMIT :limit");
-    
-    _fetchStopPlacesByLocation = makeRef<Statement>(_db, ""
-    "SELECT "
-        "StopPlace.*, "
-        "Localization.text AS name "
-    "FROM StopPlace "
-    "JOIN "
-        "Localization ON Localization.id = StopPlace.nameId "
-    "WHERE Localization.language = :language "
-    "GROUP BY "
-        "tkDistance(:latitude, :longitude, latitude, longitude) "
-    "LIMIT :limit");
-    
-    _fetchRouteColorById = makeRef<Statement>(_db, "SELECT color FROM Route WHERE id = :id");
-    
-    _fetchRouteById = makeRef<Statement>(_db, ""
-    "SELECT "
-        "Route.*, "
-        "Localization.text AS name "
-    "FROM Route "
-    "JOIN "
-        "Localization ON Localization.id = Route.nameId "
-    "WHERE Route.id = :id "
-    "AND Localization.language = :language");
-    
-    _fetchRouteByName = makeRef<Statement>(_db, ""
-    "SELECT "
-        "Route.*, "
-        "Localization.text AS name "
-    "FROM Route "
-    "JOIN "
-        "Localization ON Localization.id = Route.nameId "
-    "WHERE Route.nameId IN ("
-        "SELECT id FROM Localization WHERE text LIKE :name"
-    ") "
-    "AND Localization.language = :language "
-    "LIMIT :limit");
-    
-    /**/
-    _fetchCalendarById = makeRef<Statement>(_db, ""
-    "SELECT "
-        "Calendar.*, "
-        "Localization.text AS name "
-    "FROM Calendar "
-    "JOIN "
-        "Localization ON Localization.id = Calendar.nameId "
-    "WHERE Calendar.id = :id "
-    "AND Localization.language = :language");
-    
-    _fetchCalendarByName = makeRef<Statement>(_db, ""
-    "SELECT "
-        "Calendar.*, "
-        "Localization.text AS name "
-    "FROM Calendar "
-    "JOIN "
-        "Localization ON Localization.id = Calendar.nameId "
-    "WHERE Calendar.nameId IN ("
-        "SELECT id FROM Localization WHERE text LIKE :name"
-    ") "
-    "AND Localization.language = :language "
-    "LIMIT :limit");
     
     if (!_fetchProperties->prepare().isOK()) {
         if (error) {
@@ -200,70 +106,6 @@ using namespace tk;
     }
     
     if (!_fetchLanguages->prepare().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        status = false;
-        goto cleanup;
-    }
-    
-    if (!_fetchStopPlaceById->prepare().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        status = false;
-        goto cleanup;
-    }
-    
-    if (!_fetchStopPlacesByName->prepare().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        status = false;
-        goto cleanup;
-    }
-    
-    if (!_fetchStopPlacesByLocation->prepare().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        status = false;
-        goto cleanup;
-    }
-    
-    if (!_fetchRouteColorById->prepare().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        status = false;
-        goto cleanup;
-    }
-    
-    if (!_fetchRouteById->prepare().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        status = false;
-        goto cleanup;
-    }
-    
-    if (!_fetchRouteByName->prepare().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        status = false;
-        goto cleanup;
-    }
-    
-    if (!_fetchCalendarById->prepare().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        status = false;
-        goto cleanup;
-    }
-    
-    if (!_fetchCalendarByName->prepare().isOK()) {
         if (error) {
             *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
         }
@@ -347,14 +189,6 @@ cleanup:
 - (BOOL)closeDatabase:(NSError **)error {
     _fetchProperties->close();
     _fetchLanguages->close();
-    _fetchStopPlaceById->close();
-    _fetchStopPlacesByName->close();
-    _fetchStopPlacesByLocation->close();
-    _fetchRouteColorById->close();
-    _fetchRouteById->close();
-    _fetchRouteByName->close();
-    _fetchCalendarById->close();
-    _fetchCalendarByName->close();
     
     _router->unload();
     
@@ -384,419 +218,59 @@ cleanup:
     }
 }
 
-#pragma mark - Fetching
-
-- (void)fetchStopPlacesWithCompletion:(TKStopPlaceFetchHandler)completion {
-    [self fetchStopPlacesWithName:[NSString string] limit:-1 completion:completion];
-}
+#pragma mark - Fetching (Private)
 
 - (TKStopPlace *)_fetchStopPlaceWithID:(TKItemID)itemID error:(NSError **)error {
-    if (!_fetchStopPlaceById->clearAndReset().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
+    TKQuery *query = [[TKQuery alloc] init];
+    query.itemID = itemID;
     
-    if (!_fetchStopPlaceById->bind(TKUToS64(itemID), ":id").isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
-    
-    
-    if (!_fetchStopPlaceById->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
-    
-    Status status = SQLITE_OK;
-    if ((status = _fetchStopPlaceById->next()).isRow()) {
-        TKStopPlace *stopPlace = [[TKStopPlace alloc] initWithStatement:_fetchStopPlaceById];
-        return stopPlace;
-    } else if (status.isDone()) {
-        return nil;
-    } else {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
-}
-
-- (UIColor *)_fetchRouteColorWithID:(TKItemID)itemID error:(NSError **)error {
-    if (!_fetchRouteColorById->clearAndReset().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
-    
-    if (!_fetchRouteColorById->bind(TKUToS64(itemID), ":id").isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
-    
-    Status status = Status();
-    if ((status = _fetchRouteColorById->next()).isRow()) {
-        Value color = (*_fetchRouteColorById)["color"];
-        if (color.isInteger()) {
-            return TKColorFromHexRGB(color.intValue());
-        } else {
-            return nil;
-        }
-    } else if (status.isDone()) {
-        return nil;
-    } else {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
+    return [[self fetchStopPlaceWithQuery:query error:error] fetchOneWithError:error];
 }
 
 - (TKRoute *)_fetchRouteWithID:(TKItemID)itemID error:(NSError **)error {
-    if (!_fetchRouteById->clearAndReset().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
+    TKQuery *query = [[TKQuery alloc] init];
+    query.itemID = itemID;
     
-    if (!_fetchRouteById->bind(TKUToS64(itemID), ":id").isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
-    
-    if (!_fetchRouteById->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
-    
-    Status status = Status();
-    if ((status = _fetchRouteById->next()).isRow()) {
-        TKRoute *route = [[TKRoute alloc] initWithStatement:_fetchRouteById];
-        return route;
-    } else if (status.isDone()) {
-        return nil;
-    } else {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
+    return [[self fetchRouteWithQuery:query error:error] fetchOneWithError:error];
 }
 
 - (TKCalendar *)_fetchCalendarWithID:(TKItemID)itemID error:(NSError **)error {
-    if (!_fetchCalendarById->clearAndReset().isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
+    TKQuery *query = [[TKQuery alloc] init];
+    query.itemID = itemID;
     
-    if (!_fetchCalendarById->bind(TKUToS64(itemID), ":id").isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
-    
-    if (!_fetchCalendarById->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
-    
-    Status status = Status();
-    if ((status = _fetchCalendarById->next()).isRow()) {
-        TKCalendar *calendar = [[TKCalendar alloc] initWithStatement:_fetchCalendarById];
-        return calendar;
-    } else if (status.isDone()) {
-        return nil;
-    } else {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
-        return nil;
-    }
+    return [[self fetchCalendarWithQuery:query error:error] fetchOneWithError:error];
 }
 
-- (void)fetchStopPlaceWithID:(TKItemID)itemID completion:(TKStopPlaceFetchHandler)completion {
-    NSError *error = nil;
-    TKStopPlace *stopPlace = [self _fetchStopPlaceWithID:itemID error:&error];
-    
-    if (completion) {
-        if (stopPlace) {
-            completion(@[stopPlace], error);
-        } else {
-            completion(@[], error);
-        }
-    }
+#pragma mark - Fetching
+
+- (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query {
+    return [self fetchStopPlaceWithQuery:query error:nil];
 }
 
-- (void)fetchStopPlacesWithName:(NSString *)name completion:(TKStopPlaceFetchHandler)completion {
-    [self fetchStopPlacesWithName:name limit:-1 completion:completion];
+- (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query {
+    return [self fetchRouteWithQuery:query error:nil];
 }
 
-- (void)fetchStopPlacesWithLocation:(CLLocation *)location completion:(TKStopPlaceFetchHandler)completion {
-    [self fetchStopPlacesWithLocation:location limit:-1 completion:completion];
+- (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query {
+    return [self fetchCalendarWithQuery:query error:nil];
 }
 
-- (void)fetchStopPlacesWithName:(NSString *)name limit:(TKInt)limit completion:(TKStopPlaceFetchHandler)completion {
-    if (!_fetchStopPlacesByName->clearAndReset().isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchStopPlacesByName->bind(std::string(name.UTF8String).append("%"), ":name").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchStopPlacesByName->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchStopPlacesByName->bind(limit, ":limit").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    Status status = SQLITE_OK;
-    NSMutableArray *stopPlaces = [[NSMutableArray alloc] init];
-    
-    while ((status = _fetchStopPlacesByName->next()).isRow()) {
-        TKStopPlace *stopPlace = [[TKStopPlace alloc] initWithStatement:_fetchStopPlacesByName];
-        [stopPlaces addObject:stopPlace];
-    }
-    
-    if (status.isDone()) {
-        if (completion) {
-            completion(stopPlaces, nil);
-        }
-    } else {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-    }
+- (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error {
+    query.language = _selectedLanguage;
+    return [TKStopPlaceCursor cursorWithDatabase:_db query:query error:error];
 }
 
-- (void)fetchStopPlacesWithLocation:(CLLocation *)location limit:(TKInt)limit completion:(TKStopPlaceFetchHandler)completion {
-    if (!_fetchStopPlacesByLocation->clearAndReset().isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchStopPlacesByLocation->bind(location.coordinate.latitude, ":latitude").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchStopPlacesByLocation->bind(location.coordinate.longitude, ":longitude").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchStopPlacesByLocation->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchStopPlacesByLocation->bind(limit, ":limit").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    Status status = Status();
-    NSMutableArray <TKStopPlace *> *stopPlaces = [[NSMutableArray alloc] init];
-    
-    while ((status = _fetchStopPlacesByLocation->next()).isRow()) {
-        TKStopPlace *stopPlace = [[TKStopPlace alloc] initWithStatement:_fetchStopPlacesByLocation];
-        [stopPlaces addObject:stopPlace];
-    }
-    
-    if (status.isDone()) {
-        if (completion) {
-            completion(stopPlaces, nil);
-        }
-    } else if (completion) {
-        completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-    }
+- (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query error:(NSError **)error {
+    query.language = _selectedLanguage;
+    return [TKRouteCursor cursorWithDatabase:_db query:query error:error];
 }
 
-- (void)fetchRoutesWithCompletion:(TKRouteFetchHandler)completion {
-    [self fetchRoutesWithName:[NSString string] limit:-1 completion:completion];
-}
-
-- (void)fetchRouteWithID:(TKItemID)itemID completion:(TKRouteFetchHandler)completion {
-    NSError *error = nil;
-    TKRoute *route = [self _fetchRouteWithID:itemID error:&error];
-    
-    if (completion) {
-        if (route) {
-            completion(@[route], error);
-        } else {
-            completion(@[], error);
-        }
-    }
-}
-
-- (void)fetchRoutesWithName:(NSString *)name completion:(TKRouteFetchHandler)completion {
-    [self fetchRoutesWithName:name limit:-1 completion:completion];
-}
-
-- (void)fetchRoutesWithName:(NSString *)name limit:(TKInt)limit completion:(TKRouteFetchHandler)completion {
-    if (!_fetchRouteByName->clearAndReset().isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchRouteByName->bind(std::string(name.UTF8String).append("%"), ":name").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchRouteByName->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchRouteByName->bind(limit, ":limit").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    Status status = SQLITE_OK;
-    NSMutableArray <TKRoute *> *routes = [[NSMutableArray alloc] init];
-    
-    while ((status = _fetchRouteByName->next()).isRow()) {
-        TKRoute *route = [[TKRoute alloc] initWithStatement:_fetchRouteByName];
-        [routes addObject:route];
-    }
-    
-    if (status.isDone()) {
-        if (completion) {
-            completion(routes, nil);
-        }
-    } else {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-    }
-}
-
-- (void)fetchCalendarsWithCompletion:(TKCalendarFetchHandler)completion {
-    [self fetchCalendarsWithName:[NSString string] limit:-1 completion:completion];
-}
-
-- (void)fetchCalendarWithID:(TKItemID)itemID completion:(TKCalendarFetchHandler)completion {
-    NSError *error = nil;
-    TKCalendar *calendar = [self _fetchCalendarWithID:itemID error:&error];
-    
-    if (completion) {
-        if (calendar) {
-            completion(@[calendar], error);
-        } else {
-            completion(@[], error);
-        }
-    }
-}
-
-- (void)fetchCalendarsWithName:(NSString *)name completion:(TKCalendarFetchHandler)completion {
-    [self fetchCalendarsWithName:name limit:-1 completion:completion];
-}
-
-- (void)fetchCalendarsWithName:(NSString *)name limit:(TKInt)limit completion:(TKCalendarFetchHandler)completion {
-    if (!_fetchCalendarByName->clearAndReset().isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchCalendarByName->bind(std::string(name.UTF8String).append("%"), ":name").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchCalendarByName->bind(_selectedLanguage.UTF8String, ":language").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    if (!_fetchCalendarByName->bind(limit, ":limit").isOK()) {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-        return;
-    }
-    
-    Status status = SQLITE_OK;
-    NSMutableArray <TKCalendar *> *calendars = [[NSMutableArray alloc] init];
-    
-    while ((status = _fetchCalendarByName->next()).isRow()) {
-        TKCalendar *calendar = [[TKCalendar alloc] initWithStatement:_fetchCalendarByName];
-        [calendars addObject:calendar];
-    }
-    
-    if (status.isDone()) {
-        if (completion) {
-            completion(calendars, nil);
-        }
-    } else {
-        if (completion) {
-            completion(nil, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        }
-    }
+- (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query error:(NSError **)error {
+    query.language = _selectedLanguage;
+    return [TKCalendarCursor cursorWithDatabase:_db query:query error:error];
 }
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {
-    [self fetchTripPlanWithRequest:request limit:-1 completion:completion];
-}
-
-- (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request limit:(TKInt)limit completion:(TKTripPlanFetchHandler)completion {
     ItemID from = request.source.identifier;
     ItemID to = request.destination.identifier;
     time_t departure = request.date.timeIntervalSince1970;

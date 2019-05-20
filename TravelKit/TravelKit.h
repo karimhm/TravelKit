@@ -10,6 +10,8 @@
 #import <TravelKit/TKError.h>
 
 #import <TravelKit/TKDatabase.h>
+#import <TravelKit/TKQuery.h>
+#import <TravelKit/TKCursor.h>
 #import <TravelKit/TKTripPlanRequest.h>
 #import <TravelKit/TKTripPlan.h>
 

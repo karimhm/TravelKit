@@ -6,6 +6,7 @@
  */
 
 #import "TKItinerary.h"
+#import "TKDefines_Private.h"
 
 @implementation TKItinerary
 
