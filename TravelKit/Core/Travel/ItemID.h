@@ -28,6 +28,9 @@ public:
         }
     }
     
+    IID(std::string string) : rawID_(toID(string)) {
+    }
+    
     int compare(const IID& other) const {
         if (rawID_ < other.rawID_) {
             return -1;
@@ -44,6 +47,9 @@ public:
     
     std::string stringID();
     
+private:
+    ItemID toID(std::string);
+
 private:
     ItemID rawID_;
 };
