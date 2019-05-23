@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CLLocation.h>
-#import <TravelKit/TKItem.h>
+#import <TravelKit/TKRouteLine.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -62,6 +62,22 @@ TK_EXTERN TKOrderProperty const TKOrderByName;
  @abstract   The location of the stop place.
  */
 @property (nonatomic, nullable) CLLocation *location;
+
+@end
+
+@interface TKQuery (RouteLine)
+
+/*!
+ @property
+ @abstract   The dirction of the route line.
+ */
+@property (nonatomic) TKTravelDirection direction;
+
+/*!
+ @property
+ @abstract   The identifier of the route.
+ */
+@property (nonatomic) TKItemID routeID;
 
 @end
 

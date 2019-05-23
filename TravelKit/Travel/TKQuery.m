@@ -13,7 +13,10 @@ TKOrderProperty const TKOrderByName = @"name";
 @implementation TKQuery {
     NSString *_language;
     CLLocation *_location;
+    TKTravelDirection _direction;
+    TKItemID _routeID;
     BOOL _idSet;
+    BOOL _routeIDSet;
 }
 
 - (void)setItemID:(TKItemID)itemID {
@@ -37,8 +40,29 @@ TKOrderProperty const TKOrderByName = @"name";
     return _location;
 }
 
+- (void)setDirection:(TKTravelDirection)direction {
+    _direction = direction;
+}
+
+- (TKTravelDirection)direction {
+    return _direction;
+}
+
+- (void)setRouteID:(TKItemID)routeID {
+    _routeID = routeID;
+    _routeIDSet = true;
+}
+
+- (TKItemID)routeID {
+    return _routeID;
+}
+
 - (BOOL)idSet {
     return _idSet;
+}
+
+- (BOOL)routeIDSet {
+    return _routeIDSet;
 }
 
 @end

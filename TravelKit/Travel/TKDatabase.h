@@ -12,6 +12,7 @@
 #import <TravelKit/TKCursor.h>
 #import <TravelKit/TKStopPlace.h>
 #import <TravelKit/TKCalendar.h>
+#import <TravelKit/TKRouteLine.h>
 #import <TravelKit/TKTripPlanRequest.h>
 #import <TravelKit/TKTripPlan.h>
 
@@ -38,10 +39,12 @@ typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError *
 - (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query;
 - (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query;
 - (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query;
+- (TKCursor <TKRouteLine *> *)fetchRouteLineWithQuery:(TKQuery *)query;
 
 - (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error;
 - (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query error:(NSError **)error;
 - (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query error:(NSError **)error;
+- (TKCursor <TKRouteLine *> *)fetchRouteLineWithQuery:(TKQuery *)query error:(NSError **)error;
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion;
 

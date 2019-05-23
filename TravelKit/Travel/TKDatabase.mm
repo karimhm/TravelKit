@@ -96,7 +96,6 @@ using namespace tk;
     _fetchProperties = makeRef<Statement>(_db, "SELECT * FROM Properties");
     _fetchLanguages = makeRef<Statement>(_db, "SELECT DISTINCT language from Localization");
     
-    
     if (!_fetchProperties->prepare().isOK()) {
         if (error) {
             *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
@@ -255,6 +254,10 @@ cleanup:
     return [self fetchCalendarWithQuery:query error:nil];
 }
 
+- (TKCursor <TKRouteLine *> *)fetchRouteLineWithQuery:(TKQuery *)query {
+    return [self fetchRouteLineWithQuery:query error:nil];
+}
+
 - (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error {
     query.language = _selectedLanguage;
     return [TKStopPlaceCursor cursorWithDatabase:_db query:query error:error];
@@ -268,6 +271,11 @@ cleanup:
 - (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query error:(NSError **)error {
     query.language = _selectedLanguage;
     return [TKCalendarCursor cursorWithDatabase:_db query:query error:error];
+}
+
+- (TKCursor <TKRouteLine *> *)fetchRouteLineWithQuery:(TKQuery *)query error:(NSError **)error {
+    query.language = _selectedLanguage;
+    return [TKRouteLineCursor cursorWithDatabase:_db query:query error:error];
 }
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {

@@ -55,6 +55,13 @@
                               calendarId INTEGER REFERENCES Calendar(id) NOT NULL,\
                               routeId INTEGER REFERENCES Route(id) NOT NULL\
                           );\
+                          CREATE TABLE IF NOT EXISTS RouteLine (\
+                              id INTEGER PRIMARY KEY NOT NULL,\
+                              routeId INTEGER REFERENCES Route(id) NOT NULL,\
+                              stopPlaceId INTEGER REFERENCES StopPlace(id) NOT NULL,\
+                              direction INT CHECK (direction = 1 OR direction = 2),\
+                              position INT CHECK (position <= 65535) NOT NULL\
+                          );\
                           ", nullptr, nullptr, nullptr);
     
     XCTAssertTrue(status == SQLITE_OK, "Unable to create stop places table");
@@ -90,9 +97,19 @@
                           INSERT INTO Calendar(id, nameId, days) VALUES(3, 9, 127);\
                           \
                           INSERT INTO Trip(id, calendarId, routeId) VALUES(1, 1, 1);\
+                          \
+                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(1, 1, 1, 1, 0);\
+                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(2, 1, 2, 1, 1);\
+                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(3, 1, 4, 1, 3);\
+                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(4, 1, 3, 1, 2);\
+                          \
+                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(5, 1, 4, 2, 0);\
+                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(6, 1, 3, 2, 1);\
+                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(7, 1, 1, 2, 3);\
+                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(8, 1, 2, 2, 2);\
                           ", nullptr, nullptr, nullptr);
     
-    XCTAssertTrue(status == SQLITE_OK, "Unable to insert test columns");
+    XCTAssertTrue(status == SQLITE_OK, "Unable to insert test columns, %s", sqlite3_errmsg(self.sqliteDB));
     
     // SELECT id, calendarId, routeId FROM Trip
     
@@ -126,11 +143,11 @@
     
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
-    XCTAssertTrue(stopPlaces.count == 1, @"The number of stop places should be 1");
+    XCTAssertTrue(stopPlaces.count == 1, @"The number of stop places should be 1, current: %lu", (unsigned long)stopPlaces.count);
     XCTAssertTrue(fetchError == nil, @"Fetching stop places did fail %@", fetchError);
     
-    XCTAssertTrue(stopPlaces.firstObject.identifier == 1, @"The stop place identifier is incorrect. It should be 1");
-    XCTAssertTrue([stopPlaces.firstObject.name isEqualToString:@"testPlace1"], @"The stop place name is incorrect. It should be 'testPlace1'");
+    XCTAssertTrue(stopPlaces.firstObject.identifier == 1, @"The stop place identifier is incorrect. It should be 1, current: %lli", stopPlaces.firstObject.identifier);
+    XCTAssertTrue([stopPlaces.firstObject.name isEqualToString:@"testPlace1"], @"The stop place name is incorrect. It should be 'testPlace1', current: %@", stopPlaces.firstObject.name);
     
     XCTAssertTrue(stopPlaces.firstObject.location.coordinate.latitude == 0 && stopPlaces.firstObject.location.coordinate.longitude == 0, @"The StopPlace location is incorrect. It should be {0, 0}");
     
@@ -352,6 +369,77 @@
     
     XCTAssertTrue(calendars.count == 2, @"The number of calendars should be , current: %lu", (unsigned long)calendars.count);
     XCTAssertTrue(fetchError == nil, @"Fetching calendars did fail %@", fetchError);
+}
+
+- (void)testRouteLineByRouteId {
+    __block NSArray<TKRouteLine *> *routeLines = nil;
+    __block NSError *fetchError = nil;
+    
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    
+    TKQuery *query = [[TKQuery alloc] init];
+    query.routeID = 1;
+    query.direction = TKTravelDirectionOutbound;
+    
+    [[self.database fetchRouteLineWithQuery:query] fetchAllWithCompletion:^(NSArray<TKRouteLine *> *result, NSError *error) {
+        routeLines = result;
+        fetchError = error;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    XCTAssertTrue(routeLines.count == 1, @"The number of route lines should be 1, current: %lu", (unsigned long)routeLines.count);
+    XCTAssertTrue(routeLines.firstObject.routeID == 1, @"The route id of route lines should be 1, current: %lu", (unsigned long)routeLines.firstObject.routeID);
+    XCTAssertTrue(routeLines.firstObject.stopPlaces.count == 4, @"The number of route line stop places should be outbound 4, current: %lu", (unsigned long)routeLines.firstObject.stopPlaces.count);
+    XCTAssertTrue(routeLines.firstObject.direction == TKTravelDirectionOutbound, @"The route line directions should be outbound");
+    
+    XCTAssertTrue(routeLines.firstObject.stopPlaces[0].identifier == 1
+                  && routeLines.firstObject.stopPlaces[1].identifier == 2
+                  && routeLines.firstObject.stopPlaces[2].identifier == 3
+                  && routeLines.firstObject.stopPlaces[3].identifier == 4, @"The order of route line stop places is incorrect");
+    
+    // Fetch non existing route line
+    semaphore = dispatch_semaphore_create(0);
+    
+    query = [[TKQuery alloc] init];
+    query.routeID = 999999;
+    query.direction = TKTravelDirectionOutbound;
+    
+    [[self.database fetchRouteLineWithQuery:query] fetchAllWithCompletion:^(NSArray<TKRouteLine *> *result, NSError *error) {
+        routeLines = result;
+        fetchError = error;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    XCTAssertTrue(routeLines.count == 0, @"The number of route lines should be 0, current: %lu", (unsigned long)routeLines.count);
+    
+    // Fetch inbound route line
+    semaphore = dispatch_semaphore_create(0);
+    
+    query = [[TKQuery alloc] init];
+    query.routeID = 1;
+    query.direction = TKTravelDirectionInbound;
+    
+    [[self.database fetchRouteLineWithQuery:query] fetchAllWithCompletion:^(NSArray<TKRouteLine *> *result, NSError *error) {
+        routeLines = result;
+        fetchError = error;
+        dispatch_semaphore_signal(semaphore);
+    }];
+    
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    
+    XCTAssertTrue(routeLines.count == 1, @"The number of route lines should be 1, current: %lu", (unsigned long)routeLines.count);
+    XCTAssertTrue(routeLines.firstObject.routeID == 1, @"The route id of route lines should be 1, current: %lu", (unsigned long)routeLines.firstObject.routeID);
+    XCTAssertTrue(routeLines.firstObject.stopPlaces.count == 4, @"The number of route line stop places should be outbound 4, current: %lu", (unsigned long)routeLines.firstObject.stopPlaces.count);
+    XCTAssertTrue(routeLines.firstObject.direction == TKTravelDirectionInbound, @"The route line directions should be outbound");
+    
+    XCTAssertTrue(routeLines.firstObject.stopPlaces[0].identifier == 4
+                  && routeLines.firstObject.stopPlaces[1].identifier == 3
+                  && routeLines.firstObject.stopPlaces[2].identifier == 2
+                  && routeLines.firstObject.stopPlaces[3].identifier == 1, @"The order of route line stop places is incorrect");
 }
 
 - (void)testProperties {

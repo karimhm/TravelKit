@@ -5,11 +5,12 @@
  *  Copyright (C) 2019 Karim. All rights reserved.
  */
 
+#import <TravelKit/TKItem.h>
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TKCursor<ObjectType> : NSEnumerator<ObjectType>
+@interface TKCursor<ObjectType: TKItem *> : NSEnumerator<ObjectType>
 
 /*!
  @method

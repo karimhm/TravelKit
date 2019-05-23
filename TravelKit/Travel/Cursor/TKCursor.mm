@@ -31,7 +31,7 @@ using namespace tk;
     return self;
 }
 
-- (void)fetchAllWithCompletion:(void (^) (NSArray <id> * __nullable result, NSError * __nullable error))completion {
+- (void)fetchAllWithCompletion:(void (^) (NSArray <TKItem *> * __nullable result, NSError * __nullable error))completion {
     NSError *fetchError = nil;
     
     if (_result) {
@@ -43,7 +43,7 @@ using namespace tk;
     }
 }
 
-- (nullable id)fetchOneWithError:(NSError **)error {
+- (nullable TKItem *)fetchOneWithError:(NSError **)error {
     id object = [self nextWithError:error];
     self.completed = true;
     return object;
@@ -66,11 +66,11 @@ using namespace tk;
     return nil;
 }
 
-- (nullable id)next {
+- (nullable TKItem *)next {
     return [self nextWithError:nil];
 }
 
-- (id)nextObject {
+- (TKItem *)nextObject {
     return [self next];
 }
 
@@ -114,7 +114,6 @@ using namespace tk;
 }
 
 - (BOOL)close {
-    NSLog(@"Close cursor");
     return _statement->close().isOK();
 }
 
