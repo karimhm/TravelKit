@@ -10,12 +10,17 @@
 
 using namespace tk;
 
+typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
+    TKTravelDirectionUnknown         = 0,
+    TKTravelDirectionOutbound        = 1,
+    TKTravelDirectionInbound         = 2
+};
+
 @implementation TKRouteLineCursor {
     Ref<Statement> _fetchStopPlaceID;
 }
 
 - (BOOL)prepareWithQuery:(TKQuery *)query error:(NSError **)error {
-    BOOL hasDirection = false;
     BOOL hasRouteId = false;
     BOOL hasLimit = false;
     
@@ -25,12 +30,6 @@ using namespace tk;
     /* Query Where */
     BOOL hasWhere = false;
     std::string queryWhere = "WHERE ";
-    
-    if (query.direction != TKTravelDirectionUnknown) {
-        queryWhere.append("direction = :direction ");
-        hasDirection = true;
-        hasWhere = true;
-    }
     
     if (query.routeIDSet) {
         queryWhere.append(hasWhere ? "AND routeId = :routeId ":"routeId = :routeId ");
@@ -74,10 +73,6 @@ using namespace tk;
     }
     
     /* Binding */
-    if (hasDirection && !self.statement->bind((int64_t)query.direction, ":direction").isOK()) {
-        return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
-    }
-    
     if (hasRouteId && !self.statement->bind((int64_t)query.routeID, ":routeId").isOK()) {
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
@@ -134,7 +129,8 @@ using namespace tk;
         return nil;
     }
     
-    routeLine.stopPlaces = [self fetchStopPlacesWithRouteID:route.identifier direction:routeLine.direction];
+    routeLine.outboundStopPlaces = [self fetchStopPlacesWithRouteID:route.identifier direction:TKTravelDirectionOutbound];
+    routeLine.inboundStopPlaces = [self fetchStopPlacesWithRouteID:route.identifier direction:TKTravelDirectionInbound];
     
     return routeLine;
 }

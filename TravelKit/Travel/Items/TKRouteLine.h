@@ -9,16 +9,10 @@
 #import <TravelKit/TKRoute.h>
 #import <TravelKit/TKStopPlace.h>
 
-typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
-    TKTravelDirectionUnknown         = 0,
-    TKTravelDirectionOutbound        = 1,
-    TKTravelDirectionInbound         = 2
-};
-
 @interface TKRouteLine : TKItem
 
 @property (nonatomic, readonly) TKRoute *route;
-@property (nonatomic, readonly) NSArray<TKStopPlace *> *stopPlaces;
-@property (nonatomic, readonly) TKTravelDirection direction;
+@property (nonatomic, readonly) NSArray<TKStopPlace *> *outboundStopPlaces;
+@property (nonatomic, readonly) NSArray<TKStopPlace *> *inboundStopPlaces;
 
 @end

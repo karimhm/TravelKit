@@ -69,12 +69,6 @@ TK_EXTERN TKOrderProperty const TKOrderByName;
 
 /*!
  @property
- @abstract   The dirction of the route line.
- */
-@property (nonatomic) TKTravelDirection direction;
-
-/*!
- @property
  @abstract   The identifier of the route.
  */
 @property (nonatomic) TKItemID routeID;

@@ -9,9 +9,8 @@
 
 @interface TKRouteLine ()
 
-- (instancetype)initWithStatement:(tk::Ref<tk::Statement>)statement stopPlaces:(NSArray<TKStopPlace *> *)stopPlaces routeID:(TKItemID)routeID direction:(TKTravelDirection)direction;
-
 - (void)setRoute:(TKRoute *)route;
-- (void)setStopPlaces:(NSArray<TKStopPlace *> *)stopPlaces;
+- (void)setOutboundStopPlaces:(NSArray<TKStopPlace *> *)outboundStopPlaces;
+- (void)setInboundStopPlaces:(NSArray<TKStopPlace *> *)inboundStopPlaces;
 
 @end

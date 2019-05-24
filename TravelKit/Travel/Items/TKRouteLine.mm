@@ -10,30 +10,22 @@
 
 @implementation TKRouteLine
 
-- (instancetype)initWithStatement:(tk::Ref<tk::Statement>)statement {
-    if (self = [super initWithStatement:statement]) {
-        TKTravelDirection direction = (*statement)["direction"].int64Value();
-        
-        if (direction != TKTravelDirectionOutbound && direction != TKTravelDirectionInbound) {
-            direction = TKTravelDirectionUnknown;
-        }
-        
-        _direction = direction;
-    }
-    return self;
-}
-
 - (void)setRoute:(TKRoute *)route {
     _route = route;
 }
 
-- (void)setStopPlaces:(NSArray<TKStopPlace *> *)stopPlaces {
-    _stopPlaces = stopPlaces;
+- (void)setOutboundStopPlaces:(NSArray<TKStopPlace *> *)outboundStopPlaces {
+    _outboundStopPlaces = outboundStopPlaces;
+}
+
+- (void)setInboundStopPlaces:(NSArray<TKStopPlace *> *)inboundStopPlaces {
+    _inboundStopPlaces = inboundStopPlaces;
 }
 
 - (void)dealloc {
     _route = nil;
-    _stopPlaces = nil;
+    _outboundStopPlaces = nil;
+    _inboundStopPlaces = nil;
 }
 
 @end
