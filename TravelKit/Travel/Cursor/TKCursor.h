@@ -21,6 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  @method
  @abstract     Fetch one objects and store it.
+ @discussion   This method doesn't return an error.
+ */
+- (nullable ObjectType)fetchOne;
+
+/*!
+ @method
+ @abstract     Fetch one objects and store it.
  */
 - (nullable ObjectType)fetchOneWithError:(NSError **)error;
 

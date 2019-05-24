@@ -12,8 +12,6 @@
 
 - (instancetype)initWithStatement:(tk::Ref<tk::Statement>)statement {
     if (self = [super initWithStatement:statement]) {
-        _routeID = (*statement)["routeId"].int64Value();
-        
         TKTravelDirection direction = (*statement)["direction"].int64Value();
         
         if (direction != TKTravelDirectionOutbound && direction != TKTravelDirectionInbound) {
@@ -25,11 +23,16 @@
     return self;
 }
 
+- (void)setRoute:(TKRoute *)route {
+    _route = route;
+}
+
 - (void)setStopPlaces:(NSArray<TKStopPlace *> *)stopPlaces {
     _stopPlaces = stopPlaces;
 }
 
 - (void)dealloc {
+    _route = nil;
     _stopPlaces = nil;
 }
 

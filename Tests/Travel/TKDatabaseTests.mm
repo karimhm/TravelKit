@@ -390,7 +390,7 @@
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
     XCTAssertTrue(routeLines.count == 1, @"The number of route lines should be 1, current: %lu", (unsigned long)routeLines.count);
-    XCTAssertTrue(routeLines.firstObject.routeID == 1, @"The route id of route lines should be 1, current: %lu", (unsigned long)routeLines.firstObject.routeID);
+    XCTAssertTrue(routeLines.firstObject.route.identifier == 1, @"The route id of route lines should be 1, current: %lu", (unsigned long)routeLines.firstObject.route.identifier);
     XCTAssertTrue(routeLines.firstObject.stopPlaces.count == 4, @"The number of route line stop places should be outbound 4, current: %lu", (unsigned long)routeLines.firstObject.stopPlaces.count);
     XCTAssertTrue(routeLines.firstObject.direction == TKTravelDirectionOutbound, @"The route line directions should be outbound");
     
@@ -432,7 +432,7 @@
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
     XCTAssertTrue(routeLines.count == 1, @"The number of route lines should be 1, current: %lu", (unsigned long)routeLines.count);
-    XCTAssertTrue(routeLines.firstObject.routeID == 1, @"The route id of route lines should be 1, current: %lu", (unsigned long)routeLines.firstObject.routeID);
+    XCTAssertTrue(routeLines.firstObject.route.identifier == 1, @"The route id of route lines should be 1, current: %lu", (unsigned long)routeLines.firstObject.route.identifier);
     XCTAssertTrue(routeLines.firstObject.stopPlaces.count == 4, @"The number of route line stop places should be outbound 4, current: %lu", (unsigned long)routeLines.firstObject.stopPlaces.count);
     XCTAssertTrue(routeLines.firstObject.direction == TKTravelDirectionInbound, @"The route line directions should be outbound");
     

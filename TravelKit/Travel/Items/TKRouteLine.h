@@ -6,6 +6,7 @@
  */
 
 #import <TravelKit/TKItem.h>
+#import <TravelKit/TKRoute.h>
 #import <TravelKit/TKStopPlace.h>
 
 typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
@@ -16,7 +17,7 @@ typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
 
 @interface TKRouteLine : TKItem
 
-@property (nonatomic, readonly) TKItemID routeID;
+@property (nonatomic, readonly) TKRoute *route;
 @property (nonatomic, readonly) NSArray<TKStopPlace *> *stopPlaces;
 @property (nonatomic, readonly) TKTravelDirection direction;
 

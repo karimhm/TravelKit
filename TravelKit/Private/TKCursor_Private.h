@@ -22,11 +22,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TKCursor <ObjectType> ()
 
++ (instancetype)cursorWithDatabase:(tk::Ref<tk::Database>)database query:(TKQuery *)query;
 + (instancetype)cursorWithDatabase:(tk::Ref<tk::Database>)database query:(TKQuery *)query error:(NSError **)error;
 - (instancetype)initWithDatabase:(tk::Ref<tk::Database>)database query:(TKQuery *)query error:(NSError **)error;
 
 @property (nonatomic) tk::Ref<tk::Database> database;
 @property (nonatomic) tk::Ref<tk::Statement> statement;
+
+@property (nonatomic, readonly) TKQuery *query;
 
 @property (nonatomic, readonly) NSMutableArray<ObjectType> *fetchResult;
 
@@ -34,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setCompleted:(BOOL)completed;
 - (BOOL)prepareWithQuery:(TKQuery *)query error:(NSError **)error;
+- (BOOL)bindWithQuery:(TKQuery *)query error:(NSError **)error;
 - (BOOL)fetchAllWithError:(NSError **)error;
 - (BOOL)close;
 

@@ -122,7 +122,19 @@ using namespace tk;
 
 - (nullable TKRouteLine *)createObjectWithStatement:(Ref<Statement>)statement {
     TKRouteLine *routeLine = [[TKRouteLine alloc] initWithStatement:statement];
-    routeLine.stopPlaces = [self fetchStopPlacesWithRouteID:routeLine.routeID direction:routeLine.direction];
+    
+    TKQuery *query = [[TKQuery alloc] init];
+    query.language = self.query.language;
+    query.itemID = TKSToU64((*statement)["routeId"].int64Value());
+    
+    TKRoute *route = [[TKRouteCursor cursorWithDatabase:self.database query:query] fetchOne];
+    if (route) {
+        routeLine.route = route;
+    } else {
+        return nil;
+    }
+    
+    routeLine.stopPlaces = [self fetchStopPlacesWithRouteID:route.identifier direction:routeLine.direction];
     
     return routeLine;
 }

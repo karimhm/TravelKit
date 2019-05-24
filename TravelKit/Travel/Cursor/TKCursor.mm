@@ -13,6 +13,10 @@ using namespace tk;
 
 @implementation TKCursor
 
++ (instancetype)cursorWithDatabase:(tk::Ref<tk::Database>)database query:(TKQuery *)query {
+    return [self cursorWithDatabase:database query:query error:nil];
+}
+
 + (instancetype)cursorWithDatabase:(tk::Ref<tk::Database>)database query:(TKQuery *)query error:(NSError **)error {
     return [[[self class] alloc] initWithDatabase:database query:query error:error];
 }
@@ -21,10 +25,12 @@ using namespace tk;
     if (self = [super init]) {
         _database = database;
         _fetchResult = [[NSMutableArray alloc] init];
+        _query = query;
         
         if (![self prepareWithQuery:query error:error]) {
             _database = nil;
             _fetchResult = nil;
+            _query = nil;
             return nil;
         }
     }
@@ -43,17 +49,21 @@ using namespace tk;
     }
 }
 
+- (nullable TKItem *)fetchOne {
+    return [self fetchOneWithError:nil];
+}
+
 - (nullable TKItem *)fetchOneWithError:(NSError **)error {
-    id object = [self nextWithError:error];
+    TKItem *object = [self nextWithError:error];
     self.completed = true;
     return object;
 }
 
-- (nullable id)nextWithError:(NSError **)error {
+- (nullable TKItem *)nextWithError:(NSError **)error {
     Status status = _statement->next();
     
     if (status.isRow()) {
-        id object = [self createObjectWithStatement:_statement];
+        TKItem *object = [self createObjectWithStatement:_statement];
         [self.fetchResult addObject:object];
         
         return object;
@@ -82,7 +92,7 @@ using namespace tk;
     return _result;
 }
 
-- (nullable id)createObjectWithStatement:(Ref<Statement>)statement {
+- (nullable TKItem *)createObjectWithStatement:(Ref<Statement>)statement {
     return nil;
 }
 
@@ -95,6 +105,10 @@ using namespace tk;
 }
 
 - (BOOL)prepareWithQuery:(TKQuery *)query error:(NSError **)error {
+    return false;
+}
+
+- (BOOL)bindWithQuery:(TKQuery *)query error:(NSError **)error {
     return false;
 }
 
