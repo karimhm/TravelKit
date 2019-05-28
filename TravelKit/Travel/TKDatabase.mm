@@ -28,6 +28,10 @@ using namespace tk;
     Ref<Router::CSA> _router;
     Ref<Statement> _fetchProperties;
     Ref<Statement> _fetchLanguages;
+    
+    NSUUID *_uuid;
+    NSDate *_timestamp;
+    NSTimeZone *_timezone;
 }
 
 #pragma mark - Initialization
@@ -144,6 +148,18 @@ cleanup:
     }
     
     if (status.isDone()) {
+        if ([_properties[@"uuid"] isKindOfClass:[NSString class]]) {
+            _uuid = [[NSUUID alloc] initWithUUIDString:_properties[@"uuid"]];
+        }
+        
+        if ([_properties[@"timestamp"] isKindOfClass:[NSNumber class]]) {
+            _timestamp = [[NSDate alloc] initWithTimeIntervalSince1970:[_properties[@"timestamp"] doubleValue]];
+        }
+        
+        if ([_properties[@"timezone"] isKindOfClass:[NSString class]]) {
+            _timezone = [[NSTimeZone alloc] initWithName:_properties[@"timezone"]];
+        }
+        
         return true;
     } else {
         if (error) {
@@ -220,6 +236,20 @@ cleanup:
     } else {
         return true;
     }
+}
+
+#pragma mark - Properties
+
+- (NSUUID *)uuid {
+    return _uuid;
+}
+
+- (NSDate *)timestamp {
+    return _timestamp;
+}
+
+- (NSTimeZone *)timezone {
+    return _timezone;
 }
 
 #pragma mark - Fetching (Private)
