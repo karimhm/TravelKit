@@ -37,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setCompleted:(BOOL)completed;
 - (BOOL)prepareWithQuery:(TKQuery *)query error:(NSError **)error;
-- (BOOL)bindWithQuery:(TKQuery *)query error:(NSError **)error;
 - (BOOL)fetchAllWithError:(NSError **)error;
 - (BOOL)close;
 

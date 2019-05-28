@@ -186,8 +186,13 @@ cleanup:
 }
 
 - (BOOL)closeDatabase:(NSError **)error {
-    _fetchProperties->close();
-    _fetchLanguages->close();
+    if (_fetchProperties) {
+        _fetchProperties->close();
+    }
+    
+    if (_fetchLanguages) {
+        _fetchLanguages->close();
+    }
     
     _router->unload();
     

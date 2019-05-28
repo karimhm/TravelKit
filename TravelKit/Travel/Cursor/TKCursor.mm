@@ -108,10 +108,6 @@ using namespace tk;
     return false;
 }
 
-- (BOOL)bindWithQuery:(TKQuery *)query error:(NSError **)error {
-    return false;
-}
-
 - (BOOL)fetchAllWithError:(NSError **)error {
     Status status = Status();
     
@@ -128,7 +124,11 @@ using namespace tk;
 }
 
 - (BOOL)close {
-    return _statement->close().isOK();
+    if (_statement) {
+        return _statement->close().isOK();
+    }
+    
+    return true;
 }
 
 - (void)dealloc {

@@ -137,7 +137,11 @@ typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
 
 - (BOOL)close {
     if ([super close]) {
-        return _fetchStopPlaceID->close().isOK();
+        if (_fetchStopPlaceID) {
+            return _fetchStopPlaceID->close().isOK();
+        }
+        
+        return true;
     } else {
         return false;
     }

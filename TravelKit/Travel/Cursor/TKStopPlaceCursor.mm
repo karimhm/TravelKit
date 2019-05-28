@@ -103,10 +103,6 @@ using namespace tk;
     return true;
 }
 
-- (BOOL)bindWithQuery:(TKQuery *)query error:(NSError **)error {
-    return false;
-}
-
 - (nullable TKStopPlace *)createObjectWithStatement:(Ref<Statement>)statement {
     TKStopPlace *stopPlace = [[TKStopPlace alloc] initWithStatement:statement];
     return stopPlace;
