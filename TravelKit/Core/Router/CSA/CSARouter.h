@@ -20,7 +20,7 @@ namespace Router {
  */
 class CSA final : public RefCounted<CSA>, public Base {
 public:
-    CSA(Ref<Database> db) : Base(db) {
+    CSA(Ref<Database> db) : Base(db), loaded_(false) {
     }
     
     ErrorOr<void> load();
