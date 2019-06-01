@@ -68,7 +68,7 @@ public:
         return seconds_ - other;
     }
     
-    operator uint32_t() const {
+    explicit operator uint32_t() const {
         return seconds_;
     }
     

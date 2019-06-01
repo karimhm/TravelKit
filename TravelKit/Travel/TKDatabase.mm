@@ -342,7 +342,7 @@ cleanup:
                 for (auto const &stop: ride.stops()) {
                     TKStopPlace *stopPlace = [self _fetchStopPlaceWithID:stop.stopPlaceID() error:nil];
                     [stops addObject:[[TKStop alloc] initWithStopPlace:stopPlace
-                                                                  date:[NSDate dateWithTimeIntervalSince1970:dayBegin + stop.time()]]];
+                                                                  date:[NSDate dateWithTimeIntervalSince1970:dayBegin + stop.time().seconds()]]];
                 }
                 
                 TKRoute *route = [self _fetchRouteWithID:ride.routeID() error:nil];
