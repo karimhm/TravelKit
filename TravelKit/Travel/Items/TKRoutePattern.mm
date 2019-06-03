@@ -1,14 +1,14 @@
 /*
- *  TKRouteLine.mm
+ *  TKRoutePattern.mm
  *  Created on 20/May/19.
  *
  *  Copyright (C) 2019 Karim. All rights reserved.
  */
 
-#import "TKRouteLine.h"
+#import "TKRoutePattern.h"
 #import "TKItem_Core.h"
 
-@implementation TKRouteLine
+@implementation TKRoutePattern
 
 - (void)setRoute:(TKRoute *)route {
     _route = route;

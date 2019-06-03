@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CLLocation.h>
-#import <TravelKit/TKRouteLine.h>
+#import <TravelKit/TKRoutePattern.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

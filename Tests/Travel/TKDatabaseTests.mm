@@ -55,7 +55,7 @@
                               calendarId INTEGER REFERENCES Calendar(id) NOT NULL,\
                               routeId INTEGER REFERENCES Route(id) NOT NULL\
                           );\
-                          CREATE TABLE IF NOT EXISTS RouteLine (\
+                          CREATE TABLE IF NOT EXISTS RoutePattern (\
                               id INTEGER PRIMARY KEY NOT NULL,\
                               routeId INTEGER REFERENCES Route(id) NOT NULL,\
                               stopPlaceId INTEGER REFERENCES StopPlace(id) NOT NULL,\
@@ -98,15 +98,15 @@
                           \
                           INSERT INTO Trip(id, calendarId, routeId) VALUES(1, 1, 1);\
                           \
-                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(1, 1, 1, 1, 0);\
-                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(2, 1, 2, 1, 1);\
-                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(3, 1, 4, 1, 3);\
-                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(4, 1, 3, 1, 2);\
+                          INSERT INTO RoutePattern(id, routeId, stopPlaceId, direction, position) VALUES(1, 1, 1, 1, 0);\
+                          INSERT INTO RoutePattern(id, routeId, stopPlaceId, direction, position) VALUES(2, 1, 2, 1, 1);\
+                          INSERT INTO RoutePattern(id, routeId, stopPlaceId, direction, position) VALUES(3, 1, 4, 1, 3);\
+                          INSERT INTO RoutePattern(id, routeId, stopPlaceId, direction, position) VALUES(4, 1, 3, 1, 2);\
                           \
-                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(5, 1, 4, 2, 0);\
-                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(6, 1, 3, 2, 1);\
-                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(7, 1, 1, 2, 3);\
-                          INSERT INTO RouteLine(id, routeId, stopPlaceId, direction, position) VALUES(8, 1, 2, 2, 2);\
+                          INSERT INTO RoutePattern(id, routeId, stopPlaceId, direction, position) VALUES(5, 1, 4, 2, 0);\
+                          INSERT INTO RoutePattern(id, routeId, stopPlaceId, direction, position) VALUES(6, 1, 3, 2, 1);\
+                          INSERT INTO RoutePattern(id, routeId, stopPlaceId, direction, position) VALUES(7, 1, 1, 2, 3);\
+                          INSERT INTO RoutePattern(id, routeId, stopPlaceId, direction, position) VALUES(8, 1, 2, 2, 2);\
                           ", nullptr, nullptr, nullptr);
     
     XCTAssertTrue(status == SQLITE_OK, "Unable to insert test columns, %s", sqlite3_errmsg(self.sqliteDB));
@@ -371,8 +371,8 @@
     XCTAssertTrue(fetchError == nil, @"Fetching calendars did fail %@", fetchError);
 }
 
-- (void)testRouteLineByRouteId {
-    __block NSArray<TKRouteLine *> *routeLines = nil;
+- (void)testRoutePatternByRouteId {
+    __block NSArray<TKRoutePattern *> *routePatterns = nil;
     __block NSError *fetchError = nil;
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
@@ -380,29 +380,29 @@
     TKQuery *query = [[TKQuery alloc] init];
     query.routeID = 1;
     
-    [[self.database fetchRouteLineWithQuery:query] fetchAllWithCompletion:^(NSArray<TKRouteLine *> *result, NSError *error) {
-        routeLines = result;
+    [[self.database fetchRoutePatternWithQuery:query] fetchAllWithCompletion:^(NSArray<TKRoutePattern *> *result, NSError *error) {
+        routePatterns = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
     }];
     
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
-    XCTAssertTrue(routeLines.count == 1, @"The number of route lines should be 1, current: %lu", (unsigned long)routeLines.count);
-    XCTAssertTrue(routeLines.firstObject.route.identifier == 1, @"The route id of route lines should be 1, current: %lu", (unsigned long)routeLines.firstObject.route.identifier);
-    XCTAssertTrue(routeLines.firstObject.outboundStopPlaces.count == 4, @"The number of route line outbound stop places should be outbound 4, current: %lu", (unsigned long)routeLines.firstObject.outboundStopPlaces.count);
+    XCTAssertTrue(routePatterns.count == 1, @"The number of route lines should be 1, current: %lu", (unsigned long)routePatterns.count);
+    XCTAssertTrue(routePatterns.firstObject.route.identifier == 1, @"The route id of route lines should be 1, current: %lu", (unsigned long)routePatterns.firstObject.route.identifier);
+    XCTAssertTrue(routePatterns.firstObject.outboundStopPlaces.count == 4, @"The number of route line outbound stop places should be outbound 4, current: %lu", (unsigned long)routePatterns.firstObject.outboundStopPlaces.count);
     
-    XCTAssertTrue(routeLines.firstObject.outboundStopPlaces[0].identifier == 1
-                  && routeLines.firstObject.outboundStopPlaces[1].identifier == 2
-                  && routeLines.firstObject.outboundStopPlaces[2].identifier == 3
-                  && routeLines.firstObject.outboundStopPlaces[3].identifier == 4, @"The order of route line outbound stop places is incorrect");
+    XCTAssertTrue(routePatterns.firstObject.outboundStopPlaces[0].identifier == 1
+                  && routePatterns.firstObject.outboundStopPlaces[1].identifier == 2
+                  && routePatterns.firstObject.outboundStopPlaces[2].identifier == 3
+                  && routePatterns.firstObject.outboundStopPlaces[3].identifier == 4, @"The order of route line outbound stop places is incorrect");
     
-    XCTAssertTrue(routeLines.firstObject.inboundStopPlaces.count == 4, @"The number of route line stop places should be outbound 4, current: %lu", (unsigned long)routeLines.firstObject.inboundStopPlaces.count);
+    XCTAssertTrue(routePatterns.firstObject.inboundStopPlaces.count == 4, @"The number of route line stop places should be outbound 4, current: %lu", (unsigned long)routePatterns.firstObject.inboundStopPlaces.count);
     
-    XCTAssertTrue(routeLines.firstObject.inboundStopPlaces[0].identifier == 4
-                  && routeLines.firstObject.inboundStopPlaces[1].identifier == 3
-                  && routeLines.firstObject.inboundStopPlaces[2].identifier == 2
-                  && routeLines.firstObject.inboundStopPlaces[3].identifier == 1, @"The order of route line inbound stop places is incorrect");
+    XCTAssertTrue(routePatterns.firstObject.inboundStopPlaces[0].identifier == 4
+                  && routePatterns.firstObject.inboundStopPlaces[1].identifier == 3
+                  && routePatterns.firstObject.inboundStopPlaces[2].identifier == 2
+                  && routePatterns.firstObject.inboundStopPlaces[3].identifier == 1, @"The order of route line inbound stop places is incorrect");
     
     // Fetch non existing route line
     semaphore = dispatch_semaphore_create(0);
@@ -410,15 +410,15 @@
     query = [[TKQuery alloc] init];
     query.routeID = 999999;
     
-    [[self.database fetchRouteLineWithQuery:query] fetchAllWithCompletion:^(NSArray<TKRouteLine *> *result, NSError *error) {
-        routeLines = result;
+    [[self.database fetchRoutePatternWithQuery:query] fetchAllWithCompletion:^(NSArray<TKRoutePattern *> *result, NSError *error) {
+        routePatterns = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
     }];
     
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
-    XCTAssertTrue(routeLines.count == 0, @"The number of route lines should be 0, current: %lu", (unsigned long)routeLines.count);
+    XCTAssertTrue(routePatterns.count == 0, @"The number of route lines should be 0, current: %lu", (unsigned long)routePatterns.count);
 }
 
 - (void)testProperties {

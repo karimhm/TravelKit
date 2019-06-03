@@ -1,13 +1,13 @@
 /*
- *  TKRouteLine_Private.h
+ *  TKRoutePattern_Private.h
  *  Created on 20/May/19.
  *
  *  Copyright (C) 2019 Karim. All rights reserved.
  */
 
-#import "TKRouteLine.h"
+#import "TKRoutePattern.h"
 
-@interface TKRouteLine ()
+@interface TKRoutePattern ()
 
 - (void)setRoute:(TKRoute *)route;
 - (void)setOutboundStopPlaces:(NSArray<TKStopPlace *> *)outboundStopPlaces;

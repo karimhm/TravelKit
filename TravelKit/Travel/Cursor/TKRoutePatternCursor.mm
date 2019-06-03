@@ -1,12 +1,12 @@
 /*
- *  TKRouteLineCursor.mm
+ *  TKRoutePatternCursor.mm
  *  Created on 5/May/19.
  *
  *  Copyright (C) 2019 Karim. All rights reserved.
  */
 
 #import "TKCursor_Private.h"
-#import "TKRouteLine_Private.h"
+#import "TKRoutePattern_Private.h"
 
 using namespace tk;
 
@@ -16,7 +16,7 @@ typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
     TKTravelDirectionInbound         = 2
 };
 
-@implementation TKRouteLineCursor {
+@implementation TKRoutePatternCursor {
     Ref<Statement> _fetchStopPlaceID;
 }
 
@@ -25,7 +25,7 @@ typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
     BOOL hasLimit = false;
     
     std::string queryString = ""
-    "SELECT routeId, direction FROM RouteLine ";
+    "SELECT routeId, direction FROM RoutePattern ";
     
     /* Query Where */
     BOOL hasWhere = false;
@@ -41,7 +41,7 @@ typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
         queryString.append(queryWhere);
     }
     
-    queryString.append("GROUP BY routeId");
+    queryString.append("GROUP BY routeId ");
     
     /* Limit */
     if (query.limit > 0) {
@@ -59,8 +59,8 @@ typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
     "SELECT "
         "StopPlace.*, "
         "Localization.text as name "
-    "FROM RouteLine "
-        "JOIN StopPlace on StopPlace.id = RouteLine.stopPlaceId "
+    "FROM RoutePattern "
+        "JOIN StopPlace on StopPlace.id = RoutePattern.stopPlaceId "
         "JOIN Localization ON Localization.id = StopPlace.nameId "
     "WHERE routeId = :routeId "
     "AND direction = :direction "
@@ -115,8 +115,8 @@ typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
     return stopPlaces;
 }
 
-- (nullable TKRouteLine *)createObjectWithStatement:(Ref<Statement>)statement {
-    TKRouteLine *routeLine = [[TKRouteLine alloc] initWithStatement:statement];
+- (nullable TKRoutePattern *)createObjectWithStatement:(Ref<Statement>)statement {
+    TKRoutePattern *routePattern = [[TKRoutePattern alloc] initWithStatement:statement];
     
     TKQuery *query = [[TKQuery alloc] init];
     query.language = self.query.language;
@@ -124,15 +124,15 @@ typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
     
     TKRoute *route = [[TKRouteCursor cursorWithDatabase:self.database query:query] fetchOne];
     if (route) {
-        routeLine.route = route;
+        routePattern.route = route;
     } else {
         return nil;
     }
     
-    routeLine.outboundStopPlaces = [self fetchStopPlacesWithRouteID:route.identifier direction:TKTravelDirectionOutbound];
-    routeLine.inboundStopPlaces = [self fetchStopPlacesWithRouteID:route.identifier direction:TKTravelDirectionInbound];
+    routePattern.outboundStopPlaces = [self fetchStopPlacesWithRouteID:route.identifier direction:TKTravelDirectionOutbound];
+    routePattern.inboundStopPlaces = [self fetchStopPlacesWithRouteID:route.identifier direction:TKTravelDirectionInbound];
     
-    return routeLine;
+    return routePattern;
 }
 
 - (BOOL)close {

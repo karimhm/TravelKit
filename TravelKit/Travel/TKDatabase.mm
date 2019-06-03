@@ -289,8 +289,8 @@ cleanup:
     return [self fetchCalendarWithQuery:query error:nil];
 }
 
-- (TKCursor <TKRouteLine *> *)fetchRouteLineWithQuery:(TKQuery *)query {
-    return [self fetchRouteLineWithQuery:query error:nil];
+- (TKCursor <TKRoutePattern *> *)fetchRoutePatternWithQuery:(TKQuery *)query {
+    return [self fetchRoutePatternWithQuery:query error:nil];
 }
 
 - (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error {
@@ -308,9 +308,9 @@ cleanup:
     return [TKCalendarCursor cursorWithDatabase:_db query:query error:error];
 }
 
-- (TKCursor <TKRouteLine *> *)fetchRouteLineWithQuery:(TKQuery *)query error:(NSError **)error {
+- (TKCursor <TKRoutePattern *> *)fetchRoutePatternWithQuery:(TKQuery *)query error:(NSError **)error {
     query.language = _selectedLanguage;
-    return [TKRouteLineCursor cursorWithDatabase:_db query:query error:error];
+    return [TKRoutePatternCursor cursorWithDatabase:_db query:query error:error];
 }
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {

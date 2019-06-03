@@ -16,7 +16,7 @@
 #import "TKStopPlace.h"
 #import "TKRoute.h"
 #import "TKCalendar.h"
-#import "TKRouteLine.h"
+#import "TKRoutePattern.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKCalendarCursor : TKCursor<TKCalendar *>
 @end
 
-@interface TKRouteLineCursor : TKCursor<TKRouteLine *>
+@interface TKRoutePatternCursor : TKCursor<TKRoutePattern *>
 @end
 
 NS_ASSUME_NONNULL_END
