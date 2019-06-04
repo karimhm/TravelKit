@@ -13,8 +13,10 @@ TKOrderProperty const TKOrderByName = @"name";
 @implementation TKQuery {
     NSString *_language;
     CLLocation *_location;
+    TKItemID _stopPlaceID;
     TKItemID _routeID;
     BOOL _idSet;
+    BOOL _stopPlaceIDSet;
     BOOL _routeIDSet;
 }
 
@@ -39,6 +41,15 @@ TKOrderProperty const TKOrderByName = @"name";
     return _location;
 }
 
+- (void)setStopPlaceID:(TKItemID)stopPlaceID {
+    _stopPlaceID = stopPlaceID;
+    _stopPlaceIDSet = true;
+}
+
+- (TKItemID)stopPlaceID {
+    return _stopPlaceID;
+}
+
 - (void)setRouteID:(TKItemID)routeID {
     _routeID = routeID;
     _routeIDSet = true;
@@ -50,6 +61,10 @@ TKOrderProperty const TKOrderByName = @"name";
 
 - (BOOL)idSet {
     return _idSet;
+}
+
+- (BOOL)stopPlaceIDSet {
+    return _stopPlaceIDSet;
 }
 
 - (BOOL)routeIDSet {

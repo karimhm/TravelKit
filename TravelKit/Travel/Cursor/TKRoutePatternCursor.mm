@@ -10,12 +10,6 @@
 
 using namespace tk;
 
-typedef NS_OPTIONS(NSInteger, TKTravelDirection) {
-    TKTravelDirectionUnknown         = 0,
-    TKTravelDirectionOutbound        = 1,
-    TKTravelDirectionInbound         = 2
-};
-
 @implementation TKRoutePatternCursor {
     Ref<Statement> _fetchStopPlaceID;
 }

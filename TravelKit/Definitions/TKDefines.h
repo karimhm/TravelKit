@@ -6,7 +6,6 @@
  */
 
 #import <sqlite3.h>
-#import <stdio.h>
 #import <unistd.h>
 #import <machine/endian.h>
 
@@ -42,6 +41,3 @@
 #define TK_LIKE_PRINTF(f, a) __attribute__((format(__printf__, f, a)))
 
 #define TK_STRINGIFY(x) #x
-
-typedef uint64_t TKItemID;
-typedef int64_t TKInt;

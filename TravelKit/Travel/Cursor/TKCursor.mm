@@ -37,7 +37,7 @@ using namespace tk;
     return self;
 }
 
-- (void)fetchAllWithCompletion:(void (^) (NSArray <TKItem *> * __nullable result, NSError * __nullable error))completion {
+- (void)fetchAllWithCompletion:(void (^) (NSArray <id> * __nullable result, NSError * __nullable error))completion {
     NSError *fetchError = nil;
     
     if (_result) {
@@ -49,21 +49,21 @@ using namespace tk;
     }
 }
 
-- (nullable TKItem *)fetchOne {
+- (nullable id)fetchOne {
     return [self fetchOneWithError:nil];
 }
 
-- (nullable TKItem *)fetchOneWithError:(NSError **)error {
-    TKItem *object = [self nextWithError:error];
+- (nullable id)fetchOneWithError:(NSError **)error {
+    id object = [self nextWithError:error];
     self.completed = true;
     return object;
 }
 
-- (nullable TKItem *)nextWithError:(NSError **)error {
+- (nullable id )nextWithError:(NSError **)error {
     Status status = _statement->next();
     
     if (status.isRow()) {
-        TKItem *object = [self createObjectWithStatement:_statement];
+        id object = [self createObjectWithStatement:_statement];
         [self.fetchResult addObject:object];
         
         return object;
@@ -76,11 +76,11 @@ using namespace tk;
     return nil;
 }
 
-- (nullable TKItem *)next {
+- (nullable id)next {
     return [self nextWithError:nil];
 }
 
-- (TKItem *)nextObject {
+- (id)nextObject {
     return [self next];
 }
 
@@ -92,7 +92,7 @@ using namespace tk;
     return _result;
 }
 
-- (nullable TKItem *)createObjectWithStatement:(Ref<Statement>)statement {
+- (nullable id)createObjectWithStatement:(Ref<Statement>)statement {
     return nil;
 }
 

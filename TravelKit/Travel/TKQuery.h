@@ -53,9 +53,21 @@ TK_EXTERN TKOrderProperty const TKOrderByName;
  */
 @property (nonatomic, nullable) NSString *name;
 
+/*!
+ @property
+ @abstract   The travel direction. default is TKTravelDirectionUnknown.
+ */
+@property (nonatomic) TKTravelDirection direction;
+
 @end
 
 @interface TKQuery (StopPlace)
+
+/*!
+ @property
+ @abstract   The identifier of the stop place.
+ */
+@property (nonatomic) TKItemID stopPlaceID;
 
 /*!
  @property
@@ -65,7 +77,7 @@ TK_EXTERN TKOrderProperty const TKOrderByName;
 
 @end
 
-@interface TKQuery (RouteLine)
+@interface TKQuery (Route)
 
 /*!
  @property

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TKCursor<ObjectType: TKItem *> : NSEnumerator<ObjectType>
+@interface TKCursor<ObjectType> : NSEnumerator<ObjectType>
 
 /*!
  @method

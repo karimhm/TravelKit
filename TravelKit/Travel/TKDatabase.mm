@@ -7,6 +7,7 @@
 
 #import "TKDatabase.h"
 #import "TKDefines_Private.h"
+#import "TKConstants_Private.h"
 #import "NSError+TravelKit.h"
 #import "DistanceFunction.h"
 #import "TKItem_Core.h"
@@ -293,6 +294,10 @@ cleanup:
     return [self fetchRoutePatternWithQuery:query error:nil];
 }
 
+- (TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query {
+    return [self fetchStopTimeWithQuery:query error:nil];
+}
+
 - (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error {
     query.language = _selectedLanguage;
     return [TKStopPlaceCursor cursorWithDatabase:_db query:query error:error];
@@ -313,11 +318,16 @@ cleanup:
     return [TKRoutePatternCursor cursorWithDatabase:_db query:query error:error];
 }
 
+- (TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query error:(NSError **)error {
+    query.language = _selectedLanguage;
+    return [TKStopTimeCursor cursorWithDatabase:_db query:query error:error];
+}
+
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {
     ItemID from = request.source.identifier;
     ItemID to = request.destination.identifier;
     time_t departure = request.date.timeIntervalSince1970;
-    uint64_t dayBegin = departure - (departure % 86400);
+    uint64_t dayBegin = departure - (departure % TKSecondsInDay);
     
     auto options = tk::Router::QueryOptions();
     options.omitSameTripArrival(request.options & TKTripPlanOptionsOmitSameTripArrival);

@@ -10,10 +10,12 @@
 #import "TKQuery_Private.h"
 #import "NSError+TravelKit.h"
 #import "TKDefines_Private.h"
+#import "TKCore.h"
 #import "Database.h"
 #import "Statement.h"
 #import "TKItem_Core.h"
 #import "TKStopPlace.h"
+#import "TKStopTime.h"
 #import "TKRoute.h"
 #import "TKCalendar.h"
 #import "TKRoutePattern.h"
@@ -52,6 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface TKRoutePatternCursor : TKCursor<TKRoutePattern *>
+@end
+
+@interface TKStopTimeCursor : TKCursor<TKStopTime *>
 @end
 
 NS_ASSUME_NONNULL_END

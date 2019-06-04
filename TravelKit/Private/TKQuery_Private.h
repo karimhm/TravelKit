@@ -12,6 +12,7 @@
 @property (strong, nonatomic) NSString *language;
 
 @property (nonatomic, readonly) BOOL idSet;
+@property (nonatomic, readonly) BOOL stopPlaceIDSet;
 @property (nonatomic, readonly) BOOL routeIDSet;
 
 @end

@@ -6,6 +6,7 @@
  */
 
 #import <TravelKit/TKDefines.h>
+#import <TravelKit/TKCore.h>
 #import <TravelKit/TKConstants.h>
 #import <TravelKit/TKError.h>
 
@@ -17,6 +18,7 @@
 
 #import <TravelKit/TKStopPlace.h>
 #import <TravelKit/TKStop.h>
+#import <TravelKit/TKStopTime.h>
 #import <TravelKit/TKRoute.h>
 #import <TravelKit/TKRide.h>
 #import <TravelKit/TKRoutePattern.h>

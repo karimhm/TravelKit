@@ -6,6 +6,7 @@
  */
 
 #import <TravelKit/TKDefines.h>
+#import <TravelKit/TKCore.h>
 #import <Foundation/Foundation.h>
 
 @interface TKItem : NSObject <NSCopying, NSCoding, NSSecureCoding>

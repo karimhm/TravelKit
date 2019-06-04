@@ -9,6 +9,10 @@
 
 const static uint32_t TKDaysMask = 0x1;
 
+const static uint64_t TKSecondsInMinute = 60;
+const static uint64_t TKSecondsInHour = TKSecondsInMinute * 60;
+const static uint64_t TKSecondsInDay = TKSecondsInHour * 24;
+
 static NSString *kTKTableLine               = @"Line";
 static NSString *kTKTableStation            = @"Station";
 static NSString *kTKTableTrain              = @"Train";
