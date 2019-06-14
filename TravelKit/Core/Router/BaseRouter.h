@@ -46,13 +46,26 @@ private:
     
 class Base  {
 public:
-    Base(Ref<Database> db) : db_(db) {
+    Base(Ref<Database> db) : db_(db), loaded_(false) {
+    }
+    
+    ErrorOr<void> load() {
+        return {};
+    }
+    
+    ErrorOr<void> unload() {
+        return {};
+    }
+    
+    bool isLoaded() const {
+        return loaded_;
     }
     
     virtual ErrorOr<TripPlan> query(ItemID source, ItemID destination, Date date, QueryOptions options) = 0;
     
 protected:
     Ref<Database> db_;
+    bool loaded_;
 };
 
 }

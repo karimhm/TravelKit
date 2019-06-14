@@ -20,20 +20,15 @@ namespace Router {
  */
 class CSA final : public RefCounted<CSA>, public Base {
 public:
-    CSA(Ref<Database> db) : Base(db), loaded_(false) {
+    CSA(Ref<Database> db) : Base(db) {
     }
     
     ErrorOr<void> load();
     ErrorOr<void> unload();
     
-    bool isLoaded() const {
-        return loaded_;
-    }
-    
     ErrorOr<TripPlan> query(ItemID source, ItemID destination, Date date, QueryOptions options);
     
 private:
-    bool loaded_;
     ConnectionVector connections_;
     std::map<ItemID, Calendar> calendarByID_;
     std::map<ItemID, Trip> tripsByID_;
