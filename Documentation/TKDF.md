@@ -3,6 +3,7 @@
 ### Table of Contents
 - [Overview](#overview)
 - [Term definitions](#term-definitions)
+- [Field Types](#field-types)
 - [Tables](#tables)
     - [StopPlace](#stopplace)
     - [Localization](#localization)
