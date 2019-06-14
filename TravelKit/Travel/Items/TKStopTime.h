@@ -7,15 +7,7 @@
 
 #import <TravelKit/TKStopPlace.h>
 #import <TravelKit/TKCalendar.h>
-
-@interface TKTime : NSObject <NSCopying, NSCoding, NSSecureCoding>
-
-@property (nonatomic, readonly) NSInteger second;
-@property (nonatomic, readonly) NSInteger hour;
-@property (nonatomic, readonly) NSInteger minute;
-@property (nonatomic, readonly) NSInteger day;
-
-@end
+#import <TravelKit/TKTime.h>
 
 @interface TKStopTime : TKItem
 

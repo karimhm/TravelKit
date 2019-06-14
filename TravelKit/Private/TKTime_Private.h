@@ -12,4 +12,6 @@
 
 - (instancetype)initWithTimeInterval:(NSTimeInterval)time;
 
+@property (nonatomic, readonly) NSDateComponents *dateComponents;
+
 @end

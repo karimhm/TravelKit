@@ -23,4 +23,7 @@
 #import <TravelKit/TKRide.h>
 #import <TravelKit/TKRoutePattern.h>
 #import <TravelKit/TKCalendar.h>
+#import <TravelKit/TKTime.h>
 #import <TravelKit/TKItinerary.h>
+
+#import <TravelKit/TKTimeFormatter.h>

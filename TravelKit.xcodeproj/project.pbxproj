@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8A00762821F5C105002A5FB9 /* TKItinerary_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A00762621F5C105002A5FB9 /* TKItinerary_Private.h */; };
+		8A042F3322A95C0000340A1B /* TKTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A042F3122A95C0000340A1B /* TKTime.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A042F3422A95C0000340A1B /* TKTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A042F3222A95C0000340A1B /* TKTime.m */; };
 		8A0ACDF32291464E0063568D /* TKQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A0ACDF12291464E0063568D /* TKQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A0ACDF42291464E0063568D /* TKQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A0ACDF22291464E0063568D /* TKQuery.m */; };
 		8A2224F22231BDEB00025A9F /* Coordinate2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A2224F12231BDEB00025A9F /* Coordinate2D.cpp */; };
@@ -91,6 +93,8 @@
 		8AA28C0721FD04DD00FED656 /* TKTripPlan.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA28C0521FD04DD00FED656 /* TKTripPlan.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AA28C0821FD04DD00FED656 /* TKTripPlan.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AA28C0621FD04DD00FED656 /* TKTripPlan.m */; };
 		8AA28C0A21FD09D300FED656 /* TKTripPlan_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AA28C0921FD09D300FED656 /* TKTripPlan_Private.h */; };
+		8AB1BB9E22A83FDE000EB1AC /* TKTimeFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AB1BB9C22A83FDE000EB1AC /* TKTimeFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8AB1BB9F22A83FDE000EB1AC /* TKTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1BB9D22A83FDE000EB1AC /* TKTimeFormatter.m */; };
 		8ACD3C1922A0A5C000F40AC1 /* TKStopTimeCursor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8ACD3C1722A0A5C000F40AC1 /* TKStopTimeCursor.mm */; };
 		8ACEDE1122A1C6BC00D7FA0D /* TKCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ACEDE0F22A1C6BC00D7FA0D /* TKCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8ADADC90207CD21E0012CBB1 /* DistanceFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADADC6D207C36AA0012CBB1 /* DistanceFunction.h */; };
@@ -120,6 +124,8 @@
 		8A00762F21F5D643002A5FB9 /* Calendar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Calendar.h; sourceTree = "<group>"; };
 		8A00763121F5E237002A5FB9 /* Date.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Date.h; sourceTree = "<group>"; };
 		8A00763C21F85824002A5FB9 /* TripPlan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TripPlan.h; sourceTree = "<group>"; };
+		8A042F3122A95C0000340A1B /* TKTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKTime.h; sourceTree = "<group>"; };
+		8A042F3222A95C0000340A1B /* TKTime.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKTime.m; sourceTree = "<group>"; };
 		8A0ACDF12291464E0063568D /* TKQuery.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKQuery.h; sourceTree = "<group>"; };
 		8A0ACDF22291464E0063568D /* TKQuery.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKQuery.m; sourceTree = "<group>"; };
 		8A1BBDF2221CAD0F00A0EAAD /* Coordinate2D.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Coordinate2D.h; sourceTree = "<group>"; };
@@ -213,6 +219,8 @@
 		8AA5C0D82035BB09001821DA /* TKDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDefines.h; sourceTree = "<group>"; };
 		8AA5C0DA2035BBEE001821DA /* TKError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKError.h; sourceTree = "<group>"; };
 		8AAE965F2246214500D306E3 /* QueryRoute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QueryRoute.h; sourceTree = "<group>"; };
+		8AB1BB9C22A83FDE000EB1AC /* TKTimeFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKTimeFormatter.h; sourceTree = "<group>"; };
+		8AB1BB9D22A83FDE000EB1AC /* TKTimeFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKTimeFormatter.m; sourceTree = "<group>"; };
 		8AB3D98D20B34730005B0192 /* TKStop_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKStop_Private.h; sourceTree = "<group>"; };
 		8AC488D0229242D4002664AC /* TKDefines_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDefines_Private.h; sourceTree = "<group>"; };
 		8ACD3C1722A0A5C000F40AC1 /* TKStopTimeCursor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TKStopTimeCursor.mm; sourceTree = "<group>"; };
@@ -461,6 +469,10 @@
 				8A6E2C782039316A006A240F /* TKUtilities.h */,
 				8A6E2C792039316A006A240F /* TKUtilities.mm */,
 				8ACEDE0F22A1C6BC00D7FA0D /* TKCore.h */,
+				8A042F3122A95C0000340A1B /* TKTime.h */,
+				8A042F3222A95C0000340A1B /* TKTime.m */,
+				8AB1BB9C22A83FDE000EB1AC /* TKTimeFormatter.h */,
+				8AB1BB9D22A83FDE000EB1AC /* TKTimeFormatter.m */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -582,6 +594,8 @@
 				8A577E3121FC7554008126F8 /* Ride.h in Headers */,
 				8A0ACDF32291464E0063568D /* TKQuery.h in Headers */,
 				8A2B241A21F1D32800C3333B /* TKTripPlanRequest.h in Headers */,
+				8A042F3322A95C0000340A1B /* TKTime.h in Headers */,
+				8AB1BB9E22A83FDE000EB1AC /* TKTimeFormatter.h in Headers */,
 				8A577E2E21FB52D0008126F8 /* Mapping.h in Headers */,
 				8AF5C8492035D6DE00715995 /* TKConstants.h in Headers */,
 				8A9D161D21F9BC7E004922E7 /* Error.h in Headers */,
@@ -708,6 +722,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AB1BB9F22A83FDE000EB1AC /* TKTimeFormatter.m in Sources */,
 				8AF5C85C203618B500715995 /* NSError+TravelKit.m in Sources */,
 				8A543AF7229DEB9100656F10 /* (null) in Sources */,
 				8A97C26322923DF600EA04FE /* TKCalendarCursor.mm in Sources */,
@@ -724,6 +739,7 @@
 				8A0ACDF42291464E0063568D /* TKQuery.m in Sources */,
 				8A539D382293CEC700557ACD /* TKRoutePatternCursor.mm in Sources */,
 				8A97C25F22923C3500EA04FE /* TKRouteCursor.mm in Sources */,
+				8A042F3422A95C0000340A1B /* TKTime.m in Sources */,
 				8A7A4B8620806F6900EF562D /* TKStop.m in Sources */,
 				8A97C24722914F4500EA04FE /* TKCursor.mm in Sources */,
 				8A6E2C7B2039316A006A240F /* TKUtilities.mm in Sources */,
