@@ -8,7 +8,7 @@
 - [Documentation](#documentation)
 
 ## Overview
-*TravelKit* is a  public transportation routing engine. The framework depends on data being in [GTFS](https://developers.google.com/transit/gtfs) format, currently it includes only an iOS API for journey planning.
+*TravelKit* is a mobile trip planning engine.
 
 ## Requirements
 * [iOS 8.0](https://wikipedia.org/wiki/IOS_8) or later.
