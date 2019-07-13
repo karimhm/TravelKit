@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKRoute : TKItem
 
 @property (strong, nonatomic, readonly) NSString *name;
+@property (strong, nonatomic, readonly, nullable) NSString *routeDescription;
 @property (strong, nonatomic, readonly, nullable) UIColor *color;
 
 @end

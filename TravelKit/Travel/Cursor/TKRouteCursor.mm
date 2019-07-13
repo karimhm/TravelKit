@@ -20,11 +20,14 @@ using namespace tk;
     std::string queryString = ""
     "SELECT "
         "Route.*, "
-        "Localization.text AS name "
+        "NameLocalization.text AS name, "
+        "DescriptionLocalization.text AS description "
     "FROM Route "
     "JOIN "
-        "Localization ON Localization.id = Route.nameId "
-    "WHERE Localization.language = :language ";
+        "Localization AS NameLocalization ON NameLocalization.id = Route.nameId, "
+        "Localization AS DescriptionLocalization ON DescriptionLocalization.id = Route.descriptionId "
+    "WHERE NameLocalization.language = :language "
+    "AND DescriptionLocalization.language = :language ";
     
     if (query.idSet) {
         queryString.append("AND Route.id = :id ");
