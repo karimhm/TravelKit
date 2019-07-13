@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKCalendar : TKItem
 
 @property (strong, nonatomic, readonly) NSString *name;
+@property (strong, nonatomic, readonly) NSString *shortName;
 @property (nonatomic, readonly) uint8_t days;
 
 @end

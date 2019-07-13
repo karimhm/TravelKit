@@ -19,11 +19,14 @@ using namespace tk;
     std::string queryString = ""
     "SELECT "
         "Calendar.*, "
-        "Localization.text AS name "
+        "NameLocalization.text AS name, "
+        "ShortNameLocalization.text AS shortName "
     "FROM Calendar "
     "JOIN "
-        "Localization ON Localization.id = Calendar.nameId "
-    "WHERE Localization.language = :language ";
+        "Localization AS NameLocalization ON NameLocalization.id = Calendar.nameId, "
+        "Localization AS ShortNameLocalization ON ShortNameLocalization.id = Calendar.shortNameId "
+    "WHERE NameLocalization.language = :language "
+    "AND ShortNameLocalization.language = :language ";
     
     if (query.idSet) {
         queryString.append("AND Calendar.id = :id ");

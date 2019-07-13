@@ -48,6 +48,7 @@
                           CREATE TABLE IF NOT EXISTS Calendar (\
                               id INTEGER PRIMARY KEY NOT NULL,\
                               nameId INTEGER REFERENCES Localization(id),\
+                              shortNameId INTEGER REFERENCES Localization(id),\
                               days INT CHECK (days <= 127) NOT NULL\
                           );\
                           CREATE TABLE IF NOT EXISTS Trip (\
@@ -76,6 +77,9 @@
                           INSERT INTO Localization(id, language, text) VALUES(7, 'en', 'testCalendar1');\
                           INSERT INTO Localization(id, language, text) VALUES(8, 'en', 'testCalendar2');\
                           INSERT INTO Localization(id, language, text) VALUES(9, 'en', 'testCalendar3');\
+                          INSERT INTO Localization(id, language, text) VALUES(10, 'en', 'testCalendar1 ShortName');\
+                          INSERT INTO Localization(id, language, text) VALUES(11, 'en', 'testCalendar2 ShortName');\
+                          INSERT INTO Localization(id, language, text) VALUES(12, 'en', 'testCalendar3 ShortName');\
                           \
                           INSERT INTO Localization(id, language, text) VALUES(1, 'ar', 'testPlace1-ar');\
                           \
@@ -92,9 +96,9 @@
                           INSERT INTO Properties(id, value) VALUES('testProperty3', 1.2);\
                           INSERT INTO Properties(id, value) VALUES('testProperty4', NULL);\
                           \
-                          INSERT INTO Calendar(id, nameId, days) VALUES(1, 7, 127);\
-                          INSERT INTO Calendar(id, nameId, days) VALUES(2, 8, 127);\
-                          INSERT INTO Calendar(id, nameId, days) VALUES(3, 9, 127);\
+                          INSERT INTO Calendar(id, nameId, shortNameId, days) VALUES(1, 7, 10, 127);\
+                          INSERT INTO Calendar(id, nameId, shortNameId, days) VALUES(2, 8, 11, 127);\
+                          INSERT INTO Calendar(id, nameId, shortNameId, days) VALUES(3, 9, 12, 127);\
                           \
                           INSERT INTO Trip(id, calendarId, routeId) VALUES(1, 1, 1);\
                           \
@@ -293,6 +297,7 @@
     
     XCTAssertTrue(calendars.firstObject.identifier == 1, @"The calendar identifier is incorrect. It should be 1, current: %lli", calendars.firstObject.identifier);
     XCTAssertTrue([calendars.firstObject.name isEqualToString:@"testCalendar1"], @"The calendar name is incorrect. It should be 'testCalendar1', current: %@", calendars.firstObject.name);
+    XCTAssertTrue([calendars.firstObject.shortName isEqualToString:@"testCalendar1 ShortName"], @"The calendar short name is incorrect. It should be 'testCalendar1', current: %@", calendars.firstObject.name);
     XCTAssertTrue(calendars.firstObject.days == 127, @"The calendar days is incorrect. It should be '127', current: %i", calendars.firstObject.days);
     
     semaphore = dispatch_semaphore_create(0);
@@ -336,6 +341,7 @@
     // Check the calendar properties
     XCTAssertTrue(calendars.firstObject.identifier == 2, @"The calendar identifier is incorrect. It should be 2");
     XCTAssertTrue([calendars.firstObject.name isEqualToString:@"testCalendar2"], @"The calendar name is incorrect. It should be 'testPlace1'");
+    XCTAssertTrue([calendars.firstObject.shortName isEqualToString:@"testCalendar2 ShortName"], @"The calendar name is incorrect. It should be 'testPlace1'");
     XCTAssertTrue(calendars.firstObject.days == 127, @"The calendar days property is incorrect. It should be '127', current: %i", calendars.firstObject.days);
     
     semaphore = dispatch_semaphore_create(0);
