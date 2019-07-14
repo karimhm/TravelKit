@@ -43,6 +43,7 @@
                           CREATE TABLE IF NOT EXISTS Route (\
                               id INTEGER PRIMARY KEY NOT NULL,\
                               nameId INTEGER REFERENCES Localization(id),\
+                              descriptionId INTEGER REFERENCES Localization(id),\
                               color INT\
                           );\
                           CREATE TABLE IF NOT EXISTS Calendar (\
@@ -74,6 +75,7 @@
                           INSERT INTO Localization(id, language, text) VALUES(4, 'en', 'testPlaceA2');\
                           INSERT INTO Localization(id, language, text) VALUES(5, 'en', 'testPlaceA3');\
                           INSERT INTO Localization(id, language, text) VALUES(6, 'en', 'testRoute1');\
+                          INSERT INTO Localization(id, language, text) VALUES(13, 'en', 'testRoute1 Description');\
                           INSERT INTO Localization(id, language, text) VALUES(7, 'en', 'testCalendar1');\
                           INSERT INTO Localization(id, language, text) VALUES(8, 'en', 'testCalendar2');\
                           INSERT INTO Localization(id, language, text) VALUES(9, 'en', 'testCalendar3');\
@@ -83,7 +85,7 @@
                           \
                           INSERT INTO Localization(id, language, text) VALUES(1, 'ar', 'testPlace1-ar');\
                           \
-                          INSERT INTO Route(id, nameId, color) VALUES(1, 6, 16777215);\
+                          INSERT INTO Route(id, nameId, descriptionId, color) VALUES(1, 6, 13, 16777215);\
                           \
                           INSERT INTO StopPlace(id, nameId, latitude, longitude) VALUES(1, 1 , 0, 0);\
                           INSERT INTO StopPlace(id, nameId, latitude, longitude) VALUES(2, 2 , 1, 0);\
