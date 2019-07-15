@@ -8,7 +8,7 @@
 #import <TravelKit/TKStop.h>
 #import <TravelKit/TKRoute.h>
 
-@interface TKRide : NSObject
+@interface TKRide : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
 @property (readonly, nonatomic) NSArray<TKStop *> *stops;
 @property (readonly, nonatomic) TKRoute *route;
