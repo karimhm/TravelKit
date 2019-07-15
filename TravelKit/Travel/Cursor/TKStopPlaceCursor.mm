@@ -84,7 +84,7 @@ using namespace tk;
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
     
-    if (hasName && !self.statement->bind(std::string(query.name.UTF8String).append("%"), ":name").isOK()) {
+    if (hasName && !self.statement->bind(std::string{"%"}.append(query.name.UTF8String).append("%"), ":name").isOK()) {
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
     
