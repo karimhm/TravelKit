@@ -12,7 +12,7 @@ using namespace tk;
 static const int64_t IIDBase = 62;
 static const std::string IIDBaseDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-bool itoa(uint64_t value, char* result, int64_t base) {
+static bool itoa(uint64_t value, char* result, int64_t base) {
     // check that the base if valid
     if (base < 2 || base > 62) {
         *result = '\0';
