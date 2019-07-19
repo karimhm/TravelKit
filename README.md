@@ -10,7 +10,7 @@
 - [Overview](#overview)
 - [Features](#features)
 - [Requirements](#requirements)
-- [Usage](https://github.com/karimhm/TravelKit/tree/master/Documentation)
+- [Usage](https://github.com/karimhm/TravelKit/tree/master/Documentation/Usage.md)
 - [Documentation](#documentation)
 
 ## Overview
