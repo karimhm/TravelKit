@@ -1,6 +1,10 @@
-# <img src="Documentation/images/TravelKit256x256.png" width="80" height="80"> TravelKit
+<img align="left" width="80" height="80" src="Documentation/images/TravelKit256x256.png"/>
 
-[![Build Status](https://travis-ci.com/karimhm/TravelKit.svg?token=Eo1DcU7271eYfUkoq6gT&branch=master)](https://travis-ci.com/karimhm/TravelKit)
+# TravelKit
+
+&nbsp;
+
+[<img src="https://travis-ci.com/karimhm/TravelKit.svg?token=Eo1DcU7271eYfUkoq6gT&branch=master"/>](https://travis-ci.com/karimhm/TravelKit)
 
 ### Table of Contents
 - [Overview](#overview)
