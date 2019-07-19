@@ -15,6 +15,12 @@ namespace tk {
 
 using ItemID = uint64_t;
 
+/*
+   An IID (Item ID) is a 8-byte value consists of:
+    - a 4-byte value representing the seconds since the Unix epoch
+    - a 2-byte random value
+    - a 2-byte counter, starting at 0
+ */
 class IID {
 public:
     IID(ItemID rawID) : rawID_(rawID) {
