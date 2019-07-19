@@ -8,11 +8,18 @@
 
 ### Table of Contents
 - [Overview](#overview)
+- [Features](#features)
 - [Requirements](#requirements)
 - [Documentation](#documentation)
 
 ## Overview
 *TravelKit* is a mobile trip planning engine.
+
+## Features
+* A full-fledged trip planning engine for iOS
+* Depends on data in open standard formats ([GTFS](https://developers.google.com/transit/gtfs))
+* Works offline and does't depend on an external server
+* Super fast trip planning engine that will generate results in a fraction of a second
 
 ## Requirements
 * [iOS 8.0](https://wikipedia.org/wiki/IOS_8) or later.
