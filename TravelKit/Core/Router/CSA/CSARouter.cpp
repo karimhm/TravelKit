@@ -14,7 +14,28 @@
 using namespace tk;
 using namespace tk::Router;
 
-size_t IndexInfinity = std::numeric_limits<size_t>::max();
+constexpr size_t IndexInfinity = std::numeric_limits<size_t>::max();
+
+const size_t EarliestConnection(ConnectionVector& connections, Time& departureTime, const size_t startIndex) {
+    // TODO: This should be a binary search
+    for (size_t i = startIndex; i < connections.size(); i++) {
+        const Connection& connection = connections[i];
+        if (connection.startTime() >= departureTime) {
+            return i;
+            break;
+        }
+    }
+    
+    return 0;
+}
+
+const Time EarliestArrival(std::map<ItemID, Time>& arrivals, ItemID stopPlaceID) {
+    if (arrivals.count(stopPlaceID)) {
+        return arrivals[stopPlaceID];
+    } else {
+        return Time::Infinity();
+    }
+}
 
 ErrorOr<void> CSA::load() {
     if (loaded_) {
@@ -24,6 +45,7 @@ ErrorOr<void> CSA::load() {
     Status status = Status();
     StopTimeVector stopTimes(0);
     ConnectionVector connections(0);
+    std::map<ItemID, Transfer> stopTransferByID;
     std::map<ItemID, Calendar> calendarByID;
     std::map<ItemID, Trip> tripsByID;
     
@@ -100,18 +122,41 @@ ErrorOr<void> CSA::load() {
         }
     }
     
+    fetchStmt = makeRef<Statement>(db_, "SELECT sourceId, destinationId, duration FROM Transfer");
+    if (fetchStmt->prepare().isOK()) {
+        TransferMapping mapping = TransferMapping(fetchStmt);
+        
+        while (fetchStmt->next().isRow()) {
+            Transfer transfer = Transfer((*fetchStmt)[mapping.sourceIdIndex()].int64Value(),
+                                         (*fetchStmt)[mapping.destinationIdIndex()].int64Value(),
+                                         (*fetchStmt)[mapping.durationIndex()].intValue());
+            
+            if (transfer.startStopPlaceID() == transfer.endStopPlaceID()) {
+                stopTransferByID[transfer.startStopPlaceID()] = std::move(transfer);
+            }
+        }
+        
+        if (!status.isDone()) {
+            return Error(db_->handle());
+        }
+    }
+    
+    fetchStmt->close();
+    
     std::sort(connections.begin(), connections.end(), Connection::Compare());
     
     connections_ = std::move(connections);
+    stopTransferByID_ = std::move(stopTransferByID);
     calendarByID_ = std::move(calendarByID);
     tripsByID_ = std::move(tripsByID);
-    
     loaded_ = true;
+    
     return {};
 }
 
 ErrorOr<void> CSA::unload() {
     connections_.clear();
+    stopTransferByID_.clear();
     calendarByID_.clear();
     tripsByID_.clear();
     loaded_ = false;
@@ -120,12 +165,13 @@ ErrorOr<void> CSA::unload() {
 }
 
 ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, QueryOptions options) {
-    std::vector<QueryRoute> routes = std::vector<QueryRoute>();
+    std::vector<QueryRoute> routes;
     Time departureTime = date.seconds();
     std::map<ItemID, Calendar> calendars;
     
     // Fetch all the available Calendars for the given date
-    for (auto &calendar: calendarByID_) {
+    // So connections that are not available at the given date will not be considered
+    for (const auto &calendar: calendarByID_) {
         if (calendar.second.isAvailable(date)) {
             calendars[calendar.second.id()] = calendar.second;
         }
@@ -135,7 +181,7 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
     
     /*
      previousIndex is an optimization used to prevent iterating over
-     the connections vector from the begining each time
+     the connections vector from the begining each round
      */
     size_t previousIndex = 0;
     
@@ -143,33 +189,34 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
     for (size_t i = 0; i < connections_.size(); i++) {
         std::map<ItemID, Time> earliestArrival;
         std::map<ItemID, size_t> connectionIndex;
+        std::map<ItemID, ItemID> connectionTripId;
+        
+        earliestArrivals[source] = std::vector<Time>{previousDeparture};
         
         earliestArrival[source] = previousDeparture;
         Time earliest = Time::Infinity();
         
-        // Look for the earliest departure */
-        for (size_t i = previousIndex; i < connections_.size(); i++) {
-            const Connection& connection = connections_[i];
-            if (connection.startTime() >= previousDeparture) {
-                previousIndex = i;
-                break;
-            }
-        }
+        // Look for the earliest departure
+        previousIndex = EarliestConnection(connections_, previousDeparture, previousIndex);
         
         for (size_t i = previousIndex; i < connections_.size(); i++) {
             const Connection& connection = connections_[i];
-            Time startEarliest = Time::Infinity();
-            Time endEarliest = Time::Infinity();
+            const Time startEarliest = EarliestArrival(earliestArrival, connection.startStopPlaceID());
+            const Time endEarliest = EarliestArrival(earliestArrival, connection.endStopPlaceID());
             
-            if (earliestArrival.count(connection.startStopPlaceID())) {
-                startEarliest = earliestArrival[connection.startStopPlaceID()];
+            uint32_t transferDuration = 0;
+            
+            if (!options.ignoreTransferTime()
+                && connection.type() == Connection::Type::Ride
+                && connectionTripId.count(connection.startStopPlaceID()))
+            {
+                ItemID tripId = connectionTripId[connection.startStopPlaceID()];
+                if (connection.tripID() != tripId) {
+                    transferDuration = stopTransferByID_[connection.startStopPlaceID()].duration();
+                }
             }
             
-            if (earliestArrival.count(connection.endStopPlaceID())) {
-                endEarliest = earliestArrival[connection.endStopPlaceID()];
-            }
-            
-            if (connection.startTime() >= startEarliest
+            if ((connection.startTime() - transferDuration) >= startEarliest.seconds()
                 && connection.endTime() < endEarliest
                 && calendars.count(connection.calendarID()))
             {
@@ -182,6 +229,11 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
                 
                 earliestArrival[connection.endStopPlaceID()] = connection.endTime();
                 connectionIndex[connection.endStopPlaceID()] = i;
+                
+                // If transfer time is not used there is no need to store connection trip labels
+                if (!options.ignoreTransferTime()) {
+                    connectionTripId[connection.endStopPlaceID()] = connection.tripID();
+                }
             }
         }
         
@@ -189,10 +241,12 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
         if (connectionIndex.count(destination)) {
             previousConnectionIndex = connectionIndex[destination];
         } else {
-            // No departure were found for the destination StopPlace, so we break
+            // No departure were found for the destination StopPlace.
+            // We stop the query loop because there will be no available departures to the destination.
             break;
         }
         
+        // Journey extraction
         ConnectionVector route = ConnectionVector();
         size_t transfers = 0;
         ItemID previousTrip = connections_[previousConnectionIndex].tripID();

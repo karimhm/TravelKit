@@ -60,12 +60,20 @@ public:
         return seconds_ == other.seconds_;
     }
     
-    int32_t operator-(Time const &other) const {
+    Time operator-(Time const &other) const {
         return seconds_ - other.seconds_;
     }
     
-    int32_t operator-(uint32_t const &other) const {
+    Time operator-(uint32_t const &other) const {
         return seconds_ - other;
+    }
+    
+    Time operator+(Time const &other) const {
+        return seconds_ + other.seconds_;
+    }
+    
+    Time operator+(uint32_t const &other) const {
+        return seconds_ + other;
     }
     
     explicit operator uint32_t() const {

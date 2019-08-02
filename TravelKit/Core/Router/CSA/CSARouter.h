@@ -9,6 +9,7 @@
 
 #include "BaseRouter.h"
 #include "Connection.h"
+#include "Transfer.h"
 #include "Calendar.h"
 #include "Trip.h"
 
@@ -30,6 +31,7 @@ public:
     
 private:
     ConnectionVector connections_;
+    std::map<ItemID, Transfer> stopTransferByID_;
     std::map<ItemID, Calendar> calendarByID_;
     std::map<ItemID, Trip> tripsByID_;
 };

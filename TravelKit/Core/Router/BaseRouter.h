@@ -20,15 +20,20 @@ class QueryOptions {
 public:
     enum Options : uint64_t {
         None = 0,
-        OmitSameTripArrival = 1 << 0
+        OmitSameTripArrival = 1 << 0,
+        IgnoreTransferTime = 2 << 0
     };
     
 public:
-    QueryOptions(uint64_t limit = 0, Options options = Options::None) : limit_(limit), options_(options) {
+    QueryOptions(uint64_t limit = 0) : limit_(limit), options_(Options::None) {
     }
     
     bool omitSameTripArrival() {
         return options_ & Options::OmitSameTripArrival;
+    }
+    
+    bool ignoreTransferTime() {
+        return options_ & Options::IgnoreTransferTime;
     }
     
     void omitSameTripArrival(bool value) {
@@ -36,6 +41,14 @@ public:
             options_ &= ~Options::OmitSameTripArrival;
         } else {
             options_ |= Options::OmitSameTripArrival;
+        }
+    }
+    
+    void ignoreTransferTime(bool value) {
+        if (value) {
+            options_ |= Options::IgnoreTransferTime;
+        } else {
+            options_ &= ~Options::IgnoreTransferTime;
         }
     }
     

@@ -107,6 +107,32 @@ private:
     int32_t datesIndex_;
 };
 
+class TransferMapping {
+public:
+    TransferMapping(Ref<Statement> statement) {
+        sourceIdIndex_ = statement->columnMap()["sourceId"];
+        destinationIdIndex_ = statement->columnMap()["destinationId"];
+        durationIndex_ = statement->columnMap()["duration"];
+    }
+    
+    const int32_t sourceIdIndex() const {
+        return sourceIdIndex_;
+    }
+    
+    const int32_t destinationIdIndex() const {
+        return destinationIdIndex_;
+    }
+    
+    const int32_t durationIndex() const {
+        return durationIndex_;
+    }
+    
+private:
+    int32_t sourceIdIndex_;
+    int32_t destinationIdIndex_;
+    int32_t durationIndex_;
+};
+
 }
 
 #endif /* TK_MAPPING_H */
