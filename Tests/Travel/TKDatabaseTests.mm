@@ -97,6 +97,7 @@
                           INSERT INTO Properties(id, value) VALUES('testProperty2', 1);\
                           INSERT INTO Properties(id, value) VALUES('testProperty3', 1.2);\
                           INSERT INTO Properties(id, value) VALUES('testProperty4', NULL);\
+                          INSERT INTO Properties(id, value) VALUES('timezone', 'Africa/Algiers');\
                           \
                           INSERT INTO Calendar(id, nameId, shortNameId, days) VALUES(1, 7, 10, 127);\
                           INSERT INTO Calendar(id, nameId, shortNameId, days) VALUES(2, 8, 11, 127);\

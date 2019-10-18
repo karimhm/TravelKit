@@ -6,10 +6,13 @@
  */
 
 #import "TKCursor_Private.h"
+#import "TKCalendar_Private.h"
 
 using namespace tk;
 
-@implementation TKCalendarCursor
+@implementation TKCalendarCursor {
+    NSTimeZone *_timezone;
+}
 
 - (BOOL)prepareWithQuery:(TKQuery *)query error:(NSError **)error {
     BOOL hasId = false;
@@ -17,6 +20,29 @@ using namespace tk;
     BOOL hasLimit = false;
     
     std::string queryString = ""
+    "SELECT Properties.value FROM Properties WHERE id = 'timezone'";
+    
+    /* Query timezone */
+    Statement fetchTimezone = Statement(self.database, queryString);
+    if (!fetchTimezone.prepare().isOK()) {
+        TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
+        return false;
+    }
+    
+    if (fetchTimezone.next().isRow()) {
+        Value value = fetchTimezone["value"];
+        if (value.type() == ValueType::Text) {
+            _timezone = [[NSTimeZone alloc] initWithName:[NSString stringWithUTF8String:value.stringValue().c_str()]];
+        }
+    }
+    
+    if (!_timezone) {
+        TKSetError(error, [NSError tk_internalDatabaseError]);
+        return false;
+    }
+    
+    /* Query calendar */
+    queryString = ""
     "SELECT "
         "Calendar.*, "
         "NameLocalization.text AS name, "
@@ -92,6 +118,7 @@ using namespace tk;
 
 - (nullable TKCalendar *)createObjectWithStatement:(Ref<Statement>)statement {
     TKCalendar *calendar = [[TKCalendar alloc] initWithStatement:statement];
+    calendar.timeZone = _timezone;
     return calendar;
 }
 

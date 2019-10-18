@@ -9,10 +9,14 @@
 #import <TravelKit/TKCalendar.h>
 #import <TravelKit/TKTime.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface TKStopTime : TKItem
 
 @property (strong, nonatomic, readonly) TKStopPlace *stopPlace;
-@property (strong, nonatomic, readonly) TKCalendar *calendar;
+@property (strong, nonatomic, readonly, nullable) TKCalendar *calendar;
 @property (strong, nonatomic, readonly) TKTime *arrival;
 
 @end
+
+NS_ASSUME_NONNULL_END

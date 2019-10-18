@@ -16,6 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, readonly) NSString *shortName;
 @property (nonatomic, readonly) uint8_t days;
 
+@property (strong, nonatomic, readonly, nullable) NSTimeZone *timeZone;
+
+- (BOOL)isAvailableAtDate:(NSDate *)date;
+
 @end
 
 NS_ASSUME_NONNULL_END

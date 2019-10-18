@@ -6,10 +6,13 @@
  */
 
 #import "TKCalendar.h"
+#import "TKCalendar_Private.h"
 #import "TKItem_Core.h"
 #import "ItemID.h"
 
 using namespace tk;
+
+constexpr uint8_t TKCalendarDaysMask = 0x1;
 
 @implementation TKCalendar
 
@@ -45,6 +48,20 @@ using namespace tk;
         TK_DECODE_INTEGER(aDecoder, days);
     }
     return self;
+}
+
+- (void)setTimeZone:(NSTimeZone *)timeZone {
+    _timeZone = timeZone;
+}
+
+- (BOOL)isAvailableAtDate:(NSDate *)date {
+    if (_timeZone) {
+        // substract 1 because the first day of the week in 'NSCalendar' is 1 rather than 0
+        uint8_t weekDay = (uint8_t)[[NSCalendar calendarWithIdentifier:NSCalendarIdentifierISO8601] componentsInTimeZone:_timeZone fromDate:date].weekday - 1;
+        return ((TKCalendarDaysMask << weekDay) & _days);
+    } else {
+        return false;
+    }
 }
 
 - (void)dealloc {
