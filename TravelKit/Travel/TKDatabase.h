@@ -20,6 +20,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_OPTIONS(NSUInteger, TKDatabaseFeature) {
+    TKDatabaseFeatureRoutePattern = 1,
+};
+
 typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError * __nullable error);
 
 @interface TKDatabase : NSObject
@@ -57,6 +61,8 @@ typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError *
 @end
 
 @interface TKDatabase (Properties)
+
+- (BOOL)supportFeature:(TKDatabaseFeature)feature;
 
 @property (nonatomic, nullable, readonly) NSString *name;
 @property (nonatomic, nullable, readonly) NSUUID *uuid;

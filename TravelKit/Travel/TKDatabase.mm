@@ -24,11 +24,17 @@
 
 using namespace tk;
 
+struct _TKDatabaseFeatureFlags {
+    BOOL routePattern;
+};
+
 @implementation TKDatabase {
     Ref<Database> _db;
     Ref<Router::CSA> _router;
     Ref<Statement> _fetchProperties;
     Ref<Statement> _fetchLanguages;
+    
+    _TKDatabaseFeatureFlags _features;
     
     NSString *_name;
     NSUUID *_uuid;
@@ -88,6 +94,8 @@ using namespace tk;
         if (![self load:error]) {
             return false;
         }
+        
+        [self checkFeatures];
     } else if (error) {
         *error = [NSError tk_badDatabaseError];
     }
@@ -124,6 +132,10 @@ cleanup:
 
 - (BOOL)addFunctions:(NSError **)error {
     return _db->addFunction(GetDistanceFunction()).isOK();
+}
+
+- (void)checkFeatures {
+    _features.routePattern = _db->tableExist("RoutePattern");
 }
 
 - (BOOL)loadProperties:(NSError **)error {
@@ -245,6 +257,16 @@ cleanup:
 }
 
 #pragma mark - Properties
+
+- (BOOL)supportFeature:(TKDatabaseFeature)feature {
+    switch (feature) {
+        case TKDatabaseFeatureRoutePattern:
+            return _features.routePattern;
+            
+        default:
+            return false;
+    }
+}
 
 - (NSUUID *)uuid {
     return _uuid;
