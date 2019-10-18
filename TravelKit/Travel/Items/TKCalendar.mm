@@ -39,6 +39,7 @@ constexpr uint8_t TKCalendarDaysMask = 0x1;
     TK_ENCODE_OBJ(aCoder, name);
     TK_ENCODE_OBJ(aCoder, shortName);
     TK_ENCODE_INTEGER(aCoder, days);
+    TK_ENCODE_OBJ(aCoder, timeZone);
 }
 
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
@@ -46,6 +47,7 @@ constexpr uint8_t TKCalendarDaysMask = 0x1;
         TK_DECODE_OBJ_CLASS(aDecoder, name, NSString);
         TK_DECODE_OBJ_CLASS(aDecoder, shortName, NSString);
         TK_DECODE_INTEGER(aDecoder, days);
+        TK_DECODE_OBJ_CLASS(aDecoder, timeZone, NSTimeZone);
     }
     return self;
 }
