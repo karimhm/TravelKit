@@ -8,6 +8,8 @@
 #import <TravelKit/TKTime.h>
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface TKTimeFormatter : NSFormatter
 
 - (nullable NSString *)stringFromTime:(TKTime *)time;
@@ -15,3 +17,5 @@
 + (NSString *)localizedStringFromTime:(TKTime *)time;
 
 @end
+
+NS_ASSUME_NONNULL_END
