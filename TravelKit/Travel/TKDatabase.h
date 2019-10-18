@@ -60,7 +60,7 @@ typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError *
 
 @property (nonatomic, nullable, readonly) NSUUID *uuid;
 @property (nonatomic, nullable, readonly) NSDate *timestamp;
-@property (nonatomic, nullable, readonly) NSTimeZone *timezone;
+@property (nonatomic, nullable, readonly) NSTimeZone *timeZone;
 
 @end
 

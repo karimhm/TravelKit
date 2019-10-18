@@ -32,7 +32,7 @@ using namespace tk;
     
     NSUUID *_uuid;
     NSDate *_timestamp;
-    NSTimeZone *_timezone;
+    NSTimeZone *_timeZone;
 }
 
 #pragma mark - Initialization
@@ -158,7 +158,7 @@ cleanup:
         }
         
         if ([_properties[@"timezone"] isKindOfClass:[NSString class]]) {
-            _timezone = [[NSTimeZone alloc] initWithName:_properties[@"timezone"]];
+            _timeZone = [[NSTimeZone alloc] initWithName:_properties[@"timezone"]];
         }
         
         return true;
@@ -249,8 +249,8 @@ cleanup:
     return _timestamp;
 }
 
-- (NSTimeZone *)timezone {
-    return _timezone;
+- (NSTimeZone *)timeZone {
+    return _timeZone;
 }
 
 #pragma mark - Fetching (Private)
@@ -397,6 +397,7 @@ cleanup:
     _url = nil;
     _properties = nil;
     _languages = nil;
+    _timeZone = nil;
 }
 
 @end
