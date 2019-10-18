@@ -87,4 +87,14 @@ TK_EXTERN TKOrderProperty const TKOrderByName;
 
 @end
 
+@interface TKQuery (Trip)
+
+/*!
+ @property
+ @abstract   The identifier of the trip.
+ */
+@property (nonatomic) TKItemID tripID;
+
+@end
+
 NS_ASSUME_NONNULL_END

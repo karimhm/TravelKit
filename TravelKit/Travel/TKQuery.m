@@ -15,9 +15,11 @@ TKOrderProperty const TKOrderByName = @"name";
     CLLocation *_location;
     TKItemID _stopPlaceID;
     TKItemID _routeID;
+    TKItemID _tripID;
     BOOL _idSet;
     BOOL _stopPlaceIDSet;
     BOOL _routeIDSet;
+    BOOL _tripIDSet;
 }
 
 - (void)setItemID:(TKItemID)itemID {
@@ -59,6 +61,11 @@ TKOrderProperty const TKOrderByName = @"name";
     return _routeID;
 }
 
+- (void)setTripID:(TKItemID)tripID {
+    _tripID = tripID;
+    _tripIDSet = true;
+}
+
 - (BOOL)idSet {
     return _idSet;
 }
@@ -69,6 +76,10 @@ TKOrderProperty const TKOrderByName = @"name";
 
 - (BOOL)routeIDSet {
     return _routeIDSet;
+}
+
+- (BOOL)tripIDSet {
+    return _tripIDSet;
 }
 
 @end

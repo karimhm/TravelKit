@@ -11,9 +11,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TKTrip;
 @interface TKStopTime : TKItem
 
 @property (strong, nonatomic, readonly) TKStopPlace *stopPlace;
+@property (strong, nonatomic, readonly) TKTrip *trip;
 @property (strong, nonatomic, readonly, nullable) TKCalendar *calendar;
 @property (strong, nonatomic, readonly) TKTime *arrival;
 

@@ -11,8 +11,11 @@
 
 @property (strong, nonatomic) NSString *language;
 
+@property (nonatomic) BOOL fetchStopTimes;
+
 @property (nonatomic, readonly) BOOL idSet;
 @property (nonatomic, readonly) BOOL stopPlaceIDSet;
 @property (nonatomic, readonly) BOOL routeIDSet;
+@property (nonatomic, readonly) BOOL tripIDSet;
 
 @end

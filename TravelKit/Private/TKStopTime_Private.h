@@ -11,5 +11,6 @@
 
 - (void)setStopPlace:(TKStopPlace *)stopPlace;
 - (void)setCalendar:(TKCalendar *)calendar;
+- (void)setTrip:(TKTrip *)trip;
 
 @end

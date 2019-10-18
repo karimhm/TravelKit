@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*!
  @property
- @abstract   A boolean indicating if cursor did reached the end.
+ @abstract   A boolean indicating if the end was reached.
  */
 @property (nonatomic, readonly, getter=isCompleted) BOOL completed;
 

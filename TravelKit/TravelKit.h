@@ -20,6 +20,7 @@
 #import <TravelKit/TKStop.h>
 #import <TravelKit/TKStopTime.h>
 #import <TravelKit/TKRoute.h>
+#import <TravelKit/TKTrip.h>
 #import <TravelKit/TKRide.h>
 #import <TravelKit/TKRoutePattern.h>
 #import <TravelKit/TKCalendar.h>

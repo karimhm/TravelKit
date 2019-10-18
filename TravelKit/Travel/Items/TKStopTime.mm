@@ -6,6 +6,7 @@
  */
 
 #import "TKStopTime.h"
+#import "TKTrip.h"
 #import "TKTime_Private.h"
 #import "TKItem_Core.h"
 #import "ItemID.h"
@@ -27,6 +28,7 @@ using namespace tk;
     stopTime->_stopPlace = self.stopPlace;
     stopTime->_arrival = self.arrival;
     stopTime->_calendar = self.calendar;
+    stopTime->_trip = self.trip;
     
     return stopTime;
 }
@@ -36,6 +38,7 @@ using namespace tk;
     TK_ENCODE_OBJ(aCoder, stopPlace);
     TK_ENCODE_OBJ(aCoder, arrival);
     TK_ENCODE_OBJ(aCoder, calendar);
+    TK_ENCODE_OBJ(aCoder, trip);
 }
 
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
@@ -43,6 +46,7 @@ using namespace tk;
         TK_DECODE_OBJ_CLASS(aDecoder, stopPlace, TKStopPlace);
         TK_DECODE_OBJ_CLASS(aDecoder, arrival, TKTime);
         TK_DECODE_OBJ_CLASS(aDecoder, calendar, TKCalendar);
+        TK_DECODE_OBJ_CLASS(aDecoder, trip, TKTrip);
     }
     return self;
 }
@@ -55,10 +59,15 @@ using namespace tk;
     _calendar = calendar;
 }
 
+- (void)setTrip:(TKTrip *)trip {
+    _trip = trip;
+}
+
 - (void)dealloc {
     _stopPlace = nil;
     _arrival = nil;
     _calendar = nil;
+    _trip = nil;
 }
 
 #ifdef DEBUG

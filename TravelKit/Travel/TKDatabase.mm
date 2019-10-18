@@ -298,6 +298,10 @@ cleanup:
     return [self fetchStopTimeWithQuery:query error:nil];
 }
 
+- (TKCursor <TKTrip *> *)fetchTripWithQuery:(TKQuery *)query {
+    return [self fetchTripWithQuery:query error:nil];
+}
+
 - (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error {
     query.language = _selectedLanguage;
     return [TKStopPlaceCursor cursorWithDatabase:_db query:query error:error];
@@ -321,6 +325,12 @@ cleanup:
 - (TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query error:(NSError **)error {
     query.language = _selectedLanguage;
     return [TKStopTimeCursor cursorWithDatabase:_db query:query error:error];
+}
+
+- (TKCursor <TKTrip *> *)fetchTripWithQuery:(TKQuery *)query error:(NSError **)error {
+    query.language = _selectedLanguage;
+    query.fetchStopTimes = true;
+    return [TKTripCursor cursorWithDatabase:_db query:query error:error];
 }
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {

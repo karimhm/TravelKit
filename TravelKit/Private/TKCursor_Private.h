@@ -17,6 +17,7 @@
 #import "TKStopPlace.h"
 #import "TKStopTime.h"
 #import "TKRoute.h"
+#import "TKTrip.h"
 #import "TKCalendar.h"
 #import "TKRoutePattern.h"
 
@@ -57,6 +58,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface TKStopTimeCursor : TKCursor<TKStopTime *>
+@end
+
+@interface TKTripCursor : TKCursor<TKTrip *>
 @end
 
 NS_ASSUME_NONNULL_END

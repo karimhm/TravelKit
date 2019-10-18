@@ -23,6 +23,7 @@ using namespace tk;
         "StopTime.id, "
         "StopTime.arrivalTime, "
         "StopTime.stopPlaceId, "
+        "StopTime.tripId, "
         "Trip.calendarId "
     "FROM StopTime "
     "JOIN "
@@ -104,10 +105,20 @@ using namespace tk;
     return [[TKCalendarCursor cursorWithDatabase:self.database query:query] fetchOne];
 }
 
+- (nullable TKTrip *)fetchTripWithID:(TKItemID)tripID {
+    TKQuery *query = [[TKQuery alloc] init];
+    query.language = self.query.language;
+    query.itemID = tripID;
+    query.fetchStopTimes = false;
+    
+    return [[TKTripCursor cursorWithDatabase:self.database query:query] fetchOne];
+}
+
 - (nullable TKStopTime *)createObjectWithStatement:(Ref<Statement>)statement {
     TKStopTime *stopTime = [[TKStopTime alloc] initWithStatement:statement];
     stopTime.stopPlace = [self fetchStopPlacesWithID:TKSToU64((*statement)["stopPlaceId"].int64Value())];
     stopTime.calendar = [self fetchCalendarWithID:TKSToU64((*statement)["calendarId"].int64Value())];
+    stopTime.trip = [self fetchTripWithID:TKSToU64((*statement)["tripId"].int64Value())];
     
     return stopTime;
 }

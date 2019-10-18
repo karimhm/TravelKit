@@ -13,6 +13,7 @@
 #import <TravelKit/TKStopPlace.h>
 #import <TravelKit/TKStopTime.h>
 #import <TravelKit/TKCalendar.h>
+#import <TravelKit/TKTrip.h>
 #import <TravelKit/TKRoutePattern.h>
 #import <TravelKit/TKTripPlanRequest.h>
 #import <TravelKit/TKTripPlan.h>
@@ -42,12 +43,14 @@ typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError *
 - (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query;
 - (TKCursor <TKRoutePattern *> *)fetchRoutePatternWithQuery:(TKQuery *)query;
 - (TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query;
+- (TKCursor <TKTrip *> *)fetchTripWithQuery:(TKQuery *)query;
 
 - (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error;
 - (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query error:(NSError **)error;
 - (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query error:(NSError **)error;
 - (TKCursor <TKRoutePattern *> *)fetchRoutePatternWithQuery:(TKQuery *)query error:(NSError **)error;
 - (TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query error:(NSError **)error;
+- (TKCursor <TKTrip *> *)fetchTripWithQuery:(TKQuery *)query error:(NSError **)error;
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion;
 
