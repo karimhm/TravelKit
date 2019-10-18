@@ -30,6 +30,7 @@ using namespace tk;
     Ref<Statement> _fetchProperties;
     Ref<Statement> _fetchLanguages;
     
+    NSString *_name;
     NSUUID *_uuid;
     NSDate *_timestamp;
     NSTimeZone *_timeZone;
@@ -149,6 +150,10 @@ cleanup:
     }
     
     if (status.isDone()) {
+        if ([_properties[@"name"] isKindOfClass:[NSString class]]) {
+            _name = _properties[@"name"];
+        }
+        
         if ([_properties[@"uuid"] isKindOfClass:[NSString class]]) {
             _uuid = [[NSUUID alloc] initWithUUIDString:_properties[@"uuid"]];
         }
@@ -396,6 +401,7 @@ cleanup:
 - (void)dealloc {
     _url = nil;
     _properties = nil;
+    _name = nil;
     _languages = nil;
     _timeZone = nil;
 }
