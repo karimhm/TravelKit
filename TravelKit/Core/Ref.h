@@ -17,7 +17,7 @@ template<typename T>
 class Ref {
 public:
     Ref() : ptr_(nullptr) {
-    };
+    }
     
     Ref(T* object, bool addRef = true) : ptr_(object) {
         if (ptr_ && addRef) {ptr_->ref();}
@@ -49,11 +49,11 @@ public:
     
     operator T&() const {
         return *ptr_;
-    };
+    }
     
     operator bool() const {
         return ptr_ != nullptr;
-    };
+    }
     
     Ref& operator=(Ref const & other) {
         Ref(other).swap(*this);

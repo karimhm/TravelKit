@@ -22,7 +22,8 @@ public:
         None = 0,
         OpenReadOnly = 1 << 0,
         OpenReadWrite = 1 << 1,
-        Create = 1 << 2
+        InMemory = 1 << 2,
+        Create = 1 << 3
     };
     
 public:

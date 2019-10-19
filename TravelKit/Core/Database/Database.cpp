@@ -28,7 +28,11 @@ static int OptionsToSQLiteFlags(Database::Options options) {
     } else if (options & Database::Options::OpenReadOnly) {
         flags |= SQLITE_OPEN_READONLY;
     }
-    
+
+    if (options & Database::Options::InMemory) {
+        flags |= SQLITE_OPEN_MEMORY;
+    }
+
     if (options & Database::Options::Create) {
         flags |= SQLITE_OPEN_CREATE;
     }
@@ -40,9 +44,9 @@ Status Database::open(Options options) {
     options_ = options;
     
     int status = sqlite3_open_v2(path_.c_str(),
-                                    &db_,
-                                    OptionsToSQLiteFlags(options_),
-                                    NULL);
+                                 &db_,
+                                 OptionsToSQLiteFlags(options_),
+                                 NULL);
     
     if (status == SQLITE_OK) {
         open_ = true;

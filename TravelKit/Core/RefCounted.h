@@ -28,13 +28,18 @@ public:
     }
     
 protected:
-    RefCounted() : refCount_(1) {};
-    RefCounted(RefCounted const &) : refCount_(1) {};
+    RefCounted() : refCount_(1) {
+    }
+    
+    RefCounted(RefCounted const &) : refCount_(1) {
+    }
+    
     RefCounted& operator= (RefCounted const&) {
         return *this;
     }
     
-    ~RefCounted() {};
+    ~RefCounted() {
+    }
     
 private:
     mutable uint32_t refCount_;
