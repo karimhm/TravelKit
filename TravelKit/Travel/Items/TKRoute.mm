@@ -1,10 +1,9 @@
-//
-//  TKRoute.m
-//  TravelKit
-//
-//  Created by Karim on 2/5/19.
-//  Copyright © 2019 Karim. All rights reserved.
-//
+/*
+ *  TKRoute.m
+ *  Created on 5/Feb/19.
+ *
+ *  Copyright (C) 2019 Karim. All rights reserved.
+ */
 
 #import "TKRoute.h"
 #import "TKItem_Core.h"

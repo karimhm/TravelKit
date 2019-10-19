@@ -1,10 +1,9 @@
-//
-//  TKTime_Private.h
-//  TravelKit
-//
-//  Created by Karim on 6/4/19.
-//  Copyright © 2019 Karim. All rights reserved.
-//
+/*
+ *  TKTime_Private.h
+ *  Created on 4/Jun/19.
+ *
+ *  Copyright (C) 2019 Karim. All rights reserved.
+ */
 
 #import "TKStopTime.h"
 
