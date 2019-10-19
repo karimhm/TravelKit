@@ -64,12 +64,10 @@ using namespace tk;
     }
     
     if (hasRouteId && !self.statement->bind(TKUToS64(query.routeID), ":routeId").isOK()) {
-        NSLog(@"hasRouteId : %@", [NSError tk_sqliteErrorWithDB:self.database->handle()]);
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
     
     if (hasLimit && !self.statement->bind(query.limit, ":limit").isOK()) {
-        NSLog(@"hasLimit : %@", [NSError tk_sqliteErrorWithDB:self.database->handle()]);
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
     
@@ -81,11 +79,8 @@ using namespace tk;
     "ORDER BY position ASC");
     
     if (!_fetchStopTime->prepare().isOK()) {
-        NSLog(@"_fetchStopTime->prepare() : %@", [NSError tk_sqliteErrorWithDB:self.database->handle()]);
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
-    
-    NSLog(@"Prepare finish");
     
     return true;
 }
