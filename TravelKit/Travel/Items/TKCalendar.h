@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_SWIFT_NAME(Calendar)
 @interface TKCalendar : TKItem
 
 @property (strong, nonatomic, readonly) NSString *name;

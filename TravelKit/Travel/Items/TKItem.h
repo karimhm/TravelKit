@@ -9,6 +9,7 @@
 #import <TravelKit/TKCore.h>
 #import <Foundation/Foundation.h>
 
+NS_SWIFT_NAME(Item)
 @interface TKItem : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
 @property (nonatomic, readonly) TKItemID identifier;

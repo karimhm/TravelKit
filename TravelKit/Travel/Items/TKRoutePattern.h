@@ -9,6 +9,7 @@
 #import <TravelKit/TKRoute.h>
 #import <TravelKit/TKStopPlace.h>
 
+NS_SWIFT_NAME(RoutePattern)
 @interface TKRoutePattern : TKItem
 
 @property (nonatomic, readonly) TKRoute *route;

@@ -8,6 +8,7 @@
 #import <TravelKit/TKRide.h>
 #import <TravelKit/TKStopPlace.h>
 
+NS_SWIFT_NAME(Itinerary)
 @interface TKItinerary : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
 @property (readonly, nonatomic) NSArray<TKRide *> *rides;

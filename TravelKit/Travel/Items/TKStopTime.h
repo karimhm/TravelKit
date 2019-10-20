@@ -12,6 +12,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class TKTrip;
+
+NS_SWIFT_NAME(StopTime)
 @interface TKStopTime : TKItem
 
 @property (strong, nonatomic, readonly) TKStopPlace *stopPlace;

@@ -11,6 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_SWIFT_NAME(Trip)
 @interface TKTrip : TKItem
 
 @property (nonatomic, readonly) TKRoute *route;

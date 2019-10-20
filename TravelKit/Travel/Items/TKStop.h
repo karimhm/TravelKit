@@ -8,6 +8,7 @@
 #import <TravelKit/TKStopPlace.h>
 #import <Foundation/Foundation.h>
 
+NS_SWIFT_NAME(Stop)
 @interface TKStop : NSObject <NSCopying, NSCoding, NSSecureCoding>
 
 @property (strong, nonatomic, readonly) TKStopPlace *stopPlace;

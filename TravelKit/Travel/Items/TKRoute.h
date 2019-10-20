@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_SWIFT_NAME(Route)
 @interface TKRoute : TKItem
 
 @property (strong, nonatomic, readonly) NSString *name;
