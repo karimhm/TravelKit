@@ -198,7 +198,7 @@ cleanup:
     }
     
     if (status.isDone()) {
-        NSArray<NSString *> *preferred = [NSBundle preferredLocalizationsFromArray:_languages];
+        NSArray<NSString *> *preferred = [NSBundle preferredLocalizationsFromArray:_languages forPreferences:[NSLocale preferredLanguages]];
         if (preferred.count > 0) {
             _selectedLanguage = preferred.firstObject;
         } else if (_languages.count > 0 && [_properties[@"main_language"] isKindOfClass:[NSString class]]) {
