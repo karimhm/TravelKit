@@ -364,7 +364,8 @@ cleanup:
     ItemID from = request.source.identifier;
     ItemID to = request.destination.identifier;
     time_t departure = request.date.timeIntervalSince1970;
-    uint64_t dayBegin = departure - (departure % TKSecondsInDay);
+    NSDate *dayBegining = [[NSCalendar calendarWithIdentifier:NSCalendarIdentifierISO8601] startOfDayForDate:request.date];
+    NSInteger seconds = [_timeZone secondsFromGMTForDate:dayBegining];
     
     auto options = tk::Router::QueryOptions();
     options.omitSameTripArrival(request.options & TKTripPlanOptionsOmitSameTripArrival);
@@ -388,8 +389,8 @@ cleanup:
                 /* Add stops */
                 for (auto const &stop: ride.stops()) {
                     TKStopPlace *stopPlace = [self _fetchStopPlaceWithID:stop.stopPlaceID() error:nil];
-                    [stops addObject:[[TKStop alloc] initWithStopPlace:stopPlace
-                                                                  date:[NSDate dateWithTimeIntervalSince1970:dayBegin + stop.time().seconds()]]];
+                    NSDate *date = [NSDate dateWithTimeInterval:stop.time().seconds() + seconds sinceDate:dayBegining];
+                    [stops addObject:[[TKStop alloc] initWithStopPlace:stopPlace date:date]];
                 }
                 
                 TKRoute *route = [self _fetchRouteWithID:ride.routeID() error:nil];
