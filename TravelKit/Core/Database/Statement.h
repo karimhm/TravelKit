@@ -98,15 +98,11 @@ public:
     Status prepare();
     
     Status execute() {
-        Status status = sqlite3_step(statement_);
-        
-        return status;
+        return static_cast<Status>(sqlite3_step(statement_));
     }
 
     Status next() {
-        Status status = sqlite3_step(statement_);
-        
-        return status;
+        return static_cast<Status>(sqlite3_step(statement_));
     }
     
     bool isBusy() const {
@@ -142,15 +138,11 @@ public:
     }
     
     Status clearBindings() {
-        Status status = sqlite3_clear_bindings(statement_);
-        
-        return status;
+        return static_cast<Status>(sqlite3_clear_bindings(statement_));
     }
     
     Status reset() {
-        Status status = sqlite3_reset(statement_);
-        
-        return status;
+        return static_cast<Status>(sqlite3_reset(statement_));
     }
     
     Status close() {
