@@ -36,6 +36,7 @@ struct _TKDatabaseFeatureFlags {
     
     _TKDatabaseFeatureFlags _features;
     
+    NSString *_mainLanguage;
     NSString *_name;
     NSUUID *_uuid;
     NSDate *_timestamp;
@@ -53,8 +54,8 @@ struct _TKDatabaseFeatureFlags {
         return nil;
     } else if (self = [super init]) {
         _url = url;
-        _properties = [[NSMutableDictionary alloc] init];
-        _languages = [[NSMutableArray alloc] init];
+        _properties = [[NSDictionary alloc] init];
+        _languages = [[NSArray alloc] init];
         _db = makeRef<Database>([url fileSystemRepresentation]);
         _router = makeRef<Router::CSA>(_db);
     }
@@ -139,7 +140,9 @@ cleanup:
 }
 
 - (BOOL)loadProperties:(NSError **)error {
-    Status status = SQLITE_OK;
+    Status status = {};
+    
+    NSMutableDictionary <NSString *, id> *properties = [[NSMutableDictionary alloc] init];
     
     while ((status = _fetchProperties->next()).isRow()) {
         Value propertyID = (*_fetchProperties)["id"];
@@ -157,55 +160,97 @@ cleanup:
         }
         
         if (propertyID.type() == ValueType::Text) {
-            [(NSMutableDictionary *)_properties setValue:value forKey:[NSString stringWithUTF8String:propertyID.stringValue().c_str()]];
+            [properties setValue:value forKey:[NSString stringWithUTF8String:propertyID.stringValue().c_str()]];
         }
     }
     
+    _properties = [properties copy];
+    
     if (status.isDone()) {
-        if ([_properties[@"name"] isKindOfClass:[NSString class]]) {
-            _name = _properties[@"name"];
+        if ([properties[@"main_language"] isKindOfClass:[NSString class]]) {
+            _mainLanguage = properties[@"main_language"];
+        } else {
+            TKSetError(error, [NSError tk_badDatabaseError]);
+            return false;
         }
         
-        if ([_properties[@"uuid"] isKindOfClass:[NSString class]]) {
-            _uuid = [[NSUUID alloc] initWithUUIDString:_properties[@"uuid"]];
+        if ([properties[@"timezone"] isKindOfClass:[NSString class]]) {
+            _timeZone = [[NSTimeZone alloc] initWithName:properties[@"timezone"]];
+        } else {
+            TKSetError(error, [NSError tk_badDatabaseError]);
+            return false;
         }
         
-        if ([_properties[@"timestamp"] isKindOfClass:[NSNumber class]]) {
-            _timestamp = [[NSDate alloc] initWithTimeIntervalSince1970:[_properties[@"timestamp"] doubleValue]];
+        // Optional properties
+        
+        if ([properties[@"name"] isKindOfClass:[NSString class]]) {
+            _name = properties[@"name"];
         }
         
-        if ([_properties[@"timezone"] isKindOfClass:[NSString class]]) {
-            _timeZone = [[NSTimeZone alloc] initWithName:_properties[@"timezone"]];
+        if ([properties[@"uuid"] isKindOfClass:[NSString class]]) {
+            _uuid = [[NSUUID alloc] initWithUUIDString:properties[@"uuid"]];
+        }
+        
+        if ([properties[@"timestamp"] isKindOfClass:[NSNumber class]]) {
+            _timestamp = [[NSDate alloc] initWithTimeIntervalSince1970:[properties[@"timestamp"] doubleValue]];
         }
         
         return true;
     } else {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
+        TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
         return false;
     }
 }
-    
+
 - (BOOL)loadLanguages:(NSError **)error {
-    Status status = Status();
+    Status status = {};
+    
+    NSMutableArray <NSString *> *languages = [[NSMutableArray alloc] init];
+    
+    if (!_fetchLanguages->reset().isOK()) {
+        TKSetError(error, [NSError tk_badDatabaseError]);
+        return false;
+    }
     
     while ((status = _fetchLanguages->next()).isRow()) {
         Value languageValue = (*_fetchLanguages)["language"];
         NSString *language = [NSString stringWithUTF8String:languageValue.stringValue().c_str()];
         
-        [(NSMutableArray *)_languages addObject:language];
+        [languages addObject:language];
+    }
+    
+    // It's and error if the database doesn't contain any language
+    if (!languages.count) {
+        TKSetError(error, [NSError tk_badDatabaseError]);
+        return false;
+    }
+    
+    NSMutableArray <NSString *> *preferenceLanguages = [[NSLocale preferredLanguages] mutableCopy];
+    
+    // Add the main language to the end of the preference languages list
+    // so when it's not possible to determine the user prefered languages
+    // the main language will be used as fallback
+    if (![preferenceLanguages containsObject:_mainLanguage]) {
+        [preferenceLanguages addObject:_mainLanguage];
     }
     
     if (status.isDone()) {
-        NSArray<NSString *> *preferred = [NSBundle preferredLocalizationsFromArray:_languages forPreferences:[NSLocale preferredLanguages]];
-        if (preferred.count > 0) {
-            _selectedLanguage = preferred.firstObject;
-        } else if (_languages.count > 0 && [_properties[@"main_language"] isKindOfClass:[NSString class]]) {
-            _selectedLanguage = _properties[@"main_language"];
-        } else {
-            if (error) {
-                *error = [NSError tk_badDatabaseError];
+        NSMutableArray <NSString *> *preferredLanguages = [[NSMutableArray alloc] init];
+        NSMutableArray <NSString *> *candidateLanguages = [[NSMutableArray alloc] initWithArray:languages];
+        
+        for (NSInteger i = 0; i < languages.count; i++) {
+            NSString *language = [NSBundle preferredLocalizationsFromArray:candidateLanguages
+                                                            forPreferences:preferenceLanguages].firstObject;
+            if (language && ![preferredLanguages containsObject:language]) {
+                [preferredLanguages addObject:language];
+                [candidateLanguages removeObject:language];
+                
+                // Once the main language is reached the loop need to be stopped
+                // because the remaining languages are not prefered by the user
+                // and adding them will slow the queries
+                if ([language isEqualToString:_mainLanguage]) {
+                    break;
+                }
             }
         }
         
@@ -275,6 +320,24 @@ cleanup:
     }
     
     return true;
+}
+
+- (void)setSelectedLanguages:(NSArray<NSString *> *)selectedLanguages {
+    if (selectedLanguages) {
+        _selectedLanguages = selectedLanguages;
+        [self insertPreferedLanguages:selectedLanguages error:nil];
+    } else {
+        if (![self loadLanguages:nil]) {
+            if (_mainLanguage) {
+                NSArray *languages = @[_mainLanguage];
+                _selectedLanguages = languages;
+                [self insertPreferedLanguages:_selectedLanguages error:nil];
+            } else {
+                _selectedLanguages = @[];
+                [self insertPreferedLanguages:_selectedLanguages error:nil];
+            }
+        }
+    }
 }
 
 - (BOOL)closeDatabase:(NSError **)error {
