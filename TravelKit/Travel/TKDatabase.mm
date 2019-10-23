@@ -421,13 +421,26 @@ cleanup:
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion {
     ItemID from = request.source.identifier;
     ItemID to = request.destination.identifier;
-    time_t departure = request.date.timeIntervalSince1970;
-    NSDate *dayBegining = [[NSCalendar calendarWithIdentifier:NSCalendarIdentifierISO8601] startOfDayForDate:request.date];
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierISO8601];
+    NSDate *dayBegining = [calendar startOfDayForDate:request.date];
+    NSDateComponents *dateComponents = [calendar componentsInTimeZone:[NSTimeZone systemTimeZone] fromDate:request.date];
     
     auto options = tk::Router::QueryOptions();
     options.omitSameTripArrival(request.options & TKTripPlanOptionsOmitSameTripArrival);
     
-    const auto tripPlan = _router->query(from, to, Date(departure), options);
+    uint32_t seconds = uint32_t((dateComponents.hour * TKSecondsInHour)
+                                + (dateComponents.minute * TKSecondsInMinute)
+                                + dateComponents.second);
+    
+    // substract 1 from weekday because the first day of the week in 'NSCalendar' is 1 rather than 0
+    auto date = Date(dateComponents.year,
+                     dateComponents.month,
+                     dateComponents.day,
+                     dateComponents.weekday - 1,
+                     seconds);
+    
+    const auto tripPlan = _router->query(from, to, date, options);
     
     if (tripPlan.hasValue()) {
         NSMutableArray <TKItinerary *> *itineraries = [[NSMutableArray alloc] init];

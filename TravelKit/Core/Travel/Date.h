@@ -7,9 +7,7 @@
 #ifndef TK_DATE_H
 #define TK_DATE_H
 
-#include <time.h>
-#include <limits>
-#include <os/log.h>
+#include <unistd.h>
 
 namespace tk {
     
@@ -18,19 +16,12 @@ public:
     Date() {
     }
     
-    Date(time_t time) {
-        time_ = time;
-        struct tm* ti = localtime(&time_);
-        
-        year_ = ti->tm_year;
-        month_ = ti->tm_mon;
-        day_ = ti->tm_wday;
-    }
-    
-    Date(uint16_t year, uint8_t month, uint8_t day)
+    Date(uint16_t year, uint8_t month, uint8_t weekday, uint8_t day, uint32_t seconds)
          : year_(year)
          , month_(month)
+         , weekday_(weekday)
          , day_(day)
+         , seconds_(seconds)
     {
     }
     
@@ -42,23 +33,24 @@ public:
         return month_;
     }
     
+    const uint8_t weekday() const {
+        return weekday_;
+    }
+    
     const uint8_t day() const {
         return day_;
     }
     
     const uint32_t seconds() const {
-        return (time_ % 86400);
-    }
-    
-    const time_t time() const {
-        return time_;
+        return seconds_;
     }
     
 private:
     uint32_t year_;
     uint8_t month_;
+    uint8_t weekday_;
     uint8_t day_;
-    time_t time_;
+    uint32_t seconds_;
 };
     
 }
