@@ -207,16 +207,74 @@ cleanup:
             if (error) {
                 *error = [NSError tk_badDatabaseError];
             }
+        }
+        
+        if (![preferredLanguages containsObject:_mainLanguage]) {
+            [preferredLanguages addObject:_mainLanguage];
+        }
+        
+        if (![self insertPreferedLanguages:preferredLanguages error:error]) {
+            return false;
+        }
+        
+        _languages = [languages copy];
+        _selectedLanguages = [preferredLanguages copy];
+        _selectedLanguage = preferredLanguages.firstObject;
+        
+        if (!_selectedLanguages.count || !_selectedLanguage) {
+            TKSetError(error, [NSError tk_internalDatabaseError]);
             return false;
         }
         
         return true;
     } else {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
+        TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
         return false;
     }
+}
+
+- (BOOL)insertPreferedLanguages:(NSArray <NSString *> *)languages error:(NSError **)error {
+    Statement createTableStmt = Statement(_db, ""
+    "CREATE TEMP TABLE IF NOT EXISTS tkPreferedLocale ("
+        "id TEXT NOT NULL UNIQUE, "
+        "priority INTEGER NOT NULL UNIQUE"
+    ")");
+    
+    if (!createTableStmt.prepare().isOK() || !createTableStmt.execute().isDone()) {
+        TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        return false;
+    }
+    
+    // Delete all locales
+    Statement deleteStmt = Statement(_db, "DELETE FROM tkPreferedLocale");
+    if (!deleteStmt.prepare().isOK() || !deleteStmt.execute().isDone()) {
+        TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        return false;
+    }
+    
+    // Insert locales
+    Statement insertStmt = Statement(_db, "INSERT INTO tkPreferedLocale(id, priority) VALUES(:id, :priority)");
+    if (!insertStmt.prepare().isOK()) {
+        TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        return false;
+    }
+    
+    for (NSInteger i = 0; i < languages.count; i++) {
+        if (!insertStmt.clearAndReset().isOK()
+            || !insertStmt.bind(languages[i].UTF8String, ":id").isOK()
+            || !insertStmt.bind((int32_t)i, ":priority").isOK())
+        {
+            TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+            return false;
+        }
+        
+        if (!insertStmt.execute().isDone()) {
+            TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 - (BOOL)closeDatabase:(NSError **)error {
@@ -365,7 +423,6 @@ cleanup:
     ItemID to = request.destination.identifier;
     time_t departure = request.date.timeIntervalSince1970;
     NSDate *dayBegining = [[NSCalendar calendarWithIdentifier:NSCalendarIdentifierISO8601] startOfDayForDate:request.date];
-    NSInteger seconds = [_timeZone secondsFromGMTForDate:dayBegining];
     
     auto options = tk::Router::QueryOptions();
     options.omitSameTripArrival(request.options & TKTripPlanOptionsOmitSameTripArrival);
@@ -389,7 +446,7 @@ cleanup:
                 /* Add stops */
                 for (auto const &stop: ride.stops()) {
                     TKStopPlace *stopPlace = [self _fetchStopPlaceWithID:stop.stopPlaceID() error:nil];
-                    NSDate *date = [NSDate dateWithTimeInterval:stop.time().seconds() + seconds sinceDate:dayBegining];
+                    NSDate *date = [NSDate dateWithTimeInterval:stop.time().seconds() sinceDate:dayBegining];
                     [stops addObject:[[TKStop alloc] initWithStopPlace:stopPlace date:date]];
                 }
                 
