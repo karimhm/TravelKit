@@ -29,6 +29,7 @@
         _calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierISO8601];
         
         _dateFormatter = [[NSDateFormatter alloc] init];
+        _dateFormatter.calendar = _calendar;
         _dateFormatter.dateStyle = NSDateFormatterNoStyle;
         _dateFormatter.timeStyle = NSDateFormatterShortStyle;
     }
