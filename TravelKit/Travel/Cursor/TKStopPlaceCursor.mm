@@ -19,30 +19,14 @@ using namespace tk;
     BOOL hasLimit = false;
     
     std::string queryString = ""
-    "WITH PreferedLocalization AS ( "
-        "SELECT "
-            "id, "
-            "text "
-        "FROM ( "
-            "WITH Locales AS (SELECT id, priority FROM tkPreferedLocale) "
-            "SELECT "
-                "Localization.id, "
-                "Localization.text "
-            "FROM Localization "
-            "JOIN "
-                "Locales ON Locales.id = Localization.language "
-            "ORDER BY Locales.priority ASC "
-        ") "
-        "GROUP BY id "
-    ") "
     "SELECT "
         "StopPlace.id, "
         "StopPlace.latitude, "
         "StopPlace.longitude, "
-        "PreferedLocalization.text AS name "
+        "vPreferedLocalization.text AS name "
     "FROM StopPlace "
     "JOIN "
-        "PreferedLocalization ON PreferedLocalization.id = StopPlace.nameId ";
+        "vPreferedLocalization ON vPreferedLocalization.id = StopPlace.nameId ";
     
     if (query.idSet) {
         queryString.append("AND StopPlace.id = :id ");
