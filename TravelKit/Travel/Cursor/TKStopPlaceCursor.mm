@@ -19,13 +19,30 @@ using namespace tk;
     BOOL hasLimit = false;
     
     std::string queryString = ""
+    "WITH PreferedLocalization AS ( "
+        "SELECT "
+            "id, "
+            "text "
+        "FROM ( "
+            "WITH Locales AS (SELECT id, priority FROM tkPreferedLocale) "
+            "SELECT "
+                "Localization.id, "
+                "Localization.text "
+            "FROM Localization "
+            "JOIN "
+                "Locales ON Locales.id = Localization.language "
+            "ORDER BY Locales.priority ASC "
+        ") "
+        "GROUP BY id "
+    ") "
     "SELECT "
-        "StopPlace.*, "
-        "Localization.text AS name "
+        "StopPlace.id, "
+        "StopPlace.latitude, "
+        "StopPlace.longitude, "
+        "PreferedLocalization.text AS name "
     "FROM StopPlace "
     "JOIN "
-        "Localization ON Localization.id = StopPlace.nameId "
-    "WHERE Localization.language = :language ";
+        "PreferedLocalization ON PreferedLocalization.id = StopPlace.nameId ";
     
     if (query.idSet) {
         queryString.append("AND StopPlace.id = :id ");
@@ -33,7 +50,8 @@ using namespace tk;
     }
     
     if (query.name) {
-        queryString.append("AND StopPlace.nameId IN (SELECT id FROM Localization WHERE text LIKE :name) ");
+        // TODO: Use escape charachter
+        queryString.append("AND nameId IN (SELECT id FROM Localization WHERE text LIKE :name) ");
         hasName = true;
     }
     
@@ -76,10 +94,6 @@ using namespace tk;
     }
     
     /* Binding */
-    if (!self.statement->bind(query.language.UTF8String, ":language").isOK()) {
-        return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
-    }
-    
     if (hasId && !self.statement->bind(TKUToS64(query.itemID), ":id").isOK()) {
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
