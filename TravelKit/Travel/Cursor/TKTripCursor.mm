@@ -1,10 +1,9 @@
-//
-//  TKTripCursor.m
-//  TravelKit
-//
-//  Created by Karim on 10/18/19.
-//  Copyright © 2019 Karim. All rights reserved.
-//
+/*
+ *  TKTripCursor.m
+ *  Created on 18/Oct/19.
+ *
+ *  Copyright (C) 2019 Karim. All rights reserved.
+ */
 
 #import "TKCursor_Private.h"
 #import "TKTrip_Private.h"
@@ -22,29 +21,19 @@ using namespace tk;
     BOOL hasLimit = false;
     
     std::string queryString = ""
-    "SELECT id, routeId, direction FROM Trip ";
+    "SELECT id, routeId, direction FROM Trip "
+    "GROUP BY routeId ";
     
     /* Query Where */
-    BOOL hasWhere = false;
-    std::string queryWhere = "WHERE ";
-    
     if (query.idSet) {
-        queryWhere.append(hasWhere ? "AND id = :id ":"id = :id ");
+        queryString.append("AND id = :id ");
         hasId = true;
-        hasWhere = true;
     }
     
     if (query.routeIDSet) {
-        queryWhere.append(hasWhere ? "AND routeId = :routeId ":"routeId = :routeId ");
+        queryString.append("AND routeId = :routeId ");
         hasRouteId = true;
-        hasWhere = true;
     }
-    
-    if (hasWhere) {
-        queryString.append(queryWhere);
-    }
-    
-    queryString.append("GROUP BY routeId ");
     
     /* Limit */
     if (query.limit > 0) {

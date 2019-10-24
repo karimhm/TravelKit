@@ -52,7 +52,7 @@ using namespace tk;
         "AND direction = :direction "
     "ORDER BY position ASC");
     
-    
+    /* Prepare */
     if (!_fetchStopPlaceID->prepare().isOK()) {
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
