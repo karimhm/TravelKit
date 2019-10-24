@@ -205,6 +205,41 @@ cleanup:
 - (BOOL)loadLanguages:(NSError **)error {
     Status status = {};
     
+    // prefered locale table
+    Statement createTableStmt = Statement(_db, ""
+    "CREATE TEMP TABLE IF NOT EXISTS tkPreferedLocale ("
+        "id TEXT NOT NULL UNIQUE, "
+        "priority INTEGER NOT NULL UNIQUE"
+    ")");
+    
+    if (!createTableStmt.prepare().isOK() || !createTableStmt.execute().isDone()) {
+        TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        return false;
+    }
+    
+    // prefered localizations view
+    Statement createViewStmt = Statement(_db, ""
+    "CREATE TEMP VIEW IF NOT EXISTS vPreferedLocalization AS "
+    "SELECT "
+        "id, "
+        "text "
+    "FROM ( "
+        "WITH Locales AS (SELECT id, priority FROM tkPreferedLocale) "
+        "SELECT "
+            "Localization.id, "
+            "Localization.text "
+        "FROM Localization "
+        "JOIN "
+            "Locales ON Locales.id = Localization.language "
+        "ORDER BY Locales.priority ASC "
+    ") "
+    "GROUP BY id");
+    
+    if (!createViewStmt.prepare().isOK() || !createViewStmt.execute().isDone()) {
+        TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
+        return false;
+    }
+    
     NSMutableArray <NSString *> *languages = [[NSMutableArray alloc] init];
     
     if (!_fetchLanguages->reset().isOK()) {
@@ -279,17 +314,6 @@ cleanup:
 }
 
 - (BOOL)insertPreferedLanguages:(NSArray <NSString *> *)languages error:(NSError **)error {
-    Statement createTableStmt = Statement(_db, ""
-    "CREATE TEMP TABLE IF NOT EXISTS tkPreferedLocale ("
-        "id TEXT NOT NULL UNIQUE, "
-        "priority INTEGER NOT NULL UNIQUE"
-    ")");
-    
-    if (!createTableStmt.prepare().isOK() || !createTableStmt.execute().isDone()) {
-        TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
-        return false;
-    }
-    
     // Delete all locales
     Statement deleteStmt = Statement(_db, "DELETE FROM tkPreferedLocale");
     if (!deleteStmt.prepare().isOK() || !deleteStmt.execute().isDone()) {
