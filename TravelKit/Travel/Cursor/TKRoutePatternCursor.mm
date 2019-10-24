@@ -22,17 +22,9 @@ using namespace tk;
     "SELECT routeId, direction FROM RoutePattern ";
     
     /* Query Where */
-    BOOL hasWhere = false;
-    std::string queryWhere = "WHERE ";
-    
     if (query.routeIDSet) {
-        queryWhere.append(hasWhere ? "AND routeId = :routeId ":"routeId = :routeId ");
+        queryString.append("WHERE routeId = :routeId ");
         hasRouteId = true;
-        hasWhere = true;
-    }
-    
-    if (hasWhere) {
-        queryString.append(queryWhere);
     }
     
     queryString.append("GROUP BY routeId ");
@@ -52,13 +44,12 @@ using namespace tk;
     _fetchStopPlaceID = makeRef<Statement>(self.database, ""
     "SELECT "
         "StopPlace.*, "
-        "Localization.text as name "
+        "vPreferedLocalization.text as name "
     "FROM RoutePattern "
         "JOIN StopPlace on StopPlace.id = RoutePattern.stopPlaceId "
-        "JOIN Localization ON Localization.id = StopPlace.nameId "
+        "JOIN vPreferedLocalization ON vPreferedLocalization.id = StopPlace.nameId "
     "WHERE routeId = :routeId "
-    "AND direction = :direction "
-    "AND Localization.language = :language "
+        "AND direction = :direction "
     "ORDER BY position ASC");
     
     
@@ -72,10 +63,6 @@ using namespace tk;
     }
     
     if (hasLimit && !self.statement->bind(query.limit, ":limit").isOK()) {
-        return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
-    }
-    
-    if (!_fetchStopPlaceID->bind(query.language.UTF8String, ":language").isOK()) {
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
     
