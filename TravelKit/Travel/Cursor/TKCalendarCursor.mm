@@ -49,10 +49,8 @@ using namespace tk;
         "ShortNameLocalization.text AS shortName "
     "FROM Calendar "
     "JOIN "
-        "Localization AS NameLocalization ON NameLocalization.id = Calendar.nameId, "
-        "Localization AS ShortNameLocalization ON ShortNameLocalization.id = Calendar.shortNameId "
-    "WHERE NameLocalization.language = :language "
-    "AND ShortNameLocalization.language = :language ";
+        "vPreferedLocalization AS NameLocalization ON NameLocalization.id = Calendar.nameId, "
+        "vPreferedLocalization AS ShortNameLocalization ON ShortNameLocalization.id = Calendar.shortNameId ";
     
     if (query.idSet) {
         queryString.append("AND Calendar.id = :id ");
@@ -97,10 +95,6 @@ using namespace tk;
     }
     
     /* Binding */
-    if (!self.statement->bind(query.language.UTF8String, ":language").isOK()) {
-        return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
-    }
-    
     if (hasId && !self.statement->bind(TKUToS64(query.itemID), ":id").isOK()) {
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
