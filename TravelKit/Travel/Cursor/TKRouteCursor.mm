@@ -18,16 +18,30 @@ using namespace tk;
     BOOL hasLimit = false;
     
     std::string queryString = ""
+    "WITH PreferedLocalization AS ("
+        "SELECT "
+            "id, "
+            "text "
+        "FROM ( "
+            "WITH Locales AS (SELECT id, priority FROM tkPreferedLocale) "
+            "SELECT "
+                "Localization.id, "
+                "Localization.text "
+            "FROM Localization "
+            "JOIN "
+                "Locales ON Locales.id = Localization.language "
+            "ORDER BY Locales.priority ASC "
+        ") "
+        "GROUP BY id "
+    ") "
     "SELECT "
         "Route.*, "
         "NameLocalization.text AS name, "
         "DescriptionLocalization.text AS description "
     "FROM Route "
     "JOIN "
-        "Localization AS NameLocalization ON NameLocalization.id = Route.nameId, "
-        "Localization AS DescriptionLocalization ON DescriptionLocalization.id = Route.descriptionId "
-    "WHERE NameLocalization.language = :language "
-    "AND DescriptionLocalization.language = :language ";
+        "PreferedLocalization AS NameLocalization ON NameLocalization.id = Route.nameId, "
+        "PreferedLocalization AS DescriptionLocalization ON DescriptionLocalization.id = Route.descriptionId ";
     
     if (query.idSet) {
         queryString.append("AND Route.id = :id ");
@@ -35,7 +49,7 @@ using namespace tk;
     }
     
     if (query.name) {
-        queryString.append("WHERE Route.nameId IN (SELECT id FROM Localization WHERE text LIKE :name) ");
+        queryString.append("AND Route.nameId IN (SELECT id FROM Localization WHERE text LIKE :name) ");
         hasName = true;
     }
     
@@ -72,10 +86,6 @@ using namespace tk;
     }
     
     /* Binding */
-    if (!self.statement->bind(query.language.UTF8String, ":language").isOK()) {
-        return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
-    }
-    
     if (hasId && !self.statement->bind(TKUToS64(query.itemID), ":id").isOK()) {
         return TKSetError(error, [NSError tk_sqliteErrorWithDB:self.database->handle()]);
     }
