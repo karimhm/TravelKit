@@ -17,6 +17,7 @@
 #import "TKRide_Private.h"
 #import "TKTripPlan_Private.h"
 #import "TKError.h"
+#import "TKLogger.h"
 #import "Database.h"
 #import "Statement.h"
 #import "CSARouter.h"
@@ -96,6 +97,8 @@ struct _TKDatabaseFeatureFlags {
             return false;
         }
         
+        TKLogInfo(@"database <%@> opened successfully", self.uuid);
+        
         [self checkFeatures];
     } else if (error) {
         *error = [NSError tk_badDatabaseError];
@@ -170,6 +173,7 @@ cleanup:
         if ([properties[@"main_language"] isKindOfClass:[NSString class]]) {
             _mainLanguage = properties[@"main_language"];
         } else {
+            TKLogError(@"'main_language' property is missing from <%@> database", _uuid.UUIDString);
             TKSetError(error, [NSError tk_badDatabaseError]);
             return false;
         }
@@ -177,6 +181,7 @@ cleanup:
         if ([properties[@"timezone"] isKindOfClass:[NSString class]]) {
             _timeZone = [[NSTimeZone alloc] initWithName:properties[@"timezone"]];
         } else {
+            TKLogError(@"'timezone' property is missing from <%@> database", _uuid.UUIDString);
             TKSetError(error, [NSError tk_badDatabaseError]);
             return false;
         }
@@ -256,6 +261,7 @@ cleanup:
     
     // It's and error if the database doesn't contain any language
     if (!languages.count) {
+        TKLogError(@"database <%@> doesn't have any languages", _uuid.UUIDString);
         TKSetError(error, [NSError tk_badDatabaseError]);
         return false;
     }
@@ -301,6 +307,7 @@ cleanup:
         _selectedLanguages = [preferredLanguages copy];
         
         if (!_selectedLanguages.count) {
+            TKLogError(@"Unable to determine the user prefered locales");
             TKSetError(error, [NSError tk_internalDatabaseError]);
             return false;
         }
@@ -316,6 +323,7 @@ cleanup:
     // Delete all locales
     Statement deleteStmt = Statement(_db, "DELETE FROM tkPreferedLocale");
     if (!deleteStmt.prepare().isOK() || !deleteStmt.execute().isDone()) {
+        TKLogError(@"Failed to create prefered locales temporary table");
         TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
         return false;
     }
@@ -323,6 +331,7 @@ cleanup:
     // Insert locales
     Statement insertStmt = Statement(_db, "INSERT INTO tkPreferedLocale(id, priority) VALUES(:id, :priority)");
     if (!insertStmt.prepare().isOK()) {
+        TKLogError(@"Failed to prepare statement of insertion to prefered locales temporary table");
         TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
         return false;
     }
@@ -380,9 +389,8 @@ cleanup:
         _valid = false;
         return true;
     } else {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithDB:_db->handle()];
-        }
+        TKLogError(@"Failed to close <%@> database", _uuid.UUIDString);
+        TKSetError(error, [NSError tk_sqliteErrorWithDB:_db->handle()]);
         return false;
     }
 }
@@ -391,9 +399,8 @@ cleanup:
     auto status = _router->load();
     
     if (status.hasError()) {
-        if (error) {
-            *error = [NSError tk_sqliteErrorWithCode:status.error().code() message:[NSString stringWithUTF8String:status.error().message().c_str()]];
-        }
+        TKLogError(@"Failed to load trip router. %s", status.error().message().c_str());
+        TKSetError(error, [NSError tk_sqliteErrorWithCode:status.error().code() message:[NSString stringWithUTF8String:status.error().message().c_str()]]);
         return false;
     } else {
         return true;
@@ -566,6 +573,7 @@ cleanup:
     } else {
         if (completion) {
             Error error = tripPlan.error();
+            TKLogError(@"Failed to fetch trip plan. %s", error.message().c_str());
             completion(nil, [NSError tk_sqliteErrorWithCode:error.code() message:[NSString stringWithUTF8String:error.message().c_str()]]);
         }
     }
