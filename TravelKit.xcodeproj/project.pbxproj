@@ -40,6 +40,8 @@
 		8A2DA9C7228C3D2200918E74 /* TKCalendar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8A2DA9C5228C3D2200918E74 /* TKCalendar.mm */; };
 		8A30122821EE71FC00D0C4D0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A30122721EE71FB00D0C4D0 /* libsqlite3.tbd */; };
 		8A30122921EE721600D0C4D0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A30122721EE71FB00D0C4D0 /* libsqlite3.tbd */; };
+		8A40C2D02362F40B00F6DED8 /* TKLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A40C2CE2362F40B00F6DED8 /* TKLogger.h */; };
+		8A40C2D12362F40B00F6DED8 /* TKLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A40C2CF2362F40B00F6DED8 /* TKLogger.m */; };
 		8A497A0A220A2BF1007DA4BD /* Route.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A497A09220A2BF1007DA4BD /* Route.h */; };
 		8A497A0E220A3810007DA4BD /* TKRoute.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A497A0C220A3810007DA4BD /* TKRoute.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A497A0F220A3810007DA4BD /* TKRoute.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8A497A0D220A3810007DA4BD /* TKRoute.mm */; };
@@ -166,6 +168,8 @@
 		8A2DA9C4228C3D2200918E74 /* TKCalendar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKCalendar.h; sourceTree = "<group>"; };
 		8A2DA9C5228C3D2200918E74 /* TKCalendar.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TKCalendar.mm; sourceTree = "<group>"; };
 		8A30122721EE71FB00D0C4D0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		8A40C2CE2362F40B00F6DED8 /* TKLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKLogger.h; sourceTree = "<group>"; };
+		8A40C2CF2362F40B00F6DED8 /* TKLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKLogger.m; sourceTree = "<group>"; };
 		8A45E44C22A1FB7D00053459 /* TKStopTime_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKStopTime_Private.h; sourceTree = "<group>"; };
 		8A497A09220A2BF1007DA4BD /* Route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Route.h; sourceTree = "<group>"; };
 		8A497A0C220A3810007DA4BD /* TKRoute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKRoute.h; sourceTree = "<group>"; };
@@ -486,6 +490,8 @@
 				8A042F3222A95C0000340A1B /* TKTime.m */,
 				8AB1BB9C22A83FDE000EB1AC /* TKTimeFormatter.h */,
 				8AB1BB9D22A83FDE000EB1AC /* TKTimeFormatter.m */,
+				8A40C2CE2362F40B00F6DED8 /* TKLogger.h */,
+				8A40C2CF2362F40B00F6DED8 /* TKLogger.m */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -600,6 +606,7 @@
 				8A2DA9C6228C3D2200918E74 /* TKCalendar.h in Headers */,
 				8A871584235A00640040E841 /* TKCalendar_Private.h in Headers */,
 				8A2B240A21F1459A00C3333B /* BaseRouter.h in Headers */,
+				8A40C2D02362F40B00F6DED8 /* TKLogger.h in Headers */,
 				8A5A88632033325300998074 /* TravelKit.h in Headers */,
 				8ADADC90207CD21E0012CBB1 /* DistanceFunction.h in Headers */,
 				8A4BEB6921F3E17C0082AD13 /* StopPlace.h in Headers */,
@@ -763,6 +770,7 @@
 				8A97C24722914F4500EA04FE /* TKCursor.mm in Sources */,
 				8A6E2C7B2039316A006A240F /* TKUtilities.mm in Sources */,
 				8A2B241B21F1D32800C3333B /* TKTripPlanRequest.m in Sources */,
+				8A40C2D12362F40B00F6DED8 /* TKLogger.m in Sources */,
 				8A97C24F2291557E00EA04FE /* TKStopPlaceCursor.mm in Sources */,
 				8A63F51120349D6D00742FE5 /* TKItem.mm in Sources */,
 				8A2B23E821EFE7AF00C3333B /* TKStopPlace.mm in Sources */,
@@ -942,6 +950,7 @@
 				HEADER_SEARCH_PATHS = "Libraries/**";
 				INFOPLIST_FILE = TravelKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = TravelKit/TravelKit.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karhm.TravelKit;
@@ -970,6 +979,7 @@
 				HEADER_SEARCH_PATHS = "Libraries/**";
 				INFOPLIST_FILE = TravelKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = TravelKit/TravelKit.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karhm.TravelKit;

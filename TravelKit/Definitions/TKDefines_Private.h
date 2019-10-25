@@ -45,6 +45,8 @@ TK_ALWAYS_INLINE int64_t TKUToS64(uint64_t data) {
 #import <Foundation/Foundation.h>
 #import <UIKit/UIColor.h>
 
+#define TK_CONSTRUCTOR __attribute__((__constructor__))
+
 #define TK_ENCODE_OBJ(c,x)  [c encodeObject:_ ## x forKey:@TK_STRINGIFY(x)]
 #define TK_DECODE_OBJ_CLASS(d,x,cl)  _ ## x = (cl *)[d decodeObjectOfClass:[cl class] forKey:@TK_STRINGIFY(x)]
 #define TK_DECODE_OBJ_ARRAY(d,x,cl)  _ ## x = (NSArray *)[d decodeObjectOfClasses:[NSSet setWithObjects:[NSArray class],[cl class],nil] forKey:@TK_STRINGIFY(x)]
