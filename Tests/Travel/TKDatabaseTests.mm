@@ -382,7 +382,7 @@
     }];
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
-    XCTAssertTrue(calendars.count == 3, @"The number of calendars should be 3");
+    XCTAssertTrue(calendars.count == 3, @"The number of calendars should be 3, current: %lu", (unsigned long)calendars.count);
     XCTAssertTrue(fetchError == nil, @"Fetching calendars did fail %@", fetchError);
     
     // Check fetching with a limit
@@ -401,7 +401,7 @@
     }];
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     
-    XCTAssertTrue(calendars.count == 2, @"The number of calendars should be , current: %lu", (unsigned long)calendars.count);
+    XCTAssertTrue(calendars.count == 2, @"The number of calendars should be 0, current: %lu", (unsigned long)calendars.count);
     XCTAssertTrue(fetchError == nil, @"Fetching calendars did fail %@", fetchError);
 }
 
@@ -499,7 +499,7 @@
     XCTAssertTrue(fetchError == nil, @"Fetching stop places did fail %@", fetchError);
     
     XCTAssertTrue(stopPlaces.firstObject.identifier == 1, @"The stop place identifier is incorrect. It should be 1");
-    XCTAssertTrue([stopPlaces.firstObject.name isEqualToString:@"testPlace1-ar"], @"The stop place name is incorrect. It should be 'testPlace1-de'");
+    XCTAssertTrue([stopPlaces.firstObject.name isEqualToString:@"testPlace1-ar"], @"The stop place name is incorrect. It should be 'testPlace1-ar', current value: %@", stopPlaces.firstObject.name);
     
     // Fetch StopPlace by name
     semaphore = dispatch_semaphore_create(0);
@@ -524,7 +524,7 @@
     XCTAssertTrue(fetchError == nil, @"Fetching stop places did fail %@", fetchError);
     
     XCTAssertTrue(stopPlaces.firstObject.identifier == 1, @"The stop place identifier is incorrect. It should be 1");
-    XCTAssertTrue([stopPlaces.firstObject.name isEqualToString:@"testPlace1-ar"], @"The stop place name is incorrect. It should be 'testPlace1-de'");
+    XCTAssertTrue([stopPlaces.firstObject.name isEqualToString:@"testPlace1-ar"], @"The stop place name is incorrect. It should be 'testPlace1-ar', current value: %@", stopPlaces.firstObject.name);
     
     // Fetch StopPlace by location
     semaphore = dispatch_semaphore_create(0);
@@ -552,7 +552,7 @@
     XCTAssertTrue(fetchError == nil, @"Fetching stop places did fail %@", fetchError);
     
     XCTAssertTrue(stopPlaces.firstObject.identifier == 1, @"The stop place identifier is incorrect. It should be 1");
-    XCTAssertTrue([stopPlaces.firstObject.name isEqualToString:@"testPlace1-ar"], @"The stop place name is incorrect. It should be 'testPlace1-de'");
+    XCTAssertTrue([stopPlaces.firstObject.name isEqualToString:@"testPlace1-ar"], @"The stop place name is incorrect. It should be 'testPlace1-ar', current value: %@", stopPlaces.firstObject.name);
     
 }
 
