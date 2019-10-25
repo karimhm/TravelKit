@@ -143,7 +143,9 @@
     TKQuery *query = [[TKQuery alloc] init];
     query.itemID = 1;
     
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    TKCursor *cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -164,7 +166,9 @@
     query = [[TKQuery alloc] init];
     query.itemID = 000000;
     // Check fetching a non-existing stop place
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -185,7 +189,9 @@
     TKQuery *query = [[TKQuery alloc] init];
     query.name = @"testPlace2";
     
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    TKCursor *cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -209,7 +215,9 @@
     query = [[TKQuery alloc] init];
     query.name = @"testPlaceA";
     
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -226,7 +234,9 @@
     query.name = @"testPlace";
     query.limit = 2;
     
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -246,7 +256,9 @@
     TKQuery *query = [[TKQuery alloc] init];
     query.location = [[CLLocation alloc] initWithLatitude:0 longitude:0];
     
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    TKCursor *cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -269,7 +281,9 @@
     query.location = [[CLLocation alloc] initWithLatitude:0 longitude:0];;
     query.limit = 2;
     
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -288,7 +302,9 @@
     TKQuery *query = [[TKQuery alloc] init];
     query.itemID = 1;
     
-    [[self.database fetchCalendarWithQuery:query] fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
+    TKCursor *cursor = [self.database fetchCalendarWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
         calendars = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -310,7 +326,9 @@
     query = [[TKQuery alloc] init];
     query.itemID = 9999999;
     
-    [[self.database fetchCalendarWithQuery:query] fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
+    cursor = [self.database fetchCalendarWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
         calendars = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -331,7 +349,9 @@
     TKQuery *query = [[TKQuery alloc] init];
     query.name = @"testCalendar2";
     
-    [[self.database fetchCalendarWithQuery:query] fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
+    TKCursor *cursor = [self.database fetchCalendarWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
         calendars = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -353,7 +373,9 @@
     query = [[TKQuery alloc] init];
     query.name = @"testCalend";
     
-    [[self.database fetchCalendarWithQuery:query] fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
+    cursor = [self.database fetchCalendarWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
         calendars = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -370,7 +392,9 @@
     query.name = @"testCalendar";
     query.limit = 2;
     
-    [[self.database fetchCalendarWithQuery:query] fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
+    cursor = [self.database fetchCalendarWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKCalendar *> *result, NSError *error) {
         calendars = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -390,7 +414,9 @@
     TKQuery *query = [[TKQuery alloc] init];
     query.routeID = 1;
     
-    [[self.database fetchRoutePatternWithQuery:query] fetchAllWithCompletion:^(NSArray<TKRoutePattern *> *result, NSError *error) {
+    TKCursor *cursor = [self.database fetchRoutePatternWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKRoutePattern *> *result, NSError *error) {
         routePatterns = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -420,7 +446,9 @@
     query = [[TKQuery alloc] init];
     query.routeID = 999999;
     
-    [[self.database fetchRoutePatternWithQuery:query] fetchAllWithCompletion:^(NSArray<TKRoutePattern *> *result, NSError *error) {
+    cursor = [self.database fetchRoutePatternWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKRoutePattern *> *result, NSError *error) {
         routePatterns = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -457,7 +485,9 @@
     TKQuery *query = [[TKQuery alloc] init];
     query.itemID = 1;
     
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    TKCursor *cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -480,7 +510,9 @@
     query = [[TKQuery alloc] init];
     query.itemID = 1;
     
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);
@@ -506,7 +538,9 @@
     query.location = location;
     query.limit = 1;
     
-    [[self.database fetchStopPlaceWithQuery:query] fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
+    cursor = [self.database fetchStopPlaceWithQuery:query];
+    XCTAssertNotNil(cursor, "The cusror shold not be nil");
+    [cursor fetchAllWithCompletion:^(NSArray<TKStopPlace *> *result, NSError *error) {
         stopPlaces = result;
         fetchError = error;
         dispatch_semaphore_signal(semaphore);

@@ -43,19 +43,19 @@ typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError *
 @property (nonatomic, null_resettable) NSArray <NSString *> *selectedLanguages;
 @property (nonatomic, nullable) NSString *selectedLanguage;
 
-- (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query;
-- (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query;
-- (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query;
-- (TKCursor <TKRoutePattern *> *)fetchRoutePatternWithQuery:(TKQuery *)query;
-- (TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query;
-- (TKCursor <TKTrip *> *)fetchTripWithQuery:(TKQuery *)query;
+- (nullable TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query;
+- (nullable TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query;
+- (nullable TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query;
+- (nullable TKCursor <TKRoutePattern *> *)fetchRoutePatternWithQuery:(TKQuery *)query;
+- (nullable TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query;
+- (nullable TKCursor <TKTrip *> *)fetchTripWithQuery:(TKQuery *)query;
 
-- (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error;
-- (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query error:(NSError **)error;
-- (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query error:(NSError **)error;
-- (TKCursor <TKRoutePattern *> *)fetchRoutePatternWithQuery:(TKQuery *)query error:(NSError **)error;
-- (TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query error:(NSError **)error;
-- (TKCursor <TKTrip *> *)fetchTripWithQuery:(TKQuery *)query error:(NSError **)error;
+- (nullable TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error;
+- (nullable TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query error:(NSError **)error;
+- (nullable TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query error:(NSError **)error;
+- (nullable TKCursor <TKRoutePattern *> *)fetchRoutePatternWithQuery:(TKQuery *)query error:(NSError **)error;
+- (nullable TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query error:(NSError **)error;
+- (nullable TKCursor <TKTrip *> *)fetchTripWithQuery:(TKQuery *)query error:(NSError **)error;
 
 - (void)fetchTripPlanWithRequest:(TKTripPlanRequest *)request completion:(TKTripPlanFetchHandler)completion;
 
