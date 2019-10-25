@@ -191,8 +191,6 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
         std::map<ItemID, size_t> connectionIndex;
         std::map<ItemID, ItemID> connectionTripId;
         
-        earliestArrivals[source] = std::vector<Time>{previousDeparture};
-        
         earliestArrival[source] = previousDeparture;
         Time earliest = Time::Infinity();
         
