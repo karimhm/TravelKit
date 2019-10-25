@@ -23,7 +23,7 @@
 * Super fast trip planning engine that will generate results in a fraction of a second
 
 ## Requirements
-* [iOS 8.0](https://wikipedia.org/wiki/IOS_8) or later.
+* [iOS 9.0](https://wikipedia.org/wiki/IOS_9) or later.
 * [Xcode 9.0](https://developer.apple.com/xcode) or later.
 
 ## Documentation
