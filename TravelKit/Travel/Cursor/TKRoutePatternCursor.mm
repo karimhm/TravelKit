@@ -100,7 +100,6 @@ using namespace tk;
     TKRoutePattern *routePattern = [[TKRoutePattern alloc] initWithStatement:statement];
     
     TKQuery *query = [[TKQuery alloc] init];
-    query.language = self.query.language;
     query.itemID = TKSToU64((*statement)["routeId"].int64Value());
     
     TKRoute *route = [[TKRouteCursor cursorWithDatabase:self.database query:query] fetchOne];

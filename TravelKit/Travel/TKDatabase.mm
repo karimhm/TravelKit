@@ -299,9 +299,8 @@ cleanup:
         
         _languages = [languages copy];
         _selectedLanguages = [preferredLanguages copy];
-        _selectedLanguage = preferredLanguages.firstObject;
         
-        if (!_selectedLanguages.count || !_selectedLanguage) {
+        if (!_selectedLanguages.count) {
             TKSetError(error, [NSError tk_internalDatabaseError]);
             return false;
         }
@@ -475,32 +474,26 @@ cleanup:
 }
 
 - (TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query error:(NSError **)error {
-    query.language = _selectedLanguage;
     return [TKStopPlaceCursor cursorWithDatabase:_db query:query error:error];
 }
 
 - (TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query error:(NSError **)error {
-    query.language = _selectedLanguage;
     return [TKRouteCursor cursorWithDatabase:_db query:query error:error];
 }
 
 - (TKCursor <TKCalendar *> *)fetchCalendarWithQuery:(TKQuery *)query error:(NSError **)error {
-    query.language = _selectedLanguage;
     return [TKCalendarCursor cursorWithDatabase:_db query:query error:error];
 }
 
 - (TKCursor <TKRoutePattern *> *)fetchRoutePatternWithQuery:(TKQuery *)query error:(NSError **)error {
-    query.language = _selectedLanguage;
     return [TKRoutePatternCursor cursorWithDatabase:_db query:query error:error];
 }
 
 - (TKCursor <TKStopTime *> *)fetchStopTimeWithQuery:(TKQuery *)query error:(NSError **)error {
-    query.language = _selectedLanguage;
     return [TKStopTimeCursor cursorWithDatabase:_db query:query error:error];
 }
 
 - (TKCursor <TKTrip *> *)fetchTripWithQuery:(TKQuery *)query error:(NSError **)error {
-    query.language = _selectedLanguage;
     query.fetchStopTimes = true;
     return [TKTripCursor cursorWithDatabase:_db query:query error:error];
 }

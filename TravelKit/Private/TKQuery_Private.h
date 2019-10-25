@@ -9,8 +9,6 @@
 
 @interface TKQuery ()
 
-@property (strong, nonatomic) NSString *language;
-
 @property (nonatomic) BOOL fetchStopTimes;
 
 @property (nonatomic, readonly) BOOL idSet;

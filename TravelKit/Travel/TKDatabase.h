@@ -41,7 +41,6 @@ typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError *
 
 @property (nonatomic, readonly) NSArray <NSString *> *languages;
 @property (nonatomic, null_resettable) NSArray <NSString *> *selectedLanguages;
-@property (nonatomic, nullable) NSString *selectedLanguage;
 
 - (nullable TKCursor <TKStopPlace *> *)fetchStopPlaceWithQuery:(TKQuery *)query;
 - (nullable TKCursor <TKRoute *> *)fetchRouteWithQuery:(TKQuery *)query;

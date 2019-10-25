@@ -80,7 +80,6 @@ using namespace tk;
 
 - (nullable TKStopPlace *)fetchStopPlacesWithID:(TKItemID)stopPlacesID {
     TKQuery *query = [[TKQuery alloc] init];
-    query.language = self.query.language;
     query.itemID = stopPlacesID;
     
     return [[TKStopPlaceCursor cursorWithDatabase:self.database query:query] fetchOne];
@@ -88,7 +87,6 @@ using namespace tk;
 
 - (nullable TKCalendar *)fetchCalendarWithID:(TKItemID)calendarID {
     TKQuery *query = [[TKQuery alloc] init];
-    query.language = self.query.language;
     query.itemID = calendarID;
     
     return [[TKCalendarCursor cursorWithDatabase:self.database query:query] fetchOne];
@@ -96,7 +94,6 @@ using namespace tk;
 
 - (nullable TKTrip *)fetchTripWithID:(TKItemID)tripID {
     TKQuery *query = [[TKQuery alloc] init];
-    query.language = self.query.language;
     query.itemID = tripID;
     query.fetchStopTimes = false;
     

@@ -11,7 +11,6 @@
 TKOrderProperty const TKOrderByName = @"name";
 
 @implementation TKQuery {
-    NSString *_language;
     CLLocation *_location;
     TKItemID _stopPlaceID;
     TKItemID _routeID;
@@ -25,14 +24,6 @@ TKOrderProperty const TKOrderByName = @"name";
 - (void)setItemID:(TKItemID)itemID {
     _itemID = itemID;
     _idSet = true;
-}
-
-- (void)setLanguage:(NSString *)language {
-    _language = language;
-}
-
-- (NSString *)language {
-    return _language;
 }
 
 - (void)setLocation:(CLLocation *)location {
