@@ -98,6 +98,7 @@
                           INSERT INTO Properties(id, value) VALUES('testProperty3', 1.2);\
                           INSERT INTO Properties(id, value) VALUES('testProperty4', NULL);\
                           INSERT INTO Properties(id, value) VALUES('timezone', 'Africa/Algiers');\
+                          INSERT INTO Properties(id, value) VALUES('main_language', 'en');\
                           \
                           INSERT INTO Calendar(id, nameId, shortNameId, days) VALUES(1, 7, 10, 127);\
                           INSERT INTO Calendar(id, nameId, shortNameId, days) VALUES(2, 8, 11, 127);\
@@ -445,7 +446,7 @@
 }
     
 - (void)testLanguages {
-    self.database.selectedLanguage = @"ar";
+    self.database.selectedLanguages = @[@"ar"];
     
     // Fetch StopPlace by id
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
