@@ -22,6 +22,7 @@ The data is encapsulated within an [SQLite](https://sqlite.org/about.html) datab
 
 ## Field Types
 * **ID**: A 64 bit unsigned integer that uniquely identifies a **Record**.
+* **Integer**: A 64 bit signed integer.
 * **Latitude**: The [WGS84](https://wikipedia.org/wiki/World_Geodetic_System) latitude in decimal degrees.
 * **Longitude**: The [WGS84](https://wikipedia.org/wiki/World_Geodetic_System) longitude in decimal degrees.
 * **Text**: A sequence of UTF-8 characters.
