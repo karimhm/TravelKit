@@ -59,6 +59,32 @@ private:
     
 class Base  {
 public:
+    class Options {
+        Options() {
+        }
+        
+        void limits(uint64_t limits) {
+            limits_ = limits;
+        }
+        
+        uint64_t limits() {
+            return limits_;
+        }
+        
+        void omitSameArrival(bool omitSameArrival) {
+            omitSameArrival_ = omitSameArrival;
+        }
+        
+        bool omitSameArrival() {
+            return omitSameArrival_;
+        }
+        
+    private:
+        uint64_t limits_;
+        bool omitSameArrival_;
+    };
+    
+public:
     Base(Ref<Database> db) : db_(db), loaded_(false) {
     }
     

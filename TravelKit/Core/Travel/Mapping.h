@@ -133,6 +133,38 @@ private:
     int32_t durationIndex_;
 };
 
+class FootpathMapping {
+public:
+    FootpathMapping(Ref<Statement> statement) {
+        sourceIdIndex_ = statement->columnMap()["sourceId"];
+        destinationIdIndex_ = statement->columnMap()["destinationId"];
+        durationIndex_ = statement->columnMap()["duration"];
+        distanceIndex_ = statement->columnMap()["distance"];
+    }
+    
+    const int32_t sourceIdIndex() const {
+        return sourceIdIndex_;
+    }
+    
+    const int32_t destinationIdIndex() const {
+        return destinationIdIndex_;
+    }
+    
+    const int32_t durationIndex() const {
+        return durationIndex_;
+    }
+    
+    const int32_t distanceIndex() const {
+        return distanceIndex_;
+    }
+    
+private:
+    int32_t sourceIdIndex_;
+    int32_t destinationIdIndex_;
+    int32_t durationIndex_;
+    int32_t distanceIndex_;
+};
+
 }
 
 #endif /* TK_MAPPING_H */

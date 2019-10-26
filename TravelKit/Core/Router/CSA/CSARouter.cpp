@@ -11,6 +11,65 @@
 #include "QueryRoute.h"
 #include "OmitSameTripArrival.h"
 
+/* No Commit */
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
+
+ using namespace tk;
+ using namespace tk::Router;
+
+uint32_t MaxNameSize = 27;
+
+std::string TimeName(time_t time) {
+    struct tm *tm = gmtime(&time);
+    std::ostringstream oss;
+    oss << tm->tm_hour << ":" << tm->tm_min;
+    
+    return oss.str();
+}
+
+std::string AdjustSize(std::string text, uint32_t maxSize) {
+    if (text.size() < maxSize) {
+        std::string name = text;
+        size_t size = text.size();
+        name.insert(size, (maxSize - size), ' ');
+        return name;
+    } else {
+        return text;
+    }
+}
+
+const static uint64_t SecondsInMinute = 60;
+const static uint64_t SecondsInHour = SecondsInMinute * 60;
+const static uint64_t SecondsInDay = SecondsInHour * 24;
+
+static void FormatStop(std::map<ItemID, std::string>& stopNameMap, std::map<ItemID, std::string>& routeNameMap, ItemID route, ItemID from, ItemID to, time_t fromTime, time_t toTime, bool isSelected, bool isReplaced, bool isFootpath) {
+    std::string text;
+    
+    text.append(AdjustSize(stopNameMap[from], MaxNameSize));
+    text.append(" ");
+    text.append(AdjustSize(TimeName(fromTime), 5));
+    text.append("   ->   ");
+    text.append(AdjustSize(stopNameMap[to], MaxNameSize));
+    text.append(" ");
+    text.append(AdjustSize(TimeName(toTime), 5));
+    
+    if (isReplaced) {
+        text.append("    #    ");
+    } else if (isSelected) {
+        text.append("    *    ");
+    } else {
+        text.append("         ");
+    }
+    
+    text.append(AdjustSize(routeNameMap[route], MaxNameSize));
+    
+    std::cout << text << std::endl;
+}
+/* No Commit */
+
 using namespace tk;
 using namespace tk::Router;
 
@@ -18,6 +77,10 @@ constexpr size_t IndexInfinity = std::numeric_limits<size_t>::max();
 
 const size_t EarliestConnection(ConnectionVector& connections, Time& departureTime, const size_t startIndex) {
     // TODO: This should be a binary search
+    /*std::lower_bound(connections.begin(), connections.end(), [](Connection &lhs, Connection &rhs) -> bool {
+        return lhs.startTime() < rhs.startTime();
+    });*/
+    
     for (size_t i = startIndex; i < connections.size(); i++) {
         const Connection& connection = connections[i];
         if (connection.startTime() >= departureTime) {
@@ -48,6 +111,7 @@ ErrorOr<void> CSA::load() {
     std::map<ItemID, Transfer> stopTransferByID;
     std::map<ItemID, Calendar> calendarByID;
     std::map<ItemID, Trip> tripsByID;
+    std::map<ItemID, std::vector<Footpath>> stopFootpathsByID;
     
     Ref<Statement> fetchStmt;
     
@@ -143,12 +207,73 @@ ErrorOr<void> CSA::load() {
     
     fetchStmt->close();
     
+    fetchStmt = makeRef<Statement>(db_, "SELECT sourceId, destinationId, duration, distance FROM Footpath");
+    if (fetchStmt->prepare().isOK()) {
+        FootpathMapping mapping = FootpathMapping(fetchStmt);
+        
+        while (fetchStmt->next().isRow()) {
+            Footpath footpath = Footpath((*fetchStmt)[mapping.sourceIdIndex()].int64Value(),
+                                         (*fetchStmt)[mapping.destinationIdIndex()].int64Value(),
+                                         (*fetchStmt)[mapping.durationIndex()].intValue(),
+                                         (*fetchStmt)[mapping.distanceIndex()].intValue());
+            
+            if (!stopFootpathsByID.count(footpath.startStopPlaceID())) {
+                stopFootpathsByID[footpath.startStopPlaceID()] = std::vector<Footpath>();
+            }
+            
+            stopFootpathsByID[footpath.startStopPlaceID()].push_back(footpath);
+        }
+        
+        if (!status.isDone()) {
+            return Error(db_->handle());
+        }
+    }
+    
+    fetchStmt->close();
+    
     std::sort(connections.begin(), connections.end(), Connection::Compare());
+    
+    /* No Commit */
+    // stop place
+    fetchStmt = makeRef<Statement>(db_, "select StopPlace.id, Localization.text from StopPlace join Localization on Localization.id = StopPlace.nameId where Localization.language = 'en'");
+    if (fetchStmt->prepare().isOK()) {
+        while (fetchStmt->next().isRow()) {
+            ItemID id = (*fetchStmt)["id"].int64Value();
+            stopNameByID_[id] = (*fetchStmt)["text"].stringValue();
+            
+            // std::cout << "Transfer from: " << (*fetchStmt)["text"].stringValue() << " = " << transferByID_[id][id].duration() << std::endl;
+        }
+        
+        if (!status.isDone()) {
+            std::cout << "Failed to load stop place names" << std::endl;
+        }
+    }
+    
+    fetchStmt->close();
+    // stop place
+    
+    // route
+    fetchStmt = makeRef<Statement>(db_, "select Route.id, Localization.text from Route join Localization on Localization.id = Route.nameId where Localization.language = 'en'");
+    if (fetchStmt->prepare().isOK()) {
+        while (fetchStmt->next().isRow()) {
+            ItemID id = (*fetchStmt)["id"].int64Value();
+            routeNameByID_[id] = (*fetchStmt)["text"].stringValue();
+        }
+        
+        if (!status.isDone()) {
+            std::cout << "Failed to load route names" << std::endl;
+        }
+    }
+    
+    fetchStmt->close();
+    // route
+    /* No Commit */
     
     connections_ = std::move(connections);
     stopTransferByID_ = std::move(stopTransferByID);
     calendarByID_ = std::move(calendarByID);
     tripsByID_ = std::move(tripsByID);
+    stopFootpathsByID_ = std::move(stopFootpathsByID);
     loaded_ = true;
     
     return {};
@@ -179,6 +304,18 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
     
     Time previousDeparture = departureTime;
     
+    for (auto& footpathVector: stopFootpathsByID_) {
+        std::cout << "Footpath of: " << stopNameByID_[footpathVector.first] << std::endl;
+        for (auto& footpath: footpathVector.second) {
+            std::cout << "From: " << stopNameByID_[footpath.startStopPlaceID()]
+            << " to: " << stopNameByID_[footpath.endStopPlaceID()]
+            << " distance: " << footpath.distance()
+            << " duration: " << footpath.duration().seconds() << std::endl;
+        }
+        
+        std::cout << std::endl;
+    }
+    
     /*
      previousIndex is an optimization used to prevent iterating over
      the connections vector from the begining each round
@@ -190,6 +327,8 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
         std::map<ItemID, Time> earliestArrival;
         std::map<ItemID, size_t> connectionIndex;
         std::map<ItemID, ItemID> connectionTripId;
+        std::map<ItemID, Connection> journeyPointers;
+        std::set<ItemID> reachedTrips;
         
         earliestArrival[source] = previousDeparture;
         Time earliest = Time::Infinity();
@@ -197,6 +336,9 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
         // Look for the earliest departure
         previousIndex = EarliestConnection(connections_, previousDeparture, previousIndex);
         
+        bool breakFlag = false;
+        
+//        std::cout << "Begin query loop" << std::endl;
         for (size_t i = previousIndex; i < connections_.size(); i++) {
             const Connection& connection = connections_[i];
             const Time startEarliest = EarliestArrival(earliestArrival, connection.startStopPlaceID());
@@ -214,19 +356,59 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
                 }
             }
             
-            if ((connection.startTime() - transferDuration) >= startEarliest.seconds()
-                && connection.endTime() < endEarliest
-                && calendars.count(connection.calendarID()))
-            {
+            bool tripReached = reachedTrips.count(connection.tripID());
+            
+            bool connects = (connection.startTime() - transferDuration) >= startEarliest
+                             && connection.endTime() < endEarliest
+                             && calendars.count(connection.calendarID());
+            
+            if (tripReached || connects) {
+                reachedTrips.insert(connection.tripID());
+                
+                /* No Commit */
+                if (transferDuration) {
+                    ItemID tripId = connectionTripId[connection.startStopPlaceID()];
+                    transferDuration = stopTransferByID_[connection.startStopPlaceID()].duration();
+                    // std::cout << "    Switching @: " << stopNameByID_[connection.startStopPlaceID()] << " -> duration: (" << transferDuration << " s) from: [" << routeNameByID_[tripsByID_[tripId].routeID()] << "] -> [" << routeNameByID_[tripsByID_[connection.tripID()].routeID()] << "]"  << std::endl;
+                }
+                
+                /*FormatStop(stopNameByID_,
+                           routeNameByID_,
+                           tripsByID_[connection.tripID()].routeID(),
+                           connection.startStopPlaceID(),
+                           connection.endStopPlaceID(),
+                           connection.startTime().seconds(),
+                           connection.endTime().seconds(),
+                           false,
+                           false,
+                           false);*/
+                /* No Commit */
+                
                 if (connection.endStopPlaceID() == destination && connection.endTime() < earliest) {
                     earliest = connection.endTime();
                 } else if (earliest <= connection.startTime()) {
                     // There is no better StopTime, so we break
-                    break;
+                    if (!breakFlag) {
+                        breakFlag = true;
+                        // std::cout << "    Break" << std::endl;
+                    }
+                    //break;
                 }
                 
-                earliestArrival[connection.endStopPlaceID()] = connection.endTime();
-                connectionIndex[connection.endStopPlaceID()] = i;
+                //if (earliestArrival == Time::Infinity().seconds()) {
+                    
+                //}
+                
+                if (endEarliest == Time::Infinity()) {
+                    // std::cout << "Infinity" << std::endl;
+                    earliestArrival[connection.endStopPlaceID()] = connection.endTime();
+                    connectionIndex[connection.endStopPlaceID()] = i;
+                }
+                
+                if (connects) {
+                    earliestArrival[connection.endStopPlaceID()] = connection.endTime();
+                    connectionIndex[connection.endStopPlaceID()] = i;
+                }
                 
                 // If transfer time is not used there is no need to store connection trip labels
                 if (!options.ignoreTransferTime()) {
@@ -234,6 +416,10 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
                 }
             }
         }
+        
+        /* No Commit */
+        std::cout << std::endl;
+        /* No Commit */
         
         size_t previousConnectionIndex = IndexInfinity;
         if (connectionIndex.count(destination)) {
@@ -253,6 +439,19 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
             const Connection& connection = connections_[previousConnectionIndex];
             route.insert(route.begin(), connection);
             
+            /* No Commit */
+            /*FormatStop(stopNameByID_,
+                       routeNameByID_,
+                       tripsByID_[connection.tripID()].routeID(),
+                       connection.startStopPlaceID(),
+                       connection.endStopPlaceID(),
+                       connection.startTime().seconds(),
+                       connection.endTime().seconds(),
+                       false,
+                       false,
+                       false);*/
+            /* No Commit */
+            
             if (connection.tripID() != previousTrip) {
                 transfers++;
                 previousTrip = connection.tripID();
@@ -266,13 +465,17 @@ ErrorOr<TripPlan> CSA::query(ItemID source, ItemID destination, Date date, Query
             }
         }
         
+        /* No Commit */
+        std::cout << std::endl;
+        /* No Commit */
+        
         ItemID id = IID(static_cast<uint16_t>(routes.size())).rawID();
         routes.push_back({id, std::move(route), transfers});
     } // Query loop
     
     // Filters
     if (options.omitSameTripArrival()) {
-        Filter::OmitSameTripArrival::apply(routes);
+        //Filter::OmitSameTripArrival::apply(routes);
     }
     
     // Construct itineraries

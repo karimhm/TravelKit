@@ -21,7 +21,34 @@ typedef NS_OPTIONS(NSUInteger, TKSortOrder) {
 
 TK_EXTERN TKOrderProperty const TKOrderByName;
 
+// TODO: Use NEPredicate
 @interface TKQuery : NSObject
+
+- (instancetype)initWithPredicate:(NSPredicate *)predicate NS_DESIGNATED_INITIALIZER;
+
+/*!
+* @property predicate
+* Returns the predicate used by the query.
+*/
+@property (nonatomic, readonly, copy) NSPredicate *predicate;
+
+/*!
+* @property sortDescriptors
+* An array of sort descriptor objects.
+*/
+@property (nonatomic, copy, nullable) NSArray<NSSortDescriptor *> *sortDescriptors;
+
+- (BOOL)updateParameters:(NSDictionary *)parameters;
+
+/*
+ id
+ name
+ direction
+ location
+ stopPlace
+ route
+ trip
+ */
 
 /*!
  @property
@@ -35,6 +62,7 @@ TK_EXTERN TKOrderProperty const TKOrderByName;
  */
 @property (nonatomic) TKInt limit;
 
+// TODO: use NSSortDescriptor for sorting
 /*!
  @property
  @abstract   The column used to order items.
@@ -69,6 +97,7 @@ TK_EXTERN TKOrderProperty const TKOrderByName;
  */
 @property (nonatomic) TKItemID stopPlaceID;
 
+// TODO: Use CKLocationSortDescriptor or similar
 /*!
  @property
  @abstract   The location of the stop place.
