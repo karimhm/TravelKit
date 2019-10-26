@@ -53,6 +53,29 @@ CREATE TABLE IF NOT EXISTS StopPlace (
 ```
 ---
 
+### Calendar
+Table: **Required**
+
+Defines the service dates of trips.
+
+| Field Name    | Type          | SQL Datatype      | Required | Description          |
+|---------------|---------------|-------------------|----------|----------------------|
+id | `ID` | `INTEGER` | **Required**| The unique identifier of the record
+nameId | `Text ID` | `INTEGER` | Optional | The name of the calendar
+shortNameId | `Text ID` | `INTEGER` | Optional | The short name of the calendar
+days | `Integer` | `INTEGER` | **Required** | A bitset containing the operations days during the week. 1 means operational, 0 means not operational. The first bit represent  *Sunday*.
+
+The SQL statement to create the table:
+``` SQL
+CREATE TABLE IF NOT EXISTS Calendar (
+    id INTEGER PRIMARY KEY NOT NULL,
+    nameId INTEGER REFERENCES Localization(id),
+    shortNameId INTEGER REFERENCES Localization(id),
+    days INT CHECK (days <= 127) NOT NULL
+);
+```
+---
+
 ### Localization
 Table: **Required**
 
