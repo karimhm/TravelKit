@@ -21,19 +21,29 @@ using namespace tk;
     BOOL hasLimit = false;
     
     std::string queryString = ""
-    "SELECT id, routeId, direction FROM Trip "
-    "GROUP BY routeId ";
+    "SELECT id, routeId, direction FROM Trip ";
     
     /* Query Where */
+    BOOL hasWhere = false;
+    std::string queryWhere = "WHERE ";
+    
     if (query.idSet) {
-        queryString.append("AND id = :id ");
+        queryWhere.append(hasWhere ? "AND id = :id ":"id = :id ");
         hasId = true;
+        hasWhere = true;
     }
     
     if (query.routeIDSet) {
-        queryString.append("AND routeId = :routeId ");
+        queryWhere.append(hasWhere ? "AND routeId = :routeId ":"routeId = :routeId ");
         hasRouteId = true;
+        hasWhere = true;
     }
+    
+    if (hasWhere) {
+        queryString.append(queryWhere);
+    }
+    
+    queryString.append("GROUP BY routeId ");
     
     /* Limit */
     if (query.limit > 0) {

@@ -27,24 +27,35 @@ using namespace tk;
         "Trip.calendarId "
     "FROM StopTime "
     "JOIN "
-        "Trip on Trip.id = StopTime.tripId "
-    "ORDER BY StopTime.arrivalTime ";
+        "Trip on Trip.id = StopTime.tripId ";
     
     /* Query Where */
+    BOOL hasWhere = false;
+    std::string queryWhere = "WHERE ";
+    
     if (query.stopPlaceIDSet) {
-        queryString.append("AND StopTime.stopPlaceId = :stopPlaceId ");
+        queryWhere.append(hasWhere ? "AND StopTime.stopPlaceId = :stopPlaceId ":"StopTime.stopPlaceId = :stopPlaceId ");
         hasStopPlaceId = true;
+        hasWhere = true;
     }
     
     if (query.routeIDSet) {
-        queryString.append("AND Trip.routeId = :routeId ");
+        queryWhere.append(hasWhere ? "AND Trip.routeId = :routeId ":"Trip.routeId = :routeId ");
         hasRouteId = true;
+        hasWhere = true;
     }
     
     if (query.direction != TKTravelDirectionUnknown) {
-        queryString.append("AND Trip.direction = :direction ");
+        queryWhere.append(hasWhere ? "AND Trip.direction = :direction ":"Trip.direction = :direction ");
         hasDirection = true;
+        hasWhere = true;
     }
+    
+    if (hasWhere) {
+        queryString.append(queryWhere);
+    }
+    
+    queryString.append("ORDER BY StopTime.arrivalTime ");
     
     /* Limit */
     if (query.limit > 0) {
