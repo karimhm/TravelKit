@@ -16,6 +16,8 @@ NS_SWIFT_NAME(TripPlan)
 
 @property (readonly, nonatomic) NSDate *date;
 
+@property (nonatomic, readonly, getter=isEmpty) BOOL empty;
+
 @property (readonly, nonatomic) NSArray<TKItinerary *> *itineraries;
 
 @end

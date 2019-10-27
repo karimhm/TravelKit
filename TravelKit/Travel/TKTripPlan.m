@@ -14,6 +14,7 @@
         _source = source;
         _destination = destination;
         _date = date;
+        _empty = itineraries.count == 0;
         _itineraries = itineraries;
     }
     return self;
