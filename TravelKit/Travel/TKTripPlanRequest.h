@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <TravelKit/TKStopPlace.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSInteger, TKTripPlanOptions) {
     TKTripPlanOptionsNone                   = 0,
     TKTripPlanOptionsOmitSameTripArrival    = 1 << 0
@@ -28,3 +30,5 @@ NS_SWIFT_NAME(TripPlanRequest)
 @property (nonatomic) TKInt limit;
 
 @end
+
+NS_ASSUME_NONNULL_END
