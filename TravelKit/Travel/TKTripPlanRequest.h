@@ -13,6 +13,7 @@ typedef NS_ENUM(NSInteger, TKTripPlanOptions) {
     TKTripPlanOptionsOmitSameTripArrival    = 1 << 0
 };
 
+NS_SWIFT_NAME(TripPlanRequest)
 @interface TKTripPlanRequest : NSObject
 
 - (instancetype)initWithSource:(TKStopPlace *)source destination:(TKStopPlace *)destination;

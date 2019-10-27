@@ -26,6 +26,7 @@ typedef NS_OPTIONS(NSUInteger, TKDatabaseFeature) {
 
 typedef void (^TKTripPlanFetchHandler)(TKTripPlan * __nullable result, NSError * __nullable error);
 
+NS_SWIFT_NAME(TravelDatabase)
 @interface TKDatabase : NSObject
 
 - (instancetype)initWithPath:(NSString *)path;

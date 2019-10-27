@@ -21,6 +21,7 @@ typedef NS_OPTIONS(NSUInteger, TKSortOrder) {
 
 TK_EXTERN TKOrderProperty const TKOrderByName;
 
+NS_SWIFT_NAME(Query)
 @interface TKQuery : NSObject
 
 /*!

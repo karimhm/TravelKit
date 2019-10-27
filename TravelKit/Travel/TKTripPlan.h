@@ -8,6 +8,7 @@
 #import <TravelKit/TKStopPlace.h>
 #import <TravelKit/TKItinerary.h>
 
+NS_SWIFT_NAME(TripPlan)
 @interface TKTripPlan : NSObject
 
 @property (readonly, nonatomic) TKStopPlace *source;

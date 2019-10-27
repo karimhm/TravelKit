@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_SWIFT_NAME(TimeFormatter)
 @interface TKTimeFormatter : NSFormatter
 
 - (nullable NSString *)stringFromTime:(TKTime *)time;
