@@ -24,13 +24,15 @@ NS_SWIFT_NAME(Cursor)
  @abstract     Fetch one objects and store it.
  @discussion   This method doesn't return an error.
  */
-- (nullable ObjectType)fetchOne;
+- (nullable ObjectType)fetchOne NS_SWIFT_UNAVAILABLE("Use fetchOne() instead")
+NS_SWIFT_NAME(_fetchOne());
 
 /*!
  @method
  @abstract     Fetch one objects and store it.
  */
-- (nullable ObjectType)fetchOneWithError:(NSError **)error;
+- (nullable ObjectType)fetchOneWithError:(NSError **)error
+NS_SWIFT_NAME(fetchOne());
 
 /*!
  @method
