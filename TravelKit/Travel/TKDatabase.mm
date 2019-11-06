@@ -6,6 +6,7 @@
  */
 
 #import "TKDatabase.h"
+#import "TKDatabase_Private.h"
 #import "TKDefines_Private.h"
 #import "TKConstants_Private.h"
 #import "NSError+TravelKit.h"
@@ -405,6 +406,10 @@ cleanup:
     } else {
         return true;
     }
+}
+
+- (tk::Ref<tk::Database>)database {
+    return _db;
 }
 
 #pragma mark - Properties
