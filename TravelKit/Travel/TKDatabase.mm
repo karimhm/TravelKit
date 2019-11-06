@@ -135,7 +135,7 @@ cleanup:
 }
 
 - (BOOL)addFunctions:(NSError **)error {
-    return _db->addFunction(GetDistanceFunction()).isOK();
+    return _db->addFunction(SQLite::GetDistanceFunction()).isOK();
 }
 
 - (void)checkFeatures {

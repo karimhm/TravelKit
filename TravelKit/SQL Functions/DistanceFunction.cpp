@@ -37,7 +37,7 @@ static void DistanceFunctionExecute(ContextRef context, int valuesCount, ValueRe
     }
 }
 
-FunctionContext tk::GetDistanceFunction(void) {
+FunctionContext SQLite::GetDistanceFunction(void) {
     if (!_didInit) {
         _distanceFunction.name = "tkDistance";
         _distanceFunction.valuesCount = 4;
