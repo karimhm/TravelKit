@@ -97,6 +97,16 @@ public:
     
     Status prepare();
     
+    Status prepareAndExecute() {
+        Status status = prepare();
+        
+        if (status.isOK()) {
+            status = execute();
+        }
+        
+        return status;
+    }
+    
     Status execute() {
         return static_cast<Status>(sqlite3_step(statement_));
     }
